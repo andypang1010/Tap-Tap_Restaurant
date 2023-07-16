@@ -1,0 +1,9 @@
+body,
+html {
+  margin: 0;
+  font-family: 'SF Pro Display', sans-serif
+}
+
+.bold {
+  font-weight: 700;
+}
