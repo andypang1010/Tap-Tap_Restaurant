@@ -101,12 +101,5 @@
 }
 
 body {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    background-color:dodgerblue;
-    background:url('../../media/BG.png') no-repeat;
-    background-size:cover;
-    background-position:center;
+    background-color: black;
 }

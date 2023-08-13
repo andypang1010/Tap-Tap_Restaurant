@@ -1,12 +1,11 @@
+import DashboardNav from "../components/DashboardNav/DashboardNav";
+
 function Menu() {
-    return(
-        <>
-            <br />
-            <div className="container">
-                <h1>Menu</h1>
-            </div>
-        </>
-    )
+  return (
+    <div className="container">
+      <DashboardNav />
+    </div>
+  );
 }
 
-export default Menu
+export default Menu;
