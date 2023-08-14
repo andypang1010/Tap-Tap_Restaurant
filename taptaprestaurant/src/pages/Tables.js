@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DatabaseContext from "../components/DatabaseContext";
+import RestaurantDataListener from "../components/RestaurantDataListener";
 import LoginForm from "../components/LoginForm/LoginForm";
 
 export default function Tables() {
@@ -7,10 +7,10 @@ export default function Tables() {
 
   return (
     <div>
-      {/*DatabaseContext usage demo*/}
+      {/*RestaurantDataListener usage demo. MUST BE LOGGED IN IN ORDER TO RETRIEVE DATA*/}
       <h1>{data != null ? data.phone : ""}</h1>
       <button onClick={() => console.log(data)}>Print Data</button>
-      <DatabaseContext onDataChange={setData} />
+      <RestaurantDataListener onDataChange={setData} />
       <LoginForm />
     </div>
   );
