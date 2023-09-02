@@ -1,34 +1,34 @@
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Button } from "react-bootstrap";
+import "./SideBar.css";
 
 const sideBarData = [
   {
-    icon: "bx bxs-home bx-sm",
+    icon: "bx bxs-home bx-md",
     linkTo: "#",
     text: "Home",
   },
   {
-    icon: "bx bxs-grid-alt bx-sm",
+    icon: "bx bxs-grid-alt bx-md",
     linkTo: "#",
     text: "Tables",
   },
   {
-    icon: "bx bxs-bar-chart-square bx-sm",
+    icon: "bx bxs-bar-chart-square bx-md",
     linkTo: "#",
     text: "Statistics",
   },
   {
-    icon: "bx bxs-notepad bx-sm",
+    icon: "bx bxs-notepad bx-md",
     linkTo: "#",
     text: "Order History",
   },
   {
-    icon: "bx bxs-comment-detail bx-sm",
+    icon: "bx bxs-comment-detail bx-md",
     linkTo: "#",
     text: "Customer Reviews",
   },
   {
-    icon: "bx bxs-user-account bx-sm",
+    icon: "bx bxs-user-account bx-md",
     linkTo: "#",
     text: "Account Details",
   },
@@ -36,22 +36,31 @@ const sideBarData = [
 
 export default function SideBar() {
   return (
-    <nav>
+    <div className="sidebar">
       <Logo />
       <SideBarItems />
-    </nav>
+    </div>
   );
 }
 
 function Logo() {
-  return <h1>TechCafe</h1>;
+  return (
+    <div className="logo">
+      <h1>TC</h1>
+    </div>
+  );
 }
 
 function SideBarItems() {
   return (
-    <ul className="nav d-flex flex-column">
+    <ul className="sidebar-items">
       {sideBarData.map((item) => (
-        <SideBarItem icon={item.icon} linkTo={item.linkTo} text={item.text} />
+        <SideBarItem
+          icon={item.icon}
+          linkTo={item.linkTo}
+          text={item.text}
+          key={item.text}
+        />
       ))}
     </ul>
   );
@@ -59,10 +68,9 @@ function SideBarItems() {
 
 function SideBarItem({ icon, linkTo, text }) {
   return (
-    <li>
-      <Link className="nav-link border" to={linkTo}>
-        <i className={icon} />
-      </Link>
-    </li>
+    <Button variant="light" className="sidebar-item">
+      <i className={icon} />
+      <h5>{text}</h5>
+    </Button>
   );
 }

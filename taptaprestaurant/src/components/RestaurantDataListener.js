@@ -1,9 +1,14 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
 
-export default function DatabaseContext({ onDataChange }) {
+export default function DatabaseContext({
+  onDataChange,
+  authorizationFailureRedirect = "",
+}) {
   const socket = io("http://localhost:8008");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -16,7 +21,7 @@ export default function DatabaseContext({ onDataChange }) {
         console.log("User is logged in!");
       })
       .catch((error) => {
-        console.log(error);
+        navigate(authorizationFailureRedirect);
       });
 
     return () => {
@@ -25,7 +30,7 @@ export default function DatabaseContext({ onDataChange }) {
         socket.disconnect();
       }
     };
-  }, []);
+  }, [authorizationFailureRedirect, navigate]);
 
   useEffect(() => {
     if (socket) {
