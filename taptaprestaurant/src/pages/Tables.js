@@ -12,30 +12,40 @@ export default function Tables() {
         <h1 className="logo">TC</h1>
 
         <div className="sidebar-items">
-          <a className="sidebar-item" href="#">
-            <i className="bx bxs-home bx-md"></i>
-            <p>Tables</p>
-          </a>
+          <div className="sidebar-item">
+            <a className="sidebar-link" href="#">
+              <i className="bx bxs-home bx-md"></i>
+              <p>Tables</p>
+            </a>
+          </div>
 
-          <a className="sidebar-item" href="#">
-            <i className="bx bxs-chart bx-md"></i>
-            <p>Statistics</p>
-          </a>
+          <div className="sidebar-item">
+            <a className="sidebar-link" href="#">
+              <i className="bx bxs-chart bx-md"></i>
+              <p>Statistics</p>
+            </a>
+          </div>
 
-          <a className="sidebar-item" href="#">
-            <i className="bx bxs-notepad bx-md"></i>
-            <p>Order History</p>
-          </a>
+          <div className="sidebar-item">
+            <a className="sidebar-link" href="#">
+              <i className="bx bxs-notepad bx-md"></i>
+              <p>Order History</p>
+            </a>
+          </div>
 
-          <a className="sidebar-item" href="#">
-            <i className="bx bxs-comment bx-md"></i>
-            <p>Customer Reviews</p>
-          </a>
+          <div className="sidebar-item">
+            <a className="sidebar-link" href="#">
+              <i className="bx bxs-comment bx-md"></i>
+              <p>Customer Reviews</p>
+            </a>
+          </div>
 
-          <a className="sidebar-item" href="#">
-            <i className="bx bxs-user bx-md"></i>
-            <p>Account Details</p>
-          </a>
+          <div className="sidebar-item">
+            <a className="sidebar-link" href="#">
+              <i className="bx bxs-user bx-md"></i>
+              <p>Account Details</p>
+            </a>
+          </div>
         </div>
       </div>
     </div>
