@@ -7,7 +7,7 @@ export default function Tables() {
   const [data, setData] = useState(null);
 
   return (
-    <div>
+    <div className="contain">
       <div className="sidebar">
         <h1 className="logo">TC</h1>
 
@@ -48,6 +48,10 @@ export default function Tables() {
           </div>
         </div>
       </div>
+
+      {/* <ul className="table-list">
+        <li className="table"></li>
+      </ul> */}
     </div>
   );
 }

@@ -15,6 +15,14 @@ p {
   margin-bottom: 0;
 }
 
+.contain {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 100px;
+  column-gap: 30px;
+}
+
 .bold {
   font-weight: 700;
 }
@@ -26,15 +34,13 @@ p {
 .sidebar {
   width: 100px;
   height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
   display: flex;
   flex-direction: column;
   text-align: center;
   align-items: center;
   gap: 40px;
   border-right: 2px solid #444;
+  grid-row: 1 / -1;
 }
 
 .sidebar-items {
@@ -68,4 +74,7 @@ p {
 .sidebar-link :hover {
   color: #e38188;
   background-color: #eee;
+}
+
+.table-list {
 }
