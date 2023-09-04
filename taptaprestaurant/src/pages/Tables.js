@@ -14,7 +14,7 @@ export default function Tables() {
         <div className="sidebar-items">
           <div className="sidebar-item">
             <a className="sidebar-link" href="#">
-              <i className="bx bxs-home bx-md"></i>
+              <i className="bx bxs-grid-alt bx-md"></i>
               <p>Tables</p>
             </a>
           </div>
@@ -49,9 +49,23 @@ export default function Tables() {
         </div>
       </div>
 
-      {/* <ul className="table-list">
-        <li className="table"></li>
-      </ul> */}
+      <div className="page-title">
+        <h2>Tables</h2>
+      </div>
+
+      <RestaurantDataListener
+        onDataChange={setData}
+        authorizationFailureRedirect="/Login"
+      />
+
+      <div className="table-list">
+        <div className="table">
+          {data != null ? data.tables["1"][0].special_instructions : "no data"}
+        </div>
+        <div className="table">Is it</div>
+        <div className="table">Me You're</div>
+        <div className="table">Looking for?</div>
+      </div>
     </div>
   );
 }

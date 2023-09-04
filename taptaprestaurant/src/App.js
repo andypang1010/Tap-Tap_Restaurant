@@ -9,8 +9,7 @@ function App() {
   document.title = "Tap Tap Restaurant";
   return (
     <>
-      <Tables />
-      {/* <Router>
+      <Router>
         <Routes>
           <Route path="/" element={<Tables />} />
           <Route path="/login" element={<Login />} />
@@ -18,7 +17,7 @@ function App() {
           <Route path="/info" element={<Info />} />
           <Route path="/menu" element={<Menu />} />
         </Routes>
-      </Router> */}
+      </Router>
     </>
   );
 }
