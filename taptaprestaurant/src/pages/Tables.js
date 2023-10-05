@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 import SideBar from "../components/SideBar.js";
 import "./style.css";
 
 export default function Tables() {
   const [data, setData] = useState(null);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <div className="contain">
@@ -21,7 +25,7 @@ export default function Tables() {
 
           <div className="sidebar-item">
             <a className="sidebar-link" href="#">
-              <i className="bx bxs-chart bx-md"></i>
+              <i className="bx bxs-bar-chart-square bx-md"></i>
               <p>Statistics</p>
             </a>
           </div>
@@ -35,7 +39,7 @@ export default function Tables() {
 
           <div className="sidebar-item">
             <a className="sidebar-link" href="#">
-              <i className="bx bxs-comment bx-md"></i>
+              <i className="bx bxs-chat bx-md"></i>
               <p>Customer Reviews</p>
             </a>
           </div>
@@ -58,14 +62,42 @@ export default function Tables() {
         authorizationFailureRedirect="/Login"
       />
 
-      <div className="table-list">
-        <div className="table">
-          {data != null ? data.tables["1"][0].special_instructions : "no data"}
+      {data !== null && (
+        <div className="table-list">
+          <Table tab={data.tables["1"]} name={"1"} />
+          <Table tab={data.tables["1"]} name={"1"} />
+          <Table tab={data.tables["1"]} name={"1"} />
+          <Table tab={data.tables["1"]} name={"1"} />
         </div>
-        <div className="table">Is it</div>
-        <div className="table">Me You're</div>
-        <div className="table">Looking for?</div>
-      </div>
+      )}
+    </div>
+  );
+}
+
+function Table({ tab, name }) {
+  useEffect(() => {
+    console.log("tab");
+  }, [tab]);
+
+  return (
+    <div className="table">
+      <h4>#{name}</h4>
+      <ul className="item-list">
+        {tab &&
+          tab.map((item, i) => (
+            <li className="item" style={{ backgroundColor: "#444" }} key={i}>
+              <div className="item-info">
+                <div className="item-description">
+                  <span>{item.item.description}</span>
+                  <span className="item-price">{item.item.price}</span>
+                </div>
+                <span className="item-quantity">
+                  <em>{item.quantity}</em>
+                </span>
+              </div>
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }
