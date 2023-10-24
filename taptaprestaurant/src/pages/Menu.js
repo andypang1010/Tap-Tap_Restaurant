@@ -21,7 +21,13 @@ export default function Menu({ socket }) {
       />
 
       <div className="main-content">
-        <div className="menu-box box"></div>
+        <div className="menu-box box">
+          {data === null ? (
+            <h4>Loading...</h4>
+          ) : (
+            data.menu.map((item) => <div key={item.name}>{item.name}</div>)
+          )}
+        </div>
       </div>
     </div>
   );

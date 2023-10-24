@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 import IconContainer from "../components/IconContainer";
 import "./Account.css";
+import io from "socket.io-client";
 
-export default function Account({ socket }) {
+export default function Account({ socket = io("http://localhost:8008") }) {
   const [data, setData] = useState(null);
 
   function handleAccountUpdate() {
@@ -61,6 +62,7 @@ export default function Account({ socket }) {
                 text={data.phone}
                 onChange={(value) => {
                   data.phone = value;
+                  console.log("newphone: ", data.phone);
                   handleAccountUpdate();
                 }}
               />
@@ -77,7 +79,7 @@ export default function Account({ socket }) {
               <h3 className="mb-3">Restaurant Settings</h3>
               <EditableField
                 icon="bx bx-coin-stack"
-                number={true}
+                type="number"
                 prependText="Max Quantity per Order:"
                 text={data.maxQuantity}
                 onChange={(value) => {
@@ -87,7 +89,7 @@ export default function Account({ socket }) {
               />
               <EditableField
                 icon="bx bx-grid-alt"
-                number={true}
+                type="number"
                 prependText="Number of Tables:"
                 text={data.maxTable}
                 onChange={(value) => {
@@ -132,26 +134,32 @@ function EditableField({
   icon,
   onChange = () => {},
   prependText,
-  number = false,
+  type = "text",
 }) {
   const [newValue, setNewValue] = useState(text);
   const [isEditing, setIsEditing] = useState(false);
 
   function handleInputChange(value) {
+    console.log("valuee: ", value, type);
     setNewValue(value);
     onChange(value);
   }
 
   const handleInput = (event) => {
-    if (event.key === "Enter") {
-      handleInputChange();
-    }
-    setNewValue(parseInt(event.target.value) || 0);
+    const val =
+      type === "number" ? parseInt(event.target.value) : event.target.value;
+
+    console.log("val", val);
+    event.key === "Enter" ? handleInputChange(val) : setNewValue(val || 0);
   };
 
   const handleBlur = (event) => {
+    console.log("bool", event.target.value !== text);
+
     if (event.target.value !== text) {
-      handleInputChange(parseInt(event.target.value));
+      handleInputChange(
+        type === "number" ? parseInt(event.target.value) : event.target.value
+      );
     }
     setIsEditing(false);
   };
@@ -163,8 +171,8 @@ function EditableField({
           {prependText && <span>{prependText}</span>}
           <input
             autoFocus
-            type={number ? "number" : "text"}
-            value={number ? parseInt(newValue) : newValue}
+            type={type}
+            value={type === "number" ? parseInt(newValue) : newValue}
             size={newValue.length + 2 || 4}
             onInput={handleInput}
             onBlur={handleBlur}
