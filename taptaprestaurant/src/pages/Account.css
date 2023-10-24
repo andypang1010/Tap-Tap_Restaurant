@@ -1,0 +1,17 @@
+.account-grid {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 1rem;
+  height: 75%;
+}
+
+.account-box {
+  height: 17rem;
+}
+
+.restaurant-container {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-columns: 49% 49%;
+}

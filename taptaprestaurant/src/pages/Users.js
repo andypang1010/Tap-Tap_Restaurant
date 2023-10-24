@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 
-export default function Menu({ socket }) {
+export default function Users({ socket }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export default function Menu({ socket }) {
   return (
     <div className="main-content">
       <div className="page-title">
-        <h2>Menu Editor</h2>
+        <h2>Users</h2>
       </div>
 
       <RestaurantDataListener
@@ -19,10 +19,6 @@ export default function Menu({ socket }) {
         authorizationFailureRedirect="/Login"
         socket={socket}
       />
-
-      <div className="main-content">
-        <div className="menu-box box"></div>
-      </div>
     </div>
   );
 }

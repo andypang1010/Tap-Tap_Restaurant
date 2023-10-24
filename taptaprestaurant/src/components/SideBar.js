@@ -1,43 +1,38 @@
 import { Button } from "react-bootstrap";
 import "./SideBar.css";
+import { Link } from "react-router-dom";
 
 const sideBarData = [
   {
-    icon: "bx bxs-home bx-md",
-    linkTo: "#",
-    text: "Home",
-  },
-  {
-    icon: "bx bxs-grid-alt bx-md",
-    linkTo: "#",
+    icon: "bx bx-grid-alt bx-md",
+    linkTo: "/Tables",
     text: "Tables",
   },
   {
-    icon: "bx bxs-bar-chart-square bx-md",
-    linkTo: "#",
-    text: "Statistics",
-  },
-  {
-    icon: "bx bxs-notepad bx-md",
-    linkTo: "#",
+    icon: "bx bx-history bx-md",
+    linkTo: "/OrderHistory",
     text: "Order History",
   },
   {
-    icon: "bx bxs-comment-detail bx-md",
-    linkTo: "#",
-    text: "Customer Reviews",
+    icon: "bx bx-food-menu bx-md",
+    linkTo: "/Menu",
+    text: "Menu",
   },
   {
-    icon: "bx bxs-user-account bx-md",
-    linkTo: "#",
+    icon: "bx bx-user-pin bx-md",
+    linkTo: "/Account",
     text: "Account Details",
+  },
+  {
+    icon: "bx bx-group bx-md",
+    linkTo: "/Users",
+    text: "Users",
   },
 ];
 
 export default function SideBar() {
   return (
     <div className="sidebar">
-      <Logo />
       <SideBarItems />
     </div>
   );
@@ -53,7 +48,8 @@ function Logo() {
 
 function SideBarItems() {
   return (
-    <ul className="sidebar-items">
+    <div className="sidebar-items">
+      <Logo />
       {sideBarData.map((item) => (
         <SideBarItem
           icon={item.icon}
@@ -62,15 +58,17 @@ function SideBarItems() {
           key={item.text}
         />
       ))}
-    </ul>
+    </div>
   );
 }
 
 function SideBarItem({ icon, linkTo, text }) {
   return (
-    <Button variant="light" className="sidebar-item">
-      <i className={icon} />
-      <h5>{text}</h5>
-    </Button>
+    <div className="sidebar-item">
+      <Link className="sidebar-link" to={linkTo}>
+        <i className={icon} />
+        <p>{text}</p>
+      </Link>
+    </div>
   );
 }

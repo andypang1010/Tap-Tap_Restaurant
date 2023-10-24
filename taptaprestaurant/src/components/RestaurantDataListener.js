@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import io from "socket.io-client";
 
-export default function DatabaseContext({
+export default function RestaurantDataListener({
   onDataChange,
-  authorizationFailureRedirect = "",
+  authenticationFailureRedirect = "",
+  socket = io("http://localhost:8008"),
 }) {
-  const socket = io("http://localhost:8008");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function DatabaseContext({
         console.log("User is logged in!");
       })
       .catch((error) => {
-        navigate(authorizationFailureRedirect);
+        navigate(authenticationFailureRedirect);
       });
 
     return () => {
@@ -30,7 +30,7 @@ export default function DatabaseContext({
         socket.disconnect();
       }
     };
-  }, [authorizationFailureRedirect, navigate]);
+  }, []);
 
   useEffect(() => {
     if (socket) {
