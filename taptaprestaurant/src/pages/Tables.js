@@ -11,10 +11,10 @@ export default function Tables({ socket }) {
   }, [data]);
 
   return (
-    <div className="main-content">
-      <div className="page-title">
+    <main className="main-content">
+      <header className="page-title">
         <h2>Tables</h2>
-      </div>
+      </header>
 
       <RestaurantDataListener
         onDataChange={setData}
@@ -23,12 +23,12 @@ export default function Tables({ socket }) {
       />
 
       {data !== null && (
-        <div className="table-list">
+        <ul className="table-list">
           <Table tab={data.tables["1"]} name={"1"} />
           <Table tab={data.tables["2"]} name={"2"} />
-        </div>
+        </ul>
       )}
-    </div>
+    </main>
   );
 }
 
@@ -38,7 +38,7 @@ function Table({ tab, name }) {
   }, [tab]);
 
   return (
-    <div className="table">
+    <li className="table">
       <h4>#{name}</h4>
       <ul className="item-list">
         {tab &&
@@ -47,11 +47,6 @@ function Table({ tab, name }) {
               <div className="item-info">
                 <div className="item-description">
                   <span>{item.item.name}</span>
-                  <Dropdown className="status-dropdown">
-                    <Dropdown.Toggle className="" id="dropdown-basic">
-                      {item.status}
-                    </Dropdown.Toggle>
-                  </Dropdown>
                   <span className="item-price">
                     &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
                   </span>
@@ -63,6 +58,6 @@ function Table({ tab, name }) {
             </li>
           ))}
       </ul>
-    </div>
+    </li>
   );
 }

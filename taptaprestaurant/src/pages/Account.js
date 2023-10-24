@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 //import axios from "axios";
 import RestaurantDataListener from "../components/RestaurantDataListener";
+import EditableField from "../components/EditableField";
 import IconContainer from "../components/IconContainer";
 import "./Account.css";
 import io from "socket.io-client";
@@ -27,10 +28,10 @@ export default function Account({ socket = io("http://localhost:8008") }) {
   }, [data]);
 
   return (
-    <div className="main-content">
-      <div className="page-title">
+    <main className="main-content">
+      <header className="page-title">
         <h2>Account Details</h2>
-      </div>
+      </header>
 
       <RestaurantDataListener
         onDataChange={setData}
@@ -41,7 +42,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
       {data == null ? (
         <></>
       ) : (
-        <div className="account-grid">
+        <section className="account-grid">
           <div className="info account-box box">
             <h3 className="mb-3">Information</h3>
             <IconContainer icon="bx bx-user" text={data.username} />
@@ -123,81 +124,8 @@ export default function Account({ socket = io("http://localhost:8008") }) {
             <button className="action-button mb-2">Change Username</button>
             <button className="action-button mb-2">Reset Password</button>
           </div>
-        </div>
+        </section>
       )}
-    </div>
-  );
-}
-
-function EditableField({
-  text,
-  icon,
-  onChange = () => {},
-  prependText,
-  type = "text",
-}) {
-  const [newValue, setNewValue] = useState(text);
-  const [isEditing, setIsEditing] = useState(false);
-
-  function handleInputChange(value) {
-    console.log("valuee: ", value, type);
-    setNewValue(value);
-    onChange(value);
-  }
-
-  const handleInput = (event) => {
-    const val =
-      type === "number" ? parseInt(event.target.value) : event.target.value;
-
-    console.log("val", val);
-    event.key === "Enter" ? handleInputChange(val) : setNewValue(val || 0);
-  };
-
-  const handleBlur = (event) => {
-    console.log("bool", event.target.value !== text);
-
-    if (event.target.value !== text) {
-      handleInputChange(
-        type === "number" ? parseInt(event.target.value) : event.target.value
-      );
-    }
-    setIsEditing(false);
-  };
-
-  return (
-    <div>
-      {isEditing ? (
-        <div className="d-flex align-items-center">
-          {prependText && <span>{prependText}</span>}
-          <input
-            autoFocus
-            type={type}
-            value={type === "number" ? parseInt(newValue) : newValue}
-            size={newValue.length + 2 || 4}
-            onInput={handleInput}
-            onBlur={handleBlur}
-          />
-          <button>
-            <i className="bx bx-check text-success"></i>
-          </button>
-        </div>
-      ) : (
-        <IconContainer icon={icon} prependText={prependText} text={text}>
-          <EditIcon
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          />
-        </IconContainer>
-      )}
-    </div>
-  );
-}
-
-function EditIcon({ onClick }) {
-  return (
-    <button className="blank-button" onClick={onClick}>
-      <i className="bx bx-pencil"></i>
-    </button>
+    </main>
   );
 }

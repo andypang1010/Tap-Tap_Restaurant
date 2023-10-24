@@ -41,7 +41,9 @@ export default function SideBar() {
 function Logo() {
   return (
     <div className="logo">
-      <h1>TC</h1>
+      <h1>
+        <strong>TC</strong>
+      </h1>
     </div>
   );
 }

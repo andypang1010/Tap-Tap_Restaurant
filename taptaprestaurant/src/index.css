@@ -10,10 +10,17 @@ html {
   margin: 0;
   font-family: "SF Pro Display", sans-serif;
   color: #444;
+  overflow: auto;
+}
+
+.contain {
+  overflow: auto;
+  scrollbar-gutter: stable;
 }
 
 ul {
   list-style-type: none;
+  padding-left: 0;
 }
 
 p {
@@ -43,10 +50,11 @@ p {
   border-right: 0.5px solid #efefef;
   grid-row: 1 / -1;
   background-color: #eee;
+  box-shadow: 0.2rem 0rem 0.3rem #bbb;
 }
 
 .sidebar-items {
-  height: 75%;
+  height: 60rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -201,6 +209,7 @@ p {
   background-color: #eee;
   border-radius: 20px;
   padding: 2rem;
+  box-shadow: 0.2rem 0.3rem 0.3rem #bbb;
 }
 
 .main-content {
