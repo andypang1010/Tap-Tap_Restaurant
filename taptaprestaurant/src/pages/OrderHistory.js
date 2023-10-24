@@ -9,16 +9,16 @@ export default function OrderHistory({ socket }) {
   }, [data]);
 
   return (
-    <div className="main-content">
-      <div className="page-title">
+    <main className="main-content">
+      <header className="page-title">
         <h2>Order</h2>
-      </div>
+      </header>
 
       <RestaurantDataListener
         onDataChange={setData}
         authorizationFailureRedirect="/Login"
         socket={socket}
       />
-    </div>
+    </main>
   );
 }

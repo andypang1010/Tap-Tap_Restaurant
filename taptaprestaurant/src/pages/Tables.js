@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 import "./style.css";
-import { Dropdown } from "react-bootstrap";
 
 export default function Tables({ socket }) {
   const [data, setData] = useState(null);
