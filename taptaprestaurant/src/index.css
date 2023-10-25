@@ -22,8 +22,8 @@ EDITING DEFAULT BOOTSTRAP STYLES
   border-color: var(--main-taptap-color);
 }
 
-.form-select option:hover {
-  background-color: var(--main-taptap-color);
+select.form-select option:hover {
+  background-color: var(--main-taptap-color) !important;
   color: #fff;
 }
 
@@ -257,8 +257,8 @@ p {
 }
 
 .add-button {
-  height: 4rem;
-  width: 4rem;
+  height: 2.5rem;
+  width: 2.5rem;
   border-radius: 4px;
   background-color: var(--main-taptap-color);
   color: #fff;
@@ -266,6 +266,21 @@ p {
   font-weight: bold;
   border: none;
   display: block;
+}
+
+.submit-button {
+  background-color: var(--main-taptap-color);
+  border-color: var(--main-taptap-color);
+}
+
+.submit-button:hover {
+  background-color: var(--main-taptap-color);
+  border-color: var(--main-taptap-color);
+}
+
+.submit-button:hover,
+.add-button:hover {
+  background-image: linear-gradient(rgb(0 0 0/10%) 0 0);
 }
 
 /*Pulled from https://codepen.io/P1N2O/pen/pyBNzX*/

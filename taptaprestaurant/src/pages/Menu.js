@@ -416,7 +416,9 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
           <Button variant="secondary" onClick={onHide}>
             Close
           </Button>
-          <Button type="submit">Add Item</Button>
+          <Button className="submit-button" type="submit">
+            Add Item
+          </Button>
         </Modal.Footer>
       </Form>
     </Modal>

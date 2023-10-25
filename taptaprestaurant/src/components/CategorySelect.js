@@ -35,8 +35,8 @@ const selectData = [
 
 export default function CategorySelect({ onChange }) {
   return (
-    <Form.Select name="category" onChange={onChange}>
-      <option disabled selected hidden>
+    <Form.Select defaultValue="default" name="category" onChange={onChange}>
+      <option value="default" disabled hidden>
         Choose...
       </option>
       {selectData.map((item, i) => (
