@@ -6,7 +6,7 @@ import Tables from "./pages/Tables";
 import Users from "./pages/Users";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideBar from "./components/SideBar";
-import OrderHistory from "./pages/Account";
+import OrderHistory from "./pages/OrderHistory";
 import io from "socket.io-client";
 
 function App() {
