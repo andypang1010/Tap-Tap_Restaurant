@@ -5,6 +5,7 @@ export default function Users({ socket }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    data !== null && (document.title = `${data.name} Users`);
     console.log(data);
   }, [data]);
 

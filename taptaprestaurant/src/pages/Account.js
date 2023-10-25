@@ -24,6 +24,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
   }
 
   useEffect(() => {
+    data !== null && (document.title = "Account");
     console.log(data);
   }, [data]);
 
@@ -121,8 +122,12 @@ export default function Account({ socket = io("http://localhost:8008") }) {
 
           <div className="password-security account-box box">
             <h3 className="mb-3">Password & Security</h3>
-            <button className="action-button mb-2">Change Username</button>
-            <button className="action-button mb-2">Reset Password</button>
+            <button className="action-button red-hover mb-2">
+              Change Username
+            </button>
+            <button className="action-button red-hover mb-2">
+              Reset Password
+            </button>
           </div>
         </section>
       )}

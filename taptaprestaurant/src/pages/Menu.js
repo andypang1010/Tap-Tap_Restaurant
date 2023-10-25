@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react";
+import io from "socket.io-client";
 import RestaurantDataListener from "../components/RestaurantDataListener";
+import TypeSelect from "../components/TypeSelect";
+import CategorySelect from "../components/CategorySelect";
 import "./Menu.css";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  Form,
+  InputGroup,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 
 function VegetarianTooltip() {
   return (
@@ -73,7 +83,7 @@ const menuButtonData = [
   },
 ];
 
-export default function Menu({ socket }) {
+export default function Menu({ socket = io("http://localhost:8008") }) {
   const [data, setData] = useState(null);
 
   function handleMenuUpdate() {
@@ -91,6 +101,7 @@ export default function Menu({ socket }) {
   }
 
   useEffect(() => {
+    data !== null && (document.title = `${data.name} Menu`);
     console.log(data);
   }, [data]);
 
@@ -106,13 +117,14 @@ export default function Menu({ socket }) {
         socket={socket}
       />
 
-      <MenuBox data={data} onMenuUpdate={handleMenuUpdate} />
+      <MenuBox data={data} onMenuUpdate={handleMenuUpdate} socket={socket} />
     </main>
   );
 }
 
-function MenuBox({ data, onMenuUpdate }) {
+function MenuBox({ data, onMenuUpdate, socket }) {
   const [activeButton, setActiveButton] = useState("All");
+  const [showAddModal, setShowAddModal] = useState(false);
   const filteredItems =
     (data !== null &&
       data.menu.filter(
@@ -122,9 +134,10 @@ function MenuBox({ data, onMenuUpdate }) {
       )) ||
     [];
 
-  const handleButtonClick = (buttonType) => {
-    setActiveButton(buttonType);
-  };
+  const handleButtonClick = (buttonType) => setActiveButton(buttonType);
+
+  const handleClose = () => setShowAddModal(false);
+  const handleShow = () => setShowAddModal(true);
 
   return (
     <section className="menu-box box">
@@ -141,19 +154,36 @@ function MenuBox({ data, onMenuUpdate }) {
           />
         ))}
       </div>
-      <h2 className="current-filter-name">{activeButton}</h2>
+      <div className="d-flex align-items-center justify-content-between mb-4">
+        <h2 className="current-filter-name">{activeButton}</h2>
+        <button className="add-button" onClick={handleShow}>
+          <i className="bx bx-plus"></i>
+        </button>
+        <AddMenuItemModal
+          show={showAddModal}
+          onHide={handleClose}
+          socket={socket}
+          username={data !== null ? data.username : ""}
+        />
+      </div>
+
       <ul className="menu-list">
         {data === null ? (
-          <li>
-            <h4>Loading...</h4>
-          </li>
+          <>
+            <DummyMenuItem key="1" />
+            <DummyMenuItem key="2" />
+            <DummyMenuItem key="3" />
+            <DummyMenuItem key="4" />
+            <DummyMenuItem key="5" />
+            <DummyMenuItem key="6" />
+          </>
         ) : filteredItems.length === 0 ? (
-          <li>
+          <li key="no-items">
             <h4>No items matching this filter</h4>
           </li>
         ) : (
-          filteredItems.map((item) => (
-            <MenuItem item={item} onUpdate={onMenuUpdate} />
+          filteredItems.map((item, i) => (
+            <MenuItem item={item} key={i} onUpdate={onMenuUpdate} />
           ))
         )}
       </ul>
@@ -215,7 +245,7 @@ function MenuItem({ item, onUpdate = () => {} }) {
   }, [item]);
 
   return (
-    <li key={item.name} className={`menu-item-box ${border}`}>
+    <li className={`menu-item-box ${border}`}>
       <h5 className="menu-item-name">{item.name}</h5>
       <p>
         <em>{item.category}</em>
@@ -230,7 +260,7 @@ function MenuItem({ item, onUpdate = () => {} }) {
             placement="top"
             overlay={AllergyTooltip(item.allergies)}
           >
-            <i className="bx bxs-info-circle text-danger"></i>
+            <i className="bx bx-body text-danger"></i>
           </OverlayTrigger>
         )}
         {item.vegetarian && (
@@ -238,6 +268,170 @@ function MenuItem({ item, onUpdate = () => {} }) {
             <i className="bx bxs-leaf text-success"></i>
           </OverlayTrigger>
         )}
+      </div>
+    </li>
+  );
+}
+
+function AddMenuItemModal({ show, onHide, socket, username }) {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: 0,
+    type: "",
+    category: "",
+    vegetarian: false,
+    available: true,
+    allergies: [],
+    ingredients: [],
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (socket) {
+        socket.emit("addMenuItem", {
+          item: formData,
+          username,
+        });
+
+        socket.on("success", (response) => {
+          //console.log("newdata: ", response);
+          onHide();
+        });
+
+        socket.on("failed", (error) => {
+          console.log("error: ", error);
+          setErrorMessage("Failed to create new menu item");
+        });
+
+        socket.on("server-error", (error) => {
+          console.log("error: ", error);
+        });
+      } else {
+        console.log("socket not enabled");
+      }
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    console.log(formData);
+    const { name, value, type, checked } = e.target;
+    const newValue =
+      type === "checkbox"
+        ? checked
+        : type === "number"
+        ? parseInt(value)
+        : value;
+    setFormData({
+      ...formData,
+      [name]: newValue,
+    });
+  };
+
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Menu Item</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3">
+            <Form.Label>Name:</Form.Label>
+            <Form.Control
+              placeholder="Enter new item name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Description:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter brief item description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Price:</Form.Label>
+            <InputGroup className="mb-3 price-input">
+              <InputGroup.Text>
+                <i className="bx bx-yen"></i>
+              </InputGroup.Text>
+              <Form.Control
+                type="number"
+                min="0"
+                step="100"
+                placeholder="100"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+              />
+            </InputGroup>
+          </Form.Group>
+          <Form.Group className="mb-3 d-flex align-items-center justify-content-between">
+            <div>
+              <Form.Label>Type:</Form.Label>
+              <TypeSelect value={formData.type} onChange={handleInputChange} />
+            </div>
+            <div>
+              <Form.Label>Category:</Form.Label>
+              <CategorySelect
+                value={formData.category}
+                onChange={handleInputChange}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Is this item vegetarian?"
+              name="vegetarian"
+              value={formData.vegetarian}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Is this item currently available?"
+              name="available"
+              value={formData.available}
+              onChange={handleInputChange}
+              checked
+            />
+          </Form.Group>
+          <p className="error-message">{errorMessage}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            Close
+          </Button>
+          <Button type="submit">Add Item</Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+}
+
+function DummyMenuItem() {
+  return (
+    <li className="menu-item-box dummy-menu-box border-default">
+      <div className="dummy loading dummy-name"></div>
+      <div className="dummy loading dummy-category"></div>
+      <div className="dummy loading dummy-price"></div>
+      <div className="dummy-icons">
+        <div className="dummy loading dummy-icon"></div>
+        <div className="dummy loading dummy-icon"></div>
       </div>
     </li>
   );

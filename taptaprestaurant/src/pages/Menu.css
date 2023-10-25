@@ -12,7 +12,8 @@
 .menu-button-list {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
@@ -27,12 +28,23 @@
   border-radius: 20px;
   height: 4.5rem;
   white-space: no-wrap;
+  overflow: hidden;
 }
 
-.menu-button :hover {
-  background-color: #eee;
-  border-style: dashed;
+.menu-button:hover {
+  background-image: linear-gradient(rgb(0 0 0/3%) 0 0);
 }
+
+/*.active::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  content: "\00a0";
+  height: 4rem;
+  width: 1rem;
+  background-color: #eee;
+}*/
 
 .menu-item-box {
   position: relative;
@@ -111,6 +123,7 @@
 .active {
   border-color: #fff;
   color: #fff;
+  position: relative;
 }
 
 .active-default {
@@ -155,4 +168,50 @@
 
 .active-beverage {
   background-color: #dee2e6;
+}
+
+.dummy {
+  border-radius: 6px;
+}
+
+.dummy-name {
+  height: 1rem;
+  width: 10rem;
+  margin-bottom: 0.5rem;
+}
+
+.dummy-category {
+  height: 0.8rem;
+  width: 5rem;
+  margin-bottom: 0.3rem;
+}
+
+.dummy-price {
+  height: 0.8rem;
+  width: 4rem;
+  margin-bottom: 0.3rem;
+}
+
+.dummy-menu-box {
+  background-color: #ddd;
+  border-color: #eee;
+}
+
+.dummy-icons {
+  position: absolute;
+  bottom: 0.7rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dummy-icon {
+  height: 1.7rem;
+  width: 1.7rem;
+  border-radius: 100rem;
+}
+
+.price-input {
+  width: 8rem;
 }

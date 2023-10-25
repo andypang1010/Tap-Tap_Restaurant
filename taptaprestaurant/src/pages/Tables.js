@@ -6,6 +6,7 @@ export default function Tables({ socket }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    data !== null && (document.title = `${data.name} Tables`);
     console.log(data);
   }, [data]);
 
@@ -37,7 +38,7 @@ function Table({ tab, name }) {
   }, [tab]);
 
   return (
-    <li className="table">
+    <li className="table box">
       <h4>#{name}</h4>
       <ul className="item-list">
         {tab &&

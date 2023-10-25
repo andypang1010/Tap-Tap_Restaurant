@@ -16,7 +16,7 @@ function App() {
   return (
     <>
       <Router>
-        <div class="contain">
+        <div className="contain">
           <SideBar />
           <Routes>
             <Route socket={socket} path="/" element={<Tables />} />

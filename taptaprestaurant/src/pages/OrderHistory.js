@@ -5,6 +5,7 @@ export default function OrderHistory({ socket }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    data !== null && (document.title = `${data.name} Orders`);
     console.log(data);
   }, [data]);
 

@@ -1,3 +1,40 @@
+/*
+GLOBAL VARIABLES
+*/
+
+:root {
+  --main-taptap-color: rgba(212, 30, 30, 1);
+}
+
+/*
+EDITING DEFAULT BOOTSTRAP STYLES
+*/
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: var(--main-taptap-color);
+  box-shadow: 0 0 0 0.25rem rgb(210, 115, 115, 0.4);
+}
+
+.form-check-input:checked {
+  background-color: var(--main-taptap-color);
+  border-color: var(--main-taptap-color);
+}
+
+.form-select option:hover {
+  background-color: var(--main-taptap-color);
+  color: #fff;
+}
+
+/*
+START OF MAIN STYLING
+*/
+
+.taptap-background-color {
+  background-color: var(--main-taptap-color);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -82,7 +119,7 @@ p {
 
 .sidebar-item :hover,
 .sidebar-link :hover {
-  color: #e38188;
+  color: var(--main-taptap-color);
   background-color: #ddd;
 }
 
@@ -108,9 +145,8 @@ p {
 }
 
 .page-title h2 {
-  padding: 18px;
+  padding: 2rem;
   font-weight: 700;
-  text-align: center;
 }
 
 .item-list {
@@ -195,8 +231,12 @@ p {
   font-weight: bold;
 }
 
-.action-button :hover {
-  background-color: #e38188;
+.red-hover {
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.red-hover:hover {
+  background-color: var(--main-taptap-color);
   color: #fff;
 }
 
@@ -214,4 +254,47 @@ p {
 
 .main-content {
   margin: 0 4rem;
+}
+
+.add-button {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 4px;
+  background-color: var(--main-taptap-color);
+  color: #fff;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  display: block;
+}
+
+/*Pulled from https://codepen.io/P1N2O/pen/pyBNzX*/
+
+.loading {
+  background: linear-gradient(-90deg, #bbbbbb, #cfcfcf, #bdbdbd, #c5c5c5);
+  background-size: 400% 400%;
+  animation: gradient 3s ease infinite;
+  height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.error-message {
+  font-weight: bold;
+  color: red;
 }
