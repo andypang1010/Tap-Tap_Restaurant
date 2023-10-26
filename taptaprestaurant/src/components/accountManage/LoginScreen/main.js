@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 
-export default LoginForm;
-function LoginForm() {
+export default main;
+function main() {
     return (
         <div className="loginScreen-container"
             style={{
@@ -46,7 +46,7 @@ function LoginForm() {
                 </p>
 
                 <div style={{width:"358px", gap:"8px"}}>
-                    <Button style={{width:"358px",height:"48px",textTransform: 'none', backgroundColor:"#D41E1E"}} variant="contained">
+                    <Button href="/SignUp/email" style={{width:"358px",height:"48px",textTransform: 'none', backgroundColor:"#D41E1E"}} variant="contained">
                         <p
                         href="#" // replace with your desired link
                             style={{
