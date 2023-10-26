@@ -198,7 +198,7 @@
 
 .dummy-menu-box {
   background-color: #ddd;
-  border-color: #eee;
+  border: none;
 }
 
 .dummy-icons {

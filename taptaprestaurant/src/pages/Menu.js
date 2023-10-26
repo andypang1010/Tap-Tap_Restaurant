@@ -21,6 +21,14 @@ function VegetarianTooltip() {
   );
 }
 
+function AddMenuItemTooltip() {
+  return (
+    <Tooltip>
+      <strong>Add New Menu Item</strong>
+    </Tooltip>
+  );
+}
+
 function AllergyTooltip(allergies) {
   return (
     <Tooltip>
@@ -155,10 +163,12 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         ))}
       </div>
       <div className="d-flex align-items-center justify-content-between mb-4">
-        <h2 className="current-filter-name">{activeButton}</h2>
-        <button className="add-button" onClick={handleShow}>
-          <i className="bx bx-plus"></i>
-        </button>
+        <h3 className="current-filter-name">{activeButton}</h3>
+        <OverlayTrigger placement="top" overlay={AddMenuItemTooltip()}>
+          <button className="add-button" onClick={handleShow}>
+            <i className="bx bx-plus"></i>
+          </button>
+        </OverlayTrigger>
         <AddMenuItemModal
           show={showAddModal}
           onHide={handleClose}
@@ -179,7 +189,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
           </>
         ) : filteredItems.length === 0 ? (
           <li key="no-items">
-            <h4>No items matching this filter</h4>
+            <h5>No items matching this filter</h5>
           </li>
         ) : (
           filteredItems.map((item, i) => (
