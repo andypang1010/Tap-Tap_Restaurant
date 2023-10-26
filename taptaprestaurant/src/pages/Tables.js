@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
-import "./style.css";
 import { Form } from "react-bootstrap";
 import StatusSelect from "../components/StatusSelect";
 
@@ -53,7 +52,9 @@ function Table({ tab, name }) {
                     <em>Quantity: {item.quantity}</em>
                   </span>
                 </div>
-                <StatusSelect menuItem={item} />
+                <div className="item-status">
+                  <StatusSelect menuItem={item} />
+                </div>
                 <span className="item-price">
                   &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
                 </span>

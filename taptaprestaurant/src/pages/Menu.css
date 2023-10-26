@@ -174,7 +174,51 @@
   background-color: #dee2e6;
 }
 
-.dummy {
+.active-default:focus {
+  box-shadow: 0 0 0 0.25rem #eee;
+}
+
+.active-course:focus {
+  box-shadow: 0 0 0 0.25rem #f3d9fa;
+}
+
+.active-main:focus {
+  box-shadow: 0 0 0 0.25rem #ffe3e3;
+}
+
+.active-appetizer:focus {
+  box-shadow: 0 0 0 0.25rem #fff3bf;
+}
+
+.active-alacarte:focus {
+  box-shadow: 0 0 0 0.25rem #e9fac8;
+}
+
+.active-dessert:focus {
+  box-shadow: 0 0 0 0.25rem #e5dbff;
+}
+
+.active-breakfast:focus {
+  box-shadow: 0 0 0 0.25rem #c5f6fa;
+}
+
+.active-lunch:focus {
+  box-shadow: 0 0 0 0.25rem #8ce99a;
+}
+
+.active-dinner:focus {
+  box-shadow: 0 0 0 0.25rem #ffe8cc;
+}
+
+.active-alcohol:focus {
+  box-shadow: 0 0 0 0.25rem #d0ebff;
+}
+
+.active-beverage:focus {
+  box-shadow: 0 0 0 0.25rem #f1f3f5;
+}
+
+.dummy:focus {
   border-radius: 6px;
 }
 

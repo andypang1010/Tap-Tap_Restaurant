@@ -165,7 +165,10 @@ function MenuBox({ data, onMenuUpdate, socket }) {
       <div className="d-flex align-items-center justify-content-between mb-4">
         <h3 className="current-filter-name">{activeButton}</h3>
         <OverlayTrigger placement="top" overlay={AddMenuItemTooltip()}>
-          <button className="add-button" onClick={handleShow}>
+          <button
+            className="add-button small-shadow taptap-red"
+            onClick={handleShow}
+          >
             <i className="bx bx-plus"></i>
           </button>
         </OverlayTrigger>
