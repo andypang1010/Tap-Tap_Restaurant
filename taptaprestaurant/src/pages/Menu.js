@@ -163,7 +163,10 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         ))}
       </div>
       <div className="d-flex align-items-center justify-content-between mb-4">
-        <h3 className="current-filter-name">{activeButton}</h3>
+        <h3 className="current-filter-name">
+          <span>{activeButton}</span>
+          {filteredItems.length > 0 && <small>({filteredItems.length})</small>}
+        </h3>
         <OverlayTrigger placement="top" overlay={AddMenuItemTooltip()}>
           <button
             className="add-button small-shadow taptap-red"
@@ -192,7 +195,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
           </>
         ) : filteredItems.length === 0 ? (
           <li key="no-items">
-            <h5>No items matching this filter</h5>
+            <h5>No items matching this filter.</h5>
           </li>
         ) : (
           filteredItems.map((item, i) => (
