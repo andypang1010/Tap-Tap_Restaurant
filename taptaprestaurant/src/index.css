@@ -118,7 +118,8 @@ p {
 }
 
 .sidebar-item :hover,
-.sidebar-link :hover {
+.sidebar-link :hover,
+.active-sidebar-link {
   color: var(--main-taptap-color);
   background-color: #ddd;
 }

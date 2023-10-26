@@ -1,6 +1,6 @@
-import { Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import "./SideBar.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const sideBarData = [
   {
@@ -65,9 +65,16 @@ function SideBarItems() {
 }
 
 function SideBarItem({ icon, linkTo, text }) {
+  const location = useLocation();
+
   return (
     <div className="sidebar-item">
-      <Link className="sidebar-link" to={linkTo}>
+      <Link
+        className={`sidebar-link ${
+          location.pathname === linkTo ? "active-sidebar-link" : ""
+        }`}
+        to={linkTo}
+      >
         <i className={icon} />
         <p>{text}</p>
       </Link>
