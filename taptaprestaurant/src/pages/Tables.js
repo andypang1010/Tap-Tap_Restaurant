@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 import "./style.css";
+import { Form } from "react-bootstrap";
+import StatusSelect from "../components/StatusSelect";
 
 export default function Tables({ socket }) {
   const [data, setData] = useState(null);
@@ -34,7 +36,7 @@ export default function Tables({ socket }) {
 
 function Table({ tab, name }) {
   useEffect(() => {
-    console.log("tab");
+    console.log(tab);
   }, [tab]);
 
   return (
@@ -46,13 +48,14 @@ function Table({ tab, name }) {
             <li className="item" key={i}>
               <div className="item-info">
                 <div className="item-description">
-                  <span>{item.item.name}</span>
-                  <span className="item-price">
-                    &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
+                  <p>{item.item.name}</p>
+                  <span className="item-quantity">
+                    <em>Quantity: {item.quantity}</em>
                   </span>
                 </div>
-                <span className="item-quantity">
-                  <em>Quantity: {item.quantity}</em>
+                <StatusSelect menuItem={item} />
+                <span className="item-price">
+                  &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
                 </span>
               </div>
             </li>

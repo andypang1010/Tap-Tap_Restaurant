@@ -45,12 +45,12 @@ export default function Account({ socket = io("http://localhost:8008") }) {
       ) : (
         <section className="account-grid">
           <div className="info account-box box">
-            <h3 className="mb-3">Information</h3>
+            <h4 className="mb-3">Information</h4>
             <IconContainer icon="bx bx-user" text={data.username} />
           </div>
           <div className="restaurant-container">
             <div className="restaurant-info account-box box">
-              <h3 className="mb-3">Restaurant Information</h3>
+              <h4 className="mb-3">Restaurant Information</h4>
               <EditableField
                 icon="bx bx-comment-detail"
                 text={data.name}
@@ -78,7 +78,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
               />
             </div>
             <div className="restaurant-settings account-box box">
-              <h3 className="mb-3">Restaurant Settings</h3>
+              <h4 className="mb-3">Restaurant Settings</h4>
               <EditableField
                 icon="bx bx-coin-stack"
                 type="number"
@@ -121,7 +121,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
           </div>
 
           <div className="password-security account-box box">
-            <h3 className="mb-3">Password & Security</h3>
+            <h4 className="mb-3">Password & Security</h4>
             <button className="action-button red-hover mb-2">
               Change Username
             </button>

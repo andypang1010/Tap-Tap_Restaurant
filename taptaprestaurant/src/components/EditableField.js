@@ -1,14 +1,6 @@
 import { useState } from "react";
 import IconContainer from "./IconContainer";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
-
-function EditTooltip() {
-  return (
-    <Tooltip>
-      <strong>Edit</strong>
-    </Tooltip>
-  );
-}
+import EditIcon from "./EditIcon";
 
 export default function EditableField({
   text,
@@ -72,15 +64,5 @@ export default function EditableField({
         </IconContainer>
       )}
     </div>
-  );
-}
-
-function EditIcon({ onClick }) {
-  return (
-    <button className="blank-button" onClick={onClick}>
-      <OverlayTrigger placement="top" overlay={EditTooltip()}>
-        <i className="bx bx-pencil"></i>
-      </OverlayTrigger>
-    </button>
   );
 }

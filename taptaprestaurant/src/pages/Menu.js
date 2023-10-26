@@ -183,7 +183,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
           </li>
         ) : (
           filteredItems.map((item, i) => (
-            <MenuItem item={item} key={i} onUpdate={onMenuUpdate} />
+            <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
           ))
         )}
       </ul>
@@ -246,7 +246,7 @@ function MenuItem({ item, onUpdate = () => {} }) {
 
   return (
     <li className={`menu-item-box ${border}`}>
-      <h5 className="menu-item-name">{item.name}</h5>
+      <h6 className="menu-item-name">{item.name}</h6>
       <p>
         <em>{item.category}</em>
       </p>
@@ -391,8 +391,9 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
               />
             </div>
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-2">
             <Form.Check
+              id="vegetarian"
               type="checkbox"
               label="Is this item vegetarian?"
               name="vegetarian"
@@ -402,12 +403,13 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Check
+              id="available"
               type="checkbox"
               label="Is this item currently available?"
               name="available"
               value={formData.available}
               onChange={handleInputChange}
-              checked
+              defaultChecked
             />
           </Form.Group>
           <p className="error-message">{errorMessage}</p>

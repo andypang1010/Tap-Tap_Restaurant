@@ -83,7 +83,7 @@ p {
   flex-direction: column;
   text-align: center;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
   border-right: 0.5px solid #efefef;
   grid-row: 1 / -1;
   background-color: #eee;
@@ -91,7 +91,7 @@ p {
 }
 
 .sidebar-items {
-  height: 60rem;
+  height: 40rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -168,14 +168,8 @@ p {
 }
 
 .item-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.item-description {
   display: grid;
   grid-template-columns: 0.5fr auto 0.25fr;
-  grid-template-rows: 1fr;
   align-items: center;
 }
 
@@ -257,12 +251,12 @@ p {
 }
 
 .add-button {
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 1.8rem;
+  width: 1.8rem;
   border-radius: 4px;
   background-color: var(--main-taptap-color);
   color: #fff;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
   border: none;
   display: block;
@@ -312,4 +306,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .error-message {
   font-weight: bold;
   color: red;
+}
+
+.edit-container {
+  display: grid;
+  grid-template-columns: 10rem 1.5rem;
+  grid-template-rows: 1.5rem;
 }
