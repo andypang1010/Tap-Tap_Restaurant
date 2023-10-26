@@ -39,9 +39,9 @@ export default function SideBar() {
 function Logo() {
   return (
     <div className="logo mb-5">
-      <h1>
-        <strong>TC</strong>
-      </h1>
+      <h2>
+        <strong>TapTap</strong>
+      </h2>
     </div>
   );
 }

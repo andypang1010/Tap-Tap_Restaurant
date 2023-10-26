@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-//import axios from "axios";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 import EditableField from "../components/EditableField";
 import IconContainer from "../components/IconContainer";
@@ -25,7 +24,6 @@ export default function Account({ socket = io("http://localhost:8008") }) {
 
   useEffect(() => {
     data !== null && (document.title = "Account");
-    console.log(data);
   }, [data]);
 
   return (
@@ -64,7 +62,6 @@ export default function Account({ socket = io("http://localhost:8008") }) {
                 text={data.phone}
                 onChange={(value) => {
                   data.phone = value;
-                  console.log("newphone: ", data.phone);
                   handleAccountUpdate();
                 }}
               />
