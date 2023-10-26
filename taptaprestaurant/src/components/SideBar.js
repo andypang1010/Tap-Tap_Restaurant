@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import "./SideBar.css";
 import { Link, useLocation } from "react-router-dom";
 
 const sideBarData = [
