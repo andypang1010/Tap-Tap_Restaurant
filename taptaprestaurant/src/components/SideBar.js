@@ -2,27 +2,27 @@ import { Link, useLocation } from "react-router-dom";
 
 const sideBarData = [
   {
-    icon: "bx bx-grid-alt bx-md",
+    icon: "bx bx-grid-alt",
     linkTo: "/Tables",
     text: "Tables",
   },
   {
-    icon: "bx bx-history bx-md",
+    icon: "bx bx-history",
     linkTo: "/OrderHistory",
     text: "Order History",
   },
   {
-    icon: "bx bx-food-menu bx-md",
+    icon: "bx bx-food-menu",
     linkTo: "/Menu",
     text: "Menu",
   },
   {
-    icon: "bx bx-user-pin bx-md",
+    icon: "bx bx-user-pin",
     linkTo: "/Account",
     text: "Account Details",
   },
   {
-    icon: "bx bx-group bx-md",
+    icon: "bx bx-group",
     linkTo: "/Users",
     text: "Users",
   },
@@ -38,9 +38,9 @@ export default function SideBar() {
 
 function Logo() {
   return (
-    <div className="logo mb-5">
+    <div className="logo mb-2">
       <h2>
-        <strong>TapTap</strong>
+        <strong>TC</strong>
       </h2>
     </div>
   );
@@ -74,7 +74,7 @@ function SideBarItem({ icon, linkTo, text }) {
         to={linkTo}
       >
         <i className={icon} />
-        <p>{text}</p>
+        <span>{text}</span>
       </Link>
     </div>
   );

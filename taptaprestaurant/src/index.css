@@ -87,38 +87,44 @@ input[type="number"] {
   flex-direction: column;
   text-align: center;
   align-items: center;
-  gap: 30px;
   border-right: 0.5px solid #efefef;
   grid-row: 1 / -1;
   background-color: #eee;
   box-shadow: 0.2rem 0rem 0.3rem #bbb;
+  width: 6rem;
 }
 
 .sidebar-items {
   height: 40rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: start;
+  align-items: center;
 }
 
 .sidebar-item {
-  height: 100px;
-  width: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
   padding: 8px;
-  line-height: 83%;
+  line-height: 0.75rem;
 }
 
 .sidebar-link {
-  font-size: 12px;
-  padding: 15px;
+  height: 4.5rem;
+  width: 4.5rem;
+  padding: 0.8rem;
   text-decoration: none;
   color: #444;
   border-radius: 10px;
   transition: background-color 0.2s, color 0.2s;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+.sidebar-link i {
+  font-size: 270%;
 }
 
 .sidebar-link:hover,
@@ -141,11 +147,13 @@ input[type="number"] {
 
 .table {
   background-color: #eee;
+  border: 3px solid #ddd;
   box-shadow: 1px #444;
   border-radius: 20px;
   height: 95%;
   width: 95%;
   padding: 1rem;
+  font-size: 0.7vw;
 }
 
 .page-title h2 {
@@ -173,13 +181,25 @@ input[type="number"] {
 
 .item-info {
   display: grid;
-  grid-template-columns: 0.4fr 0.4fr auto;
+  column-gap: 1rem;
+  grid-template-columns: 27% 27% 27% auto;
   align-items: center;
 }
 
 .item-price {
+  grid-column: 4 / 4;
   font-size: 70%;
   justify-self: end;
+}
+
+.item-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-select {
+  width: 14rem;
 }
 
 .item-quantity {
@@ -244,7 +264,6 @@ input[type="number"] {
 }
 
 .box {
-  background-color: #eee;
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0.2rem 0.3rem 0.3rem #bbb;
@@ -260,7 +279,7 @@ input[type="number"] {
   border-radius: 4px;
   background-color: var(--main-taptap-color);
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   border: none;
   display: block;
@@ -284,7 +303,7 @@ input[type="number"] {
 /*Pulled from https://codepen.io/P1N2O/pen/pyBNzX*/
 
 .loading {
-  background: linear-gradient(-90deg, #bbbbbb, #cfcfcf, #bdbdbd, #c5c5c5);
+  background: linear-gradient(-90deg, #a7a7a7, #cfcfcf, #acacac, #c5c5c5);
   background-size: 400% 400%;
   animation: gradient 3s ease infinite;
   height: 100vh;
@@ -292,9 +311,6 @@ input[type="number"] {
 
 @keyframes gradient {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
     background-position: 100% 50%;
   }
   100% {
@@ -325,4 +341,40 @@ input[type="number"]::-webkit-outer-spin-button {
 .taptap-red:focus {
   border-color: var(--main-taptap-color);
   box-shadow: 0 0 0 0.25rem rgb(210, 115, 115, 0.4);
+}
+
+.dummy-icons {
+  position: absolute;
+  bottom: 0.7rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dummy-icon {
+  height: 1.7rem;
+  width: 1.7rem;
+  border-radius: 100rem;
+}
+
+.dummy-table {
+  background-color: #e8e8e8;
+}
+
+.dummy {
+  display: inline-block;
+  padding: 0 0.2rem;
+  color: transparent;
+  background: linear-gradient(-90deg, #a7a7a7, #cfcfcf, #acacac, #c5c5c5);
+  background-size: 400% 400%;
+  animation: gradient 3s ease infinite;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px #ccc;
+}
+
+.edit-field {
+  display: flex;
+  align-items: center;
+  z-index: 10;
 }

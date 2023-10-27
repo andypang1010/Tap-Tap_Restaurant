@@ -40,7 +40,7 @@ export default function EditableField({
   return (
     <div>
       {isEditing ? (
-        <div className="d-flex align-items-center">
+        <div className="edit-field">
           {prependText && <span>{prependText}</span>}
           <input
             autoFocus

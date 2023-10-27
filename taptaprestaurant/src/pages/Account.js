@@ -39,92 +39,98 @@ export default function Account({ socket = io("http://localhost:8008") }) {
       />
 
       {data == null ? (
-        <></>
+        <>
+          <p className="dummy">Test</p>
+          <p>Test</p>
+        </>
       ) : (
         <section className="account-grid">
-          <div className="info account-box box">
-            <h4 className="mb-3">Information</h4>
-            <IconContainer icon="bx bx-user" text={data.username} />
-          </div>
-          <div className="restaurant-container">
-            <div className="restaurant-info account-box box">
-              <h4 className="mb-3">Restaurant Information</h4>
-              <EditableField
-                icon="bx bx-comment-detail"
-                text={data.name}
-                onChange={(value) => {
-                  data.name = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-phone"
-                text={data.phone}
-                onChange={(value) => {
-                  data.phone = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-building-house"
-                text={data.address}
-                onChange={(value) => {
-                  data.address = value;
-                  handleAccountUpdate();
-                }}
-              />
+          <div className="content-box box">
+            <div className="info account-box box mb-4">
+              <h4 className="mb-3">Information</h4>
+              <IconContainer icon="bx bx-user" text={data.username} />
             </div>
-            <div className="restaurant-settings account-box box">
-              <h4 className="mb-3">Restaurant Settings</h4>
-              <EditableField
-                icon="bx bx-coin-stack"
-                type="number"
-                prependText="Max Quantity per Order:"
-                text={data.maxQuantity}
-                onChange={(value) => {
-                  data.maxQuantity = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-grid-alt"
-                type="number"
-                prependText="Number of Tables:"
-                text={data.maxTable}
-                onChange={(value) => {
-                  data.maxTable = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-globe"
-                prependText="Language:"
-                text={data.language}
-                onChange={(value) => {
-                  data.language = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-yen"
-                prependText="Currency:"
-                text={data.currency}
-                onChange={(value) => {
-                  data.currency = value;
-                  handleAccountUpdate();
-                }}
-              />
+            <div className="restaurant-container mb-4">
+              <div className="restaurant-info account-box box">
+                <h4 className="mb-3">Restaurant Information</h4>
+                <EditableField
+                  icon="bx bx-comment-detail"
+                  text={data.name}
+                  onChange={(value) => {
+                    data.name = value;
+                    handleAccountUpdate();
+                  }}
+                />
+                <EditableField
+                  icon="bx bx-phone"
+                  text={data.phone}
+                  onChange={(value) => {
+                    data.phone = value;
+                    handleAccountUpdate();
+                  }}
+                />
+                <EditableField
+                  as="textarea"
+                  icon="bx bx-building-house"
+                  text={data.address}
+                  onChange={(value) => {
+                    data.address = value;
+                    handleAccountUpdate();
+                  }}
+                />
+              </div>
+              <div className="restaurant-settings account-box box">
+                <h4 className="mb-3">Restaurant Settings</h4>
+                <EditableField
+                  icon="bx bx-coin-stack"
+                  type="number"
+                  prependText="Max Quantity per Order:"
+                  text={data.maxQuantity}
+                  onChange={(value) => {
+                    data.maxQuantity = value;
+                    handleAccountUpdate();
+                  }}
+                />
+                <EditableField
+                  icon="bx bx-grid-alt"
+                  type="number"
+                  prependText="Number of Tables:"
+                  text={data.maxTable}
+                  onChange={(value) => {
+                    data.maxTable = value;
+                    handleAccountUpdate();
+                  }}
+                />
+                <EditableField
+                  icon="bx bx-globe"
+                  prependText="Language:"
+                  text={data.language}
+                  onChange={(value) => {
+                    data.language = value;
+                    handleAccountUpdate();
+                  }}
+                />
+                <EditableField
+                  icon="bx bx-yen"
+                  prependText="Currency:"
+                  text={data.currency}
+                  onChange={(value) => {
+                    data.currency = value;
+                    handleAccountUpdate();
+                  }}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="password-security account-box box">
-            <h4 className="mb-3">Password & Security</h4>
-            <button className="action-button red-hover mb-2">
-              Change Username
-            </button>
-            <button className="action-button red-hover mb-2">
-              Reset Password
-            </button>
+            <div className="password-security account-box box">
+              <h4 className="mb-3">Password & Security</h4>
+              <button className="action-button red-hover mb-2">
+                Change Username
+              </button>
+              <button className="action-button red-hover mb-2">
+                Reset Password
+              </button>
+            </div>
           </div>
         </section>
       )}

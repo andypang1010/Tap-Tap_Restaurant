@@ -148,7 +148,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
   const handleShow = () => setShowAddModal(true);
 
   return (
-    <section className="menu-box box">
+    <section className="content-box box">
       <div className="menu-button-list">
         {menuButtonData.map((button) => (
           <MenuButton
@@ -163,10 +163,10 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         ))}
       </div>
       <div className="d-flex align-items-center justify-content-between mb-4">
-        <h3 className="current-filter-name">
+        <h4 className="current-filter-name">
           <span>{activeButton}</span>
           {filteredItems.length > 0 && <small>({filteredItems.length})</small>}
-        </h3>
+        </h4>
         <OverlayTrigger placement="top" overlay={AddMenuItemTooltip()}>
           <button
             className="add-button small-shadow taptap-red"
@@ -446,12 +446,16 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
 function DummyMenuItem() {
   return (
     <li className="menu-item-box dummy-menu-box border-default">
-      <div className="dummy loading dummy-name"></div>
-      <div className="dummy loading dummy-category"></div>
-      <div className="dummy loading dummy-price"></div>
+      <span className="dummy">----------Name-----------</span>
+      <span>
+        <small className="dummy">-Type-</small>
+      </span>
+      <span>
+        <small className="dummy">--Price--</small>
+      </span>
       <div className="dummy-icons">
-        <div className="dummy loading dummy-icon"></div>
-        <div className="dummy loading dummy-icon"></div>
+        <div className="dummy dummy-icon"></div>
+        <div className="dummy dummy-icon"></div>
       </div>
     </li>
   );

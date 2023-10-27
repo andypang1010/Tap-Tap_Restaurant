@@ -23,12 +23,22 @@ export default function Tables({ socket }) {
         socket={socket}
       />
 
-      {data !== null && (
+      <div className="content-box box">
         <ul className="table-list">
-          <Table tab={data.tables["1"]} name={"1"} />
-          <Table tab={data.tables["2"]} name={"2"} />
+          {data === null ? (
+            <>
+              <DummyTable key="1" />
+              <DummyTable key="2" />
+              <DummyTable key="3" />
+            </>
+          ) : (
+            <>
+              <Table tab={data.tables["1"]} name={"1"} />
+              <Table tab={data.tables["2"]} name={"2"} />
+            </>
+          )}
         </ul>
-      )}
+      </div>
     </main>
   );
 }
@@ -55,6 +65,17 @@ function Table({ tab, name }) {
                 <div className="item-status">
                   <StatusSelect menuItem={item} />
                 </div>
+                {item.special_instructions !== "None" &&
+                  item.special_instructions !== "" && (
+                    <div className="item-special_instructions">
+                      <span>
+                        <strong className="text-danger">
+                          Special Instructions:
+                        </strong>{" "}
+                        {item.special_instructions}
+                      </span>
+                    </div>
+                  )}
                 <span className="item-price">
                   &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
                 </span>
@@ -62,6 +83,37 @@ function Table({ tab, name }) {
             </li>
           ))}
       </ul>
+    </li>
+  );
+}
+
+function DummyTable() {
+  return (
+    <li className="table dummy-table box">
+      <h4 className="dummy">##</h4>
+      <ul className="item-list">
+        <DummyTableItem key="1" />
+        <DummyTableItem key="2" />
+        <DummyTableItem key="3" />
+      </ul>
+    </li>
+  );
+}
+
+function DummyTableItem() {
+  return (
+    <li className="item">
+      <div className="item-info">
+        <div className="item-description">
+          <p className="dummy">Item Name------</p>
+          <span className="item-quantity">
+            <span className="dummy">Quantity---</span>
+          </span>
+        </div>
+        <span className="item-price">
+          <small className="dummy">Price</small>
+        </span>
+      </div>
     </li>
   );
 }

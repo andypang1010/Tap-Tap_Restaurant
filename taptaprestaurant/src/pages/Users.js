@@ -20,6 +20,8 @@ export default function Users({ socket }) {
         authorizationFailureRedirect="/Login"
         socket={socket}
       />
+
+      <div className="content-box box">Users</div>
     </div>
   );
 }

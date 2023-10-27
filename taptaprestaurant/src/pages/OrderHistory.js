@@ -20,6 +20,8 @@ export default function OrderHistory({ socket }) {
         authorizationFailureRedirect="/Login"
         socket={socket}
       />
+
+      <div className="content-box box">Order History</div>
     </main>
   );
 }
