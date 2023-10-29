@@ -89,7 +89,7 @@ function Table({ tab, name }) {
 
 function DummyTable() {
   return (
-    <li className="table dummy-table box">
+    <li className="table dummy-table dummy-container box">
       <h4 className="dummy">##</h4>
       <ul className="item-list">
         <DummyTableItem key="1" />

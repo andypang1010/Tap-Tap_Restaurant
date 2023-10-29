@@ -445,7 +445,7 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
 
 function DummyMenuItem() {
   return (
-    <li className="menu-item-box dummy-menu-box border-default">
+    <li className="dummy-container menu-item-box ">
       <span className="dummy">----------Name-----------</span>
       <span>
         <small className="dummy">-Type-</small>
