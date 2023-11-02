@@ -1,11 +1,25 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-export default main;
 
-const themeColorMain="red"
-function main() {
+export default App;
+
+function App() {
+    const navigate = useNavigate();
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [restaurantName, setRestaurantName] = useState("");
+    const [mainAddress, setMainAddress] = useState("");
+
+    const registerGeneralInfo ={firstName,lastName,email,phoneNumber,restaurantName,mainAddress}
+
+
     return (
         <div className="signUpEmail-container"
          style={{display: 'flex',
@@ -63,28 +77,56 @@ function main() {
                     marginTop: "50px",
                     height:"87px",
                 }}>
-                    <TextField style={{width:"486px"}} color="error" id="outlined-basic" label="First name*" variant="outlined" />
-                    <TextField style={{width:"486px", marginLeft:"20px"}} color="error" id="outlined-basic" label="Last name*" variant="outlined" />
+                    <TextField style={{width:"486px"}} color="error" id="outlined-basic" label="First name*" variant="outlined"
+                        onChange={(e) => {
+                            setFirstName(e.target.value);
+                        }}
+                    />
+                    <TextField style={{width:"486px", marginLeft:"20px"}} color="error" id="outlined-basic" label="Last name*" variant="outlined"
+                        onChange={(e) => {
+                            setLastName(e.target.value);
+                        }}
+                    />
                 </Box>
 
                 <Box style={{width:"100vx", marginTop:"20px"}}>
-                    <TextField style={{width:"992px", height:"87px"}} color="error" id="outlined-basic" label="Email*" variant="outlined" />
+                    <TextField style={{width:"992px", height:"87px"}} color="error" id="outlined-basic" label="Email*" variant="outlined"
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                        }}
+                    />
                 </Box>
 
                 <Box style={{width:"100vx",marginTop:"20px"}}>
-                    <TextField style={{width:"992px", height:"87px"}} color="error" id="outlined-basic" label="Phone number*" variant="outlined" />
+                    <TextField style={{width:"992px", height:"87px"}} color="error" id="outlined-basic" label="Phone number*" variant="outlined"
+                        onChange={(e) => {
+                            setPhoneNumber(e.target.value);
+                        }}
+                    />
                 </Box>
 
                 <Box style={{width:"100vx",marginTop:"20px"}}>
-                    <TextField style={{width:"992px", height:"87px"}} color="error" id="outlined-basic" label="Restaurant name*" variant="outlined" />
+                    <TextField style={{width:"992px", height:"87px"}} color="error" id="outlined-basic" label="Restaurant name*" variant="outlined"
+                        onChange={(e) => {
+                            setRestaurantName(e.target.value);
+                        }}
+                    />
                 </Box>
 
                 <Box style={{width:"100vx",marginTop:"20px"}}>
-                    <TextField style={{width:"992px", height:"87px"}}  color="error" id="outlined-basic" label="Main address" variant="outlined" />
+                    <TextField style={{width:"992px", height:"87px"}}  color="error" id="outlined-basic" label="Main address" variant="outlined"
+                        onChange={(e) => {
+                            setMainAddress(e.target.value);
+                        }}
+                    />
                 </Box>
 
                 <Box style={{width:"100vx",marginTop:"20px"}}>
-                    <Button  href="/SignUp/password" variant="contained" size="large" style={{ borderRadius: '10px',backgroundColor:"#D41E1E", height:'58px', width: '200px',marginTop:"5px",marginLeft:"396px"}}>Next</Button>
+                    <Button  onClick={()=>{
+                        localStorage.setItem('registerGeneralInfo', JSON.stringify(registerGeneralInfo));
+                        console.log(registerGeneralInfo)
+                        navigate('/SignUp/password');
+                        }}  variant="contained" size="large" style={{ borderRadius: '10px',backgroundColor:"#D41E1E", height:'58px', width: '200px',marginTop:"5px",marginLeft:"396px"}}>Next</Button>
                 </Box>
             </div>
 
