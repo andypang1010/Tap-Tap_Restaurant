@@ -1,0 +1,52 @@
+.remove-all-tags {
+  background-color: var(--main-taptap-color);
+  padding: 0 0.4rem;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+}
+
+.tag-input-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.7rem;
+}
+
+.tag-input {
+  flex-grow: 1;
+}
+
+.tag-input,
+.tag-input:focus {
+  border: none;
+  outline: none;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.2rem;
+  align-items: flex-start;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  background-color: #eee;
+  padding: 0 0.2rem;
+  border-radius: 4px;
+  color: #444;
+  animation: pop-in 0.2s;
+}
+
+.remove-tag-button {
+  color: #aaa;
+  cursor: pointer;
+}
+
+.remove-tag-button:hover {
+  color: #777;
+}
