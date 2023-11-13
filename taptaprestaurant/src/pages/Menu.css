@@ -5,20 +5,13 @@
   flex-wrap: wrap;
 }
 
-.content-box {
-  background-color: #eee;
-  margin-bottom: 4rem;
-  width: 80vw;
-  padding-bottom: 3rem;
-}
-
 .menu-button-list {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
   margin-bottom: 2rem;
-  width: 75vw;
+  width: 95%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -134,54 +127,53 @@
 }
 
 .active {
-  border-color: #fff;
   color: #fff;
   position: relative;
   text-shadow: 1px 1px 2px #aaa;
 }
 
 .active-default {
-  background-color: #999;
+  background-color: #d8d8d8;
 }
 
 .active-course {
-  background-color: #e599f7;
+  background-color: #edc7f8;
 }
 
 .active-main {
-  background-color: #ffa8a8;
+  background-color: #facccc;
 }
 
 .active-appetizer {
-  background-color: #ffe066;
+  background-color: #f7e9af;
 }
 
 .active-alacarte {
-  background-color: #c0eb75;
+  background-color: #e5f7c1;
 }
 
 .active-dessert {
-  background-color: #b197fc;
+  background-color: #d1c6ec;
 }
 
 .active-breakfast {
-  background-color: #66d9e8;
+  background-color: #b4f2f8;
 }
 
 .active-lunch {
-  background-color: #51cf66;
+  background-color: #9ee4a8;
 }
 
 .active-dinner {
-  background-color: #ffc078;
+  background-color: #fadebd;
 }
 
 .active-alcohol {
-  background-color: #74c0fc;
+  background-color: #bedff9;
 }
 
 .active-beverage {
-  background-color: #dee2e6;
+  background-color: #e4e5e7;
 }
 
 .active-default:focus {
@@ -201,7 +193,7 @@
 }
 
 .active-alacarte:focus {
-  box-shadow: 0 0 0 0.25rem #e9fac8;
+  box-shadow: 0 0 0 0.25rem #ebf7d2;
 }
 
 .active-dessert:focus {
@@ -213,7 +205,7 @@
 }
 
 .active-lunch:focus {
-  box-shadow: 0 0 0 0.25rem #8ce99a;
+  box-shadow: 0 0 0 0.25rem #bbeec3;
 }
 
 .active-dinner:focus {
@@ -234,7 +226,7 @@
 
 .dummy-container {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   flex-direction: column;
   gap: 0.3rem;
   background-color: #e2e2e2;

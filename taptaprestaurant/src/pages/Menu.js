@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Children } from "react";
 import io from "socket.io-client";
 import RestaurantDataListener from "../components/RestaurantDataListener";
 import TypeSelect from "../components/TypeSelect";
@@ -17,14 +17,6 @@ function VegetarianTooltip() {
   return (
     <Tooltip>
       <strong>Vegetarian</strong>
-    </Tooltip>
-  );
-}
-
-function AddMenuItemTooltip() {
-  return (
-    <Tooltip>
-      <strong>Add New Menu Item</strong>
     </Tooltip>
   );
 }
@@ -162,19 +154,18 @@ function MenuBox({ data, onMenuUpdate, socket }) {
           />
         ))}
       </div>
-      <div className="d-flex align-items-center justify-content-between mb-4">
+      <div className="d-flex align-items-center justify-content-between mb-4 lh-1">
         <h4 className="current-filter-name">
           <span>{activeButton}</span>
           {filteredItems.length > 0 && <small>({filteredItems.length})</small>}
         </h4>
-        <OverlayTrigger placement="top" overlay={AddMenuItemTooltip()}>
-          <button
-            className="add-button small-shadow taptap-red"
-            onClick={handleShow}
-          >
-            <i className="bx bx-plus"></i>
-          </button>
-        </OverlayTrigger>
+        <button
+          className="add-button small-shadow d-flex align-items-center"
+          onClick={handleShow}
+        >
+          <i className="bx bx-plus"></i>
+          <span>Add New Item</span>
+        </button>
         <AddMenuItemModal
           show={showAddModal}
           onHide={handleClose}
@@ -183,7 +174,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         />
       </div>
 
-      <ul className="menu-list">
+      <Pagination itemsPerPage={10}>
         {data === null ? (
           <>
             <DummyMenuItem key="1" />
@@ -202,7 +193,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
             <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
           ))
         )}
-      </ul>
+      </Pagination>
     </section>
   );
 }
@@ -313,9 +304,9 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
           username,
         });
 
-        socket.on("success", (response) => {
-          //console.log("newdata: ", response);
+        socket.on("success", () => {
           onHide();
+          clearFormData();
         });
 
         socket.on("failed", (error) => {
@@ -325,6 +316,7 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
 
         socket.on("server-error", (error) => {
           console.log("error: ", error);
+          setErrorMessage("Something went wrong. Try refreshing the page.");
         });
       } else {
         console.log("socket not enabled");
@@ -334,8 +326,21 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
     }
   };
 
+  function clearFormData() {
+    setFormData({
+      name: "",
+      description: "",
+      price: 0,
+      type: "",
+      category: "",
+      vegetarian: false,
+      available: true,
+      allergies: [],
+      ingredients: [],
+    });
+  }
+
   const handleInputChange = (e) => {
-    console.log(formData);
     const { name, value, type, checked } = e.target;
     const newValue =
       type === "checkbox"
@@ -349,9 +354,18 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
     });
   };
 
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   return (
     <Modal show={show} onHide={onHide}>
-      <Form onSubmit={handleSubmit}>
+      <Form
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Add Menu Item</Modal.Title>
         </Modal.Header>
@@ -407,6 +421,30 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
               />
             </div>
           </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Ingredients:</Form.Label>
+            <TagInput
+              tags={formData.ingredients}
+              onSetTags={(tags) => {
+                setFormData({
+                  ...formData,
+                  ingredients: tags,
+                });
+              }}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Allergies:</Form.Label>
+            <TagInput
+              tags={formData.allergies}
+              onSetTags={(tags) => {
+                setFormData({
+                  ...formData,
+                  allergies: tags,
+                });
+              }}
+            />
+          </Form.Group>
           <Form.Group className="mb-2">
             <Form.Check
               id="vegetarian"
@@ -458,5 +496,175 @@ function DummyMenuItem() {
         <div className="dummy dummy-icon"></div>
       </div>
     </li>
+  );
+}
+
+function TagInput({ tags, onSetTags }) {
+  const [newTag, setNewTag] = useState("");
+
+  function handleChange(e) {
+    if (e.target.value !== ",") setNewTag(e.target.value);
+  }
+
+  function handleKeyDown(e) {
+    if ((e.key !== "Enter" && e.key !== ",") || e.target.value === "") return;
+
+    onSetTags([...tags, e.target.value]);
+    setNewTag("");
+  }
+
+  function handleRemoveTag(tag) {
+    onSetTags(tags.filter((item) => item !== tag));
+  }
+
+  function handleRemoveAllTags(e) {
+    e.preventDefault();
+    onSetTags([]);
+  }
+
+  return (
+    <div>
+      <p>
+        <small className="text-muted">
+          Press enter or add a comma after each tag.
+        </small>
+      </p>
+      <ul className="tag-list form-control">
+        {tags.map((tag, i) => (
+          <li key={i} className="tag">
+            <span>{tag}</span>
+            <i
+              className="bx bxs-x-circle remove-tag-button"
+              onClick={() => {
+                handleRemoveTag(tag);
+              }}
+            ></i>
+          </li>
+        ))}
+        <textarea
+          rows={2}
+          className="tag-input"
+          value={newTag}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Type here..."
+        />
+      </ul>
+      <div className="tag-input-details">
+        <small className="text-muted">
+          {tags.length === 0 ? "None" : tags.length}
+        </small>
+        <button className="remove-all-tags" onClick={handleRemoveAllTags}>
+          Remove All
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Pagination({ itemsPerPage = 10, children }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [filteredItems, setFilteredItems] = useState(
+    Children.toArray(children)
+  );
+
+  const listLength = filteredItems.length;
+
+  useEffect(() => {
+    setFilteredItems(
+      Children.toArray(children).filter(
+        (item) =>
+          item.props.item?.name.includes(searchTerm) ||
+          item.props.item?.description.includes(searchTerm)
+      )
+    );
+  }, [searchTerm, children]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [children]);
+
+  const totalPages = Math.ceil(listLength / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  return (
+    <div>
+      <div className="pagination-addon-container">
+        <InputGroup className="w-75">
+          <Form.Control
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <InputGroup.Text>
+            <i className="bx bx-search-alt-2"></i>
+          </InputGroup.Text>
+        </InputGroup>
+
+        <div className="page-buttons">
+          <button
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+            className="first-page-button"
+          >
+            <i className="bx bx-first-page"></i>
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="increment-button"
+          >
+            <i className="bx bx-chevron-left"></i>
+          </button>
+          <span className="page-details">
+            {listLength > 0
+              ? `Page ${currentPage} of ${totalPages}`
+              : `No results`}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages || listLength === 0}
+            className="increment-button"
+          >
+            <i className="bx bx-chevron-right"></i>
+          </button>
+          <button
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages || listLength === 0}
+            className="last-page-button"
+          >
+            <i className="bx bx-last-page"></i>
+          </button>
+        </div>
+        <span className="pagination-stats">
+          {listLength > 0 && (
+            <span>
+              Showing{" "}
+              <strong>
+                {(currentPage - 1) * itemsPerPage + 1} -{" "}
+                {itemsPerPage * currentPage > listLength
+                  ? listLength
+                  : itemsPerPage * currentPage}
+              </strong>{" "}
+              of <strong>{listLength}</strong> entries
+            </span>
+          )}
+        </span>
+      </div>
+
+      <ul className="d-flex flex-wrap gap-2 align-items-center justify-content-start mb-4">
+        {filteredItems
+          .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+          .map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+      </ul>
+    </div>
   );
 }

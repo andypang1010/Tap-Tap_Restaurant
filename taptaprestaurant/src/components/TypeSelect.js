@@ -35,7 +35,12 @@ const selectData = [
 
 export default function TypeSelect({ onChange }) {
   return (
-    <Form.Select defaultValue="default" name="type" onChange={onChange}>
+    <Form.Select
+      defaultValue="default"
+      name="type"
+      onChange={onChange}
+      className="select"
+    >
       <option value="default" disabled hidden>
         Choose...
       </option>

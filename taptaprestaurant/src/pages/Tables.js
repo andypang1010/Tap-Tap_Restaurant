@@ -23,7 +23,7 @@ export default function Tables({ socket }) {
         socket={socket}
       />
 
-      <div className="content-box box">
+      <section className="content-box box">
         <ul className="table-list">
           {data === null ? (
             <>
@@ -38,7 +38,7 @@ export default function Tables({ socket }) {
             </>
           )}
         </ul>
-      </div>
+      </section>
     </main>
   );
 }

@@ -75,11 +75,11 @@ export default function Account({ socket = io("http://localhost:8008") }) {
           </>
         ) : (
           <>
-            <div className="info account-box box mb-4">
+            <section className="info account-box box mb-4">
               <h4 className="mb-3">Information</h4>
               <IconContainer icon="bx bx-user" text={data.username} />
-            </div>
-            <div className="restaurant-container mb-4">
+            </section>
+            <section className="restaurant-container mb-4">
               <div className="restaurant-info account-box box">
                 <h4 className="mb-3">Restaurant Information</h4>
                 <EditableField
@@ -140,7 +140,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
                   }}
                 />
                 <EditableField
-                  icon="bx bx-yen"
+                  icon="bx bx-money"
                   prependText="Currency:"
                   text={data.currency}
                   onChange={(value) => {
@@ -149,9 +149,9 @@ export default function Account({ socket = io("http://localhost:8008") }) {
                   }}
                 />
               </div>
-            </div>
+            </section>
 
-            <div className="password-security account-box box">
+            <section className="password-security account-box box">
               <h4 className="mb-3">Password & Security</h4>
               <button className="action-button red-hover mb-2">
                 Change Username
@@ -159,7 +159,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
               <button className="action-button red-hover mb-2">
                 Reset Password
               </button>
-            </div>
+            </section>
           </>
         )}
       </div>

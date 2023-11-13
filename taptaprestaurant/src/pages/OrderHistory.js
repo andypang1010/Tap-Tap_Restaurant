@@ -21,7 +21,7 @@ export default function OrderHistory({ socket }) {
         socket={socket}
       />
 
-      <div className="content-box box">Order History</div>
+      <section className="content-box box">Order History</section>
     </main>
   );
 }

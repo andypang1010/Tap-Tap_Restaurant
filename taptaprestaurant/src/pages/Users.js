@@ -10,10 +10,10 @@ export default function Users({ socket }) {
   }, [data]);
 
   return (
-    <div className="main-content">
-      <div className="page-title">
+    <main className="main-content">
+      <header className="page-title">
         <h2>Users</h2>
-      </div>
+      </header>
 
       <RestaurantDataListener
         onDataChange={setData}
@@ -21,7 +21,7 @@ export default function Users({ socket }) {
         socket={socket}
       />
 
-      <div className="content-box box">Users</div>
-    </div>
+      <section className="content-box box">Users</section>
+    </main>
   );
 }
