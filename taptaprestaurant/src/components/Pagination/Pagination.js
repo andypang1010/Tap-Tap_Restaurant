@@ -90,7 +90,7 @@ export default function Pagination({
             <i className="bx bx-last-page"></i>
           </button>
         </div>
-        <span className="pagination-stats">
+        <div className="pagination-stats">
           {listLength > 0 && (
             <span>
               Showing{" "}
@@ -103,14 +103,14 @@ export default function Pagination({
               of <strong>{listLength}</strong> entries
             </span>
           )}
-        </span>
+        </div>
       </div>
 
       <ul className="d-flex flex-wrap gap-2 align-items-center justify-content-start mb-4">
         {listLength > 0 ? (
           filteredItems
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((item, index) => <li key={index}>{item}</li>)
+            .map((item, index) => item)
         ) : (
           <h5>{noResults}</h5>
         )}
