@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
+import OrderHistoryList from "../components/OrderHistoryList";
+
 
 export default function OrderHistory({ socket }) {
   const [data, setData] = useState(null);
@@ -20,8 +22,7 @@ export default function OrderHistory({ socket }) {
         authorizationFailureRedirect="/Login"
         socket={socket}
       />
-
-      <section className="content-box box">Order History</section>
+      <OrderHistoryList/>
     </main>
   );
 }
