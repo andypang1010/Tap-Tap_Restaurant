@@ -1,0 +1,65 @@
+.page-buttons {
+  height: 100%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: stretch;
+  line-height: 1;
+  justify-content: flex-start;
+  overflow: hidden;
+  box-shadow: 1px 1px 2px #ccc;
+  border-radius: 13px;
+}
+
+.page-buttons button {
+  flex-grow: 1;
+  font-size: 30px;
+  background-color: #fff;
+}
+
+.page-buttons button:focus {
+  outline: none;
+}
+
+.page-buttons button:not([disabled]):hover {
+  background-image: linear-gradient(rgb(0 0 0/3%) 0 0);
+}
+
+.page-details {
+  background-color: #fff;
+  width: 40%;
+  text-align: center;
+  padding: 0.6rem 0.4rem;
+  border-left: 0.5px solid #ddd;
+  border-right: 0.5px solid #ddd;
+  font-weight: bold;
+}
+
+.first-page-button {
+  border: none;
+  border-right: 0.5px solid #ddd;
+  padding-left: 0.3rem;
+}
+
+.last-page-button {
+  border: none;
+  border-left: 0.5px solid #ddd;
+  padding-right: 0.3rem;
+}
+
+.increment-button {
+  border: none;
+}
+
+.pagination-addon-container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 1.5rem;
+}
+
+.pagination-stats {
+  text-align: right;
+  text-transform: uppercase;
+}

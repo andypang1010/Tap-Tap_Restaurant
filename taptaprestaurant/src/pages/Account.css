@@ -1,0 +1,12 @@
+.account-box {
+  height: 13rem;
+  font-size: 90%;
+  border: 3px solid #ddd;
+}
+
+.restaurant-container {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-columns: 49% 49%;
+}

@@ -1,103 +1,119 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
-import SideBar from "../components/SideBar.js";
-import "./style.css";
+import { Form } from "react-bootstrap";
+import StatusSelect from "../components/StatusSelect";
 
-export default function Tables() {
+export default function Tables({ socket }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    data !== null && (document.title = `${data.name} Tables`);
     console.log(data);
   }, [data]);
 
   return (
-    <div className="contain">
-      <div className="sidebar">
-        <h1 className="logo">TC</h1>
-
-        <div className="sidebar-items">
-          <div className="sidebar-item">
-            <a className="sidebar-link" href="#">
-              <i className="bx bxs-grid-alt bx-md"></i>
-              <p>Tables</p>
-            </a>
-          </div>
-
-          <div className="sidebar-item">
-            <a className="sidebar-link" href="#">
-              <i className="bx bxs-bar-chart-square bx-md"></i>
-              <p>Statistics</p>
-            </a>
-          </div>
-
-          <div className="sidebar-item">
-            <a className="sidebar-link" href="#">
-              <i className="bx bxs-notepad bx-md"></i>
-              <p>Order History</p>
-            </a>
-          </div>
-
-          <div className="sidebar-item">
-            <a className="sidebar-link" href="#">
-              <i className="bx bxs-chat bx-md"></i>
-              <p>Customer Reviews</p>
-            </a>
-          </div>
-
-          <div className="sidebar-item">
-            <a className="sidebar-link" href="#">
-              <i className="bx bxs-user bx-md"></i>
-              <p>Account Details</p>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="page-title">
+    <main className="main-content">
+      <header className="page-title">
         <h2>Tables</h2>
-      </div>
+      </header>
 
       <RestaurantDataListener
         onDataChange={setData}
         authorizationFailureRedirect="/Login"
+        socket={socket}
       />
 
-      {data !== null && (
-        <div className="table-list">
-          <Table tab={data.tables["1"]} name={"1"} />
-          <Table tab={data.tables["1"]} name={"1"} />
-          <Table tab={data.tables["1"]} name={"1"} />
-          <Table tab={data.tables["1"]} name={"1"} />
-        </div>
-      )}
-    </div>
+      <section className="content-box box">
+        <ul className="table-list">
+          {data === null ? (
+            <>
+              <DummyTable key="1" />
+              <DummyTable key="2" />
+              <DummyTable key="3" />
+            </>
+          ) : (
+            <>
+              <Table tab={data.tables["1"]} name={"1"} />
+              <Table tab={data.tables["2"]} name={"2"} />
+            </>
+          )}
+        </ul>
+      </section>
+    </main>
   );
 }
 
 function Table({ tab, name }) {
   useEffect(() => {
-    console.log("tab");
+    console.log(tab);
   }, [tab]);
 
   return (
-    <div className="table">
+    <li className="table box">
       <h4>#{name}</h4>
       <ul className="item-list">
         {tab &&
           tab.map((item, i) => (
-            <li className="item" style={{ backgroundColor: "#444" }} key={i}>
+            <li className="item" key={i}>
               <div className="item-info">
                 <div className="item-description">
-                  <span>{item.item.description}</span>
-                  <span className="item-price">{item.item.price}</span>
+                  <p>{item.item.name}</p>
+                  <span className="item-quantity">
+                    <em>Quantity: {item.quantity}</em>
+                  </span>
                 </div>
-                <span className="item-quantity">
-                  <em>{item.quantity}</em>
+                <div className="item-status">
+                  <StatusSelect menuItem={item} />
+                </div>
+                {item.special_instructions !== "None" &&
+                  item.special_instructions !== "" && (
+                    <div className="item-special_instructions">
+                      <span>
+                        <strong className="text-danger">
+                          Special Instructions:
+                        </strong>{" "}
+                        {item.special_instructions}
+                      </span>
+                    </div>
+                  )}
+                <span className="item-price">
+                  &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
                 </span>
               </div>
             </li>
           ))}
       </ul>
-    </div>
+    </li>
+  );
+}
+
+function DummyTable() {
+  return (
+    <li className="table dummy-table dummy-container box">
+      <h4 className="dummy">##</h4>
+      <ul className="item-list">
+        <DummyTableItem key="1" />
+        <DummyTableItem key="2" />
+        <DummyTableItem key="3" />
+      </ul>
+    </li>
+  );
+}
+
+function DummyTableItem() {
+  return (
+    <li className="item">
+      <div className="item-info">
+        <div className="item-description">
+          <p className="dummy">Item Name------</p>
+          <span className="item-quantity">
+            <span className="dummy">Quantity---</span>
+          </span>
+        </div>
+        <span className="item-price">
+          <small className="dummy">Price</small>
+        </span>
+      </div>
+    </li>
   );
 }

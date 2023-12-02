@@ -2,10 +2,10 @@ import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./LoginForm.css";
+import "../components/LoginForm/LoginForm";
 import "boxicons/css/boxicons.min.css";
 
-function LoginForm({ successRedirect = "/" }) {
+function RegisterForm({ successRedirect = "/Login" }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ function LoginForm({ successRedirect = "/" }) {
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
+      <h1>Register</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formUsername">
           <div className="input-container">
@@ -56,23 +56,18 @@ function LoginForm({ successRedirect = "/" }) {
             />
           </div>
         </Form.Group>
-        <p className="forgot-password">
-          <Link className="forgot-password-link" to={"/signup"}>
-            Forgot password?
-          </Link>
-        </p>
         <Button variant="primary" type="submit" className="btn">
-          Login
+          Register
         </Button>
       </Form>
       <p className="register-message">
-        Don't have an account?{" "}
-        <Link className="register-link" to={"/Register"}>
-          Register
+        Already have an account?{" "}
+        <Link className="register-link" to={"/Login"}>
+          Login
         </Link>
       </p>
     </div>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;

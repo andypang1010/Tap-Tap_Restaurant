@@ -1,43 +1,36 @@
-import { Button } from "react-bootstrap";
-import "./SideBar.css";
+import { Link, useLocation } from "react-router-dom";
 
 const sideBarData = [
   {
-    icon: "bx bxs-home bx-md",
-    linkTo: "#",
-    text: "Home",
-  },
-  {
-    icon: "bx bxs-grid-alt bx-md",
-    linkTo: "#",
+    icon: "bx bx-grid-alt",
+    linkTo: "/Tables",
     text: "Tables",
   },
   {
-    icon: "bx bxs-bar-chart-square bx-md",
-    linkTo: "#",
-    text: "Statistics",
-  },
-  {
-    icon: "bx bxs-notepad bx-md",
-    linkTo: "#",
+    icon: "bx bx-history",
+    linkTo: "/OrderHistory",
     text: "Order History",
   },
   {
-    icon: "bx bxs-comment-detail bx-md",
-    linkTo: "#",
-    text: "Customer Reviews",
+    icon: "bx bx-food-menu",
+    linkTo: "/Menu",
+    text: "Menu",
   },
   {
-    icon: "bx bxs-user-account bx-md",
-    linkTo: "#",
+    icon: "bx bx-user-pin",
+    linkTo: "/Account",
     text: "Account Details",
+  },
+  {
+    icon: "bx bx-group",
+    linkTo: "/Users",
+    text: "Users",
   },
 ];
 
 export default function SideBar() {
   return (
     <div className="sidebar">
-      <Logo />
       <SideBarItems />
     </div>
   );
@@ -45,15 +38,18 @@ export default function SideBar() {
 
 function Logo() {
   return (
-    <div className="logo">
-      <h1>TC</h1>
+    <div className="logo mb-2">
+      <h2>
+        <strong>TC</strong>
+      </h2>
     </div>
   );
 }
 
 function SideBarItems() {
   return (
-    <ul className="sidebar-items">
+    <div className="sidebar-items">
+      <Logo />
       {sideBarData.map((item) => (
         <SideBarItem
           icon={item.icon}
@@ -62,15 +58,24 @@ function SideBarItems() {
           key={item.text}
         />
       ))}
-    </ul>
+    </div>
   );
 }
 
 function SideBarItem({ icon, linkTo, text }) {
+  const location = useLocation();
+
   return (
-    <Button variant="light" className="sidebar-item">
-      <i className={icon} />
-      <h5>{text}</h5>
-    </Button>
+    <div className="sidebar-item">
+      <Link
+        className={`sidebar-link ${
+          location.pathname === linkTo ? "active-sidebar-link" : ""
+        }`}
+        to={linkTo}
+      >
+        <i className={icon} />
+        <span>{text}</span>
+      </Link>
+    </div>
   );
 }
