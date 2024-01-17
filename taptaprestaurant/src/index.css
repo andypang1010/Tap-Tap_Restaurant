@@ -78,7 +78,7 @@ START OF MAIN STYLING
 
 body,
 html {
-  background-color: #ddd;
+  background-color: #efefef;
   margin: 0;
   font-family: "SF Pro Display", sans-serif;
   color: #444;
@@ -122,10 +122,9 @@ input[type="number"] {
   flex-direction: column;
   text-align: center;
   align-items: center;
-  border-right: 0.5px solid #efefef;
   grid-row: 1 / -1;
-  background-color: #eee;
-  box-shadow: 0.2rem 0rem 0.3rem #bbb;
+  background-color: #fff;
+  box-shadow: 0.2rem 0rem 0.3rem rgba(0, 0, 0, 0.1);
   width: 6rem;
 }
 
@@ -168,27 +167,65 @@ input[type="number"] {
   background-color: rgb(210, 115, 115, 0.15);
 }
 
+.tab {
+  background-color: #fff;
+  min-width: 36rem;
+}
+
 .table-list {
   grid-row: 2 / 3;
   list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 300px 300px;
   column-gap: 10px;
   row-gap: 8px;
   justify-items: center;
   align-items: center;
 }
 
-.table {
-  background-color: #eee;
-  border: 3px solid #ddd;
-  box-shadow: 1px #444;
-  border-radius: 20px;
-  height: 95%;
-  width: 95%;
-  padding: 1rem;
-  font-size: 0.7vw;
+.table-name {
+  font-size: 1.4rem;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button-list {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.circle-button {
+  line-height: 1;
+  border-radius: 100px;
+  border: 0.5px solid #ccc;
+  transition: 0.3s all;
+  font-size: 1.6rem;
+}
+
+.close-tab-button {
+  color: red;
+}
+
+.circle-button:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: none;
+}
+
+.circle-button i {
+  padding: 0.4rem;
+  background-color: transparent;
 }
 
 .page-title h2 {
@@ -198,48 +235,36 @@ input[type="number"] {
 
 .item-list {
   width: 100%;
-  height: 75%;
+  height: 12rem;
   padding: 10px;
-  background-color: #ddd;
+  background-color: #eaeaea;
   border-radius: 6px;
-  overflow-y: scroll;
   overflow-x: hidden;
+  margin-bottom: 1.2rem;
 }
 
-.item-list:nth-child(odd) {
-  background-color: #ddd;
+.item-list li:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+.item-list li:nth-child(even) {
+  background-color: #f1f1f1;
 }
 
 .item {
-  background-color: #444;
-}
-
-.item-info {
+  padding: 0.2rem 1.6rem;
   display: grid;
-  column-gap: 1rem;
-  grid-template-columns: 27% 27% 27% auto;
-  align-items: center;
+  grid-template-columns: 4fr 1fr 3fr 1fr;
 }
 
-.item-price {
-  grid-column: 4 / 4;
-  font-size: 70%;
-  justify-self: end;
-}
-
-.item-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.item-special-instructions {
+  font-size: 0.9rem;
+  padding-left: 1.6rem;
+  color: #666;
 }
 
 .status-select {
   width: 14rem;
-}
-
-.item-quantity {
-  font-size: 70%;
-  color: #444;
 }
 
 .order-placed {
@@ -277,7 +302,7 @@ input[type="number"] {
   padding: 10px;
   border-radius: 3px;
   border: none;
-  background-color: #ddd;
+  background-color: #efefef;
   width: 100%;
   font-size: 125%;
   color: #444;
@@ -305,7 +330,7 @@ input[type="number"] {
 .box {
   border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0.2rem 0.3rem 0.3rem #bbb;
+  box-shadow: 0 0.05rem 0.3rem rgba(0, 0, 0, 0.1);
 }
 
 .main-content {
@@ -422,9 +447,23 @@ button.dummy {
 }
 
 .content-box {
-  background-color: #eee;
+  background-color: #fff;
   margin-bottom: 4rem;
   width: 80vw;
   padding-bottom: 3rem;
   min-width: 80rem;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2.4rem;
+}
+
+.user-card {
+  background-color: #fff;
+  padding: 1.6rem 3.2rem;
+  border-radius: 10px;
+  font-size: 1.4rem;
 }

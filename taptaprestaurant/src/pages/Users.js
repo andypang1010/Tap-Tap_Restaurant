@@ -59,6 +59,7 @@ export default function Users({ socket }) {
         }
       </Pagination>
     </section>
+
     </main>
   );
 }

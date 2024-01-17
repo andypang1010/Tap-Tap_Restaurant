@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import RestaurantDataListener from "../components/RestaurantDataListener";
-import { Form } from "react-bootstrap";
 import StatusSelect from "../components/StatusSelect";
 
 export default function Tables({ socket }) {
@@ -23,13 +22,13 @@ export default function Tables({ socket }) {
         socket={socket}
       />
 
-      <section className="content-box box">
+      <section>
         <ul className="table-list">
           {data === null ? (
             <>
-              <DummyTable key="1" />
+              {/*<DummyTable key="1" />
               <DummyTable key="2" />
-              <DummyTable key="3" />
+          <DummyTable key="3" />*/}
             </>
           ) : (
             <>
@@ -44,14 +43,49 @@ export default function Tables({ socket }) {
 }
 
 function Table({ tab, name }) {
+  const totalPrice = tab.reduce((total, item) => total + item.item.price, 0);
+
   useEffect(() => {
     console.log(tab);
   }, [tab]);
 
   return (
-    <li className="table box">
-      <h4>#{name}</h4>
+    <li className="tab box">
+      <header className="table-header">
+        <span className="table-name">#{name}</span>
+        <ul className="button-list">
+          <button className="circle-button close-tab-button">
+            <i class="bx bx-window-close"></i>
+          </button>
+        </ul>
+      </header>
+
       <ul className="item-list">
+        {tab &&
+          tab.map((item, i) => (
+            <li className="item" key={i}>
+              <div className="item-name">{item.item.name}</div>
+              <div className="item-quantity">&#x2715; {item.quantity}</div>
+              <div className="item-status">{item.status}</div>
+              <div className="item-price">&yen; {item.item.price}</div>
+              {item.special_instructions !== "None" ? (
+                <em className="item-special-instructions">
+                  {item.special_instructions}
+                </em>
+              ) : null}
+            </li>
+          ))}
+      </ul>
+
+      <footer className="table-footer">
+        <span className="table-total">Grand Total:</span>
+        <span>&yen; {totalPrice}</span>
+      </footer>
+    </li>
+  );
+}
+
+/*<ul className="item-list">
         {tab &&
           tab.map((item, i) => (
             <li className="item" key={i}>
@@ -67,7 +101,7 @@ function Table({ tab, name }) {
                 </div>
                 {item.special_instructions !== "None" &&
                   item.special_instructions !== "" && (
-                    <div className="item-special_instructions">
+                    <div className="item-special-instructions">
                       <span>
                         <strong className="text-danger">
                           Special Instructions:
@@ -82,10 +116,7 @@ function Table({ tab, name }) {
               </div>
             </li>
           ))}
-      </ul>
-    </li>
-  );
-}
+      </ul>*/
 
 function DummyTable() {
   return (
