@@ -6,6 +6,7 @@ export default function Pagination({
   itemsPerPage = 10,
   children,
   noResults = "No Results",
+  searchFields = []
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,17 +18,16 @@ export default function Pagination({
   const listLength = filteredItems.filter((item) => !item.props.ignore).length;
 
   useEffect(() => {
+
     setFilteredItems(
       Children.toArray(children).filter(
-        (item) =>
-          item.props.item?.name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          item.props.item?.description
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          item.props.ignore
-      )
+        (item) => {
+          if (item.props.ignore) return true;
+
+          for (let searchField of searchFields) {
+            if (item.props.item[searchField].toLowerCase().includes(searchTerm.toLowerCase())) return true;
+          }
+      })
     );
   }, [searchTerm, children]);
 
@@ -106,7 +106,7 @@ export default function Pagination({
         </div>
       </div>
 
-      <ul className="d-flex flex-wrap gap-2 align-items-center justify-content-start mb-4">
+      <ul className="d-flex flex-wrap align-items-center justify-content-start mb-4">
         {listLength > 0 ? (
           filteredItems
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)

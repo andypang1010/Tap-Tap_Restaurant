@@ -1,0 +1,50 @@
+.user {
+    width: 100%;
+}
+
+.user label {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 0.5fr auto 1fr 2fr 2fr 2fr 1fr;
+    text-wrap: nowrap;
+    background: #fff;
+    padding: 0.8rem 2.4rem;
+    transition: all 0.3s;
+    border: 1px solid #ddd;
+    color: #444;
+}
+
+.user label > * {
+    padding: 0.4rem 0.8rem;
+}
+
+.user label:hover {
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.user-name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 10rem;
+}
+
+.user-fullname {
+    font-weight: 600;
+}
+
+.user-username {
+    font-size: 90%;
+    color: #666;
+}
+
+.user-actions-button {
+    display: inline-block;
+    height: 3rem;
+    width: 3rem;
+    line-height: 1;
+    padding: 0;
+    border: none;
+    background-color: #fff;
+}
