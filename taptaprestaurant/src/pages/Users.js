@@ -21,7 +21,18 @@ export default function Users({ socket }) {
         socket={socket}
       />
 
-      <section className="content-box box">Users</section>
+      <section className="content-box box">
+        <ul className="user-list">
+          {data === null ? (
+            <></>
+          ) : (
+            data.users.map((user) => (
+              <li className="user-card">{user.username}</li>
+            ))
+          )}
+          <li></li>
+        </ul>
+      </section>
     </main>
   );
 }

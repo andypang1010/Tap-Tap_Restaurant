@@ -17,6 +17,7 @@ function LoginForm({ successRedirect = "/" }) {
       .post("http://localhost:8008/auth/login", {
         username,
         password,
+        restaurantName: "makoto",
       })
       .then((response) => {
         console.log(response);

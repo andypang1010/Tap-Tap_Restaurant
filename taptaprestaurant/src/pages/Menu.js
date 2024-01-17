@@ -142,7 +142,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
   const handleShow = () => setShowAddModal(true);
 
   return (
-    <section className="content-box box">
+    <>
       <div className="menu-button-list">
         {menuButtonData.map((button) => (
           <MenuButton
@@ -176,23 +176,25 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         />
       </div>
 
-      <Pagination itemsPerPage={10} noResults="No items matching this filter">
-        {data === null ? (
-          <>
-            <DummyMenuItem ignore key="1" />
-            <DummyMenuItem ignore key="2" />
-            <DummyMenuItem ignore key="3" />
-            <DummyMenuItem ignore key="4" />
-            <DummyMenuItem ignore key="5" />
-            <DummyMenuItem ignore key="6" />
-          </>
-        ) : (
-          filteredItems.map((item, i) => (
-            <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
-          ))
-        )}
-      </Pagination>
-    </section>
+      <section className="content-box box">
+        <Pagination itemsPerPage={10} noResults="No items matching this filter">
+          {data === null ? (
+            <>
+              <DummyMenuItem ignore key="1" />
+              <DummyMenuItem ignore key="2" />
+              <DummyMenuItem ignore key="3" />
+              <DummyMenuItem ignore key="4" />
+              <DummyMenuItem ignore key="5" />
+              <DummyMenuItem ignore key="6" />
+            </>
+          ) : (
+            filteredItems.map((item, i) => (
+              <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
+            ))
+          )}
+        </Pagination>
+      </section>
+    </>
   );
 }
 
