@@ -127,19 +127,21 @@ export default function Menu({ socket = io("http://localhost:8008") }) {
 function MenuBox({ data, onMenuUpdate, socket }) {
   const [activeButton, setActiveButton] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
-  const filteredItems =
-    (data !== null &&
-      data.menu.filter(
-        (item) =>
-          item.type.toLowerCase() === activeButton.toLowerCase() ||
-          activeButton === "All"
-      )) ||
-    [];
+  const [filteredItems, setFilteredItems] = useState(data?.menu);
+  const [paginationFilteredItems, setPaginationFilteredItems] = useState(data?.menu);
 
   const handleButtonClick = (buttonType) => setActiveButton(buttonType);
 
   const handleClose = () => setShowAddModal(false);
   const handleShow = () => setShowAddModal(true);
+
+  useEffect(() =>  {
+    setFilteredItems(
+      paginationFilteredItems?.filter(
+        (item) => 
+          item.type.toLowerCase() === activeButton.toLowerCase() || activeButton === "All"))
+        
+  }, [activeButton, paginationFilteredItems]);
 
   return (
     <>
@@ -159,7 +161,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
       <div className="d-flex align-items-center justify-content-between mb-4 lh-1">
         <h4 className="current-filter-name">
           <span>{activeButton}</span>
-          {filteredItems.length > 0 && <small>({filteredItems.length})</small>}
+          {/*{filteredItems?.length > 10 ? <small>({filteredItems.length})</small> : <small>({})</small>}*/}
         </h4>
         <button
           className="add-button small-shadow d-flex align-items-center"
@@ -177,7 +179,8 @@ function MenuBox({ data, onMenuUpdate, socket }) {
       </div>
 
       <section className="content-box box">
-        <Pagination itemsPerPage={10} noResults="No items matching this filter">
+        <Pagination itemsPerPage={10} itemList={data?.menu} onFilteredItems={setPaginationFilteredItems} />
+        <ul className="menu-list">
           {data === null ? (
             <>
               <DummyMenuItem ignore key="1" />
@@ -187,12 +190,12 @@ function MenuBox({ data, onMenuUpdate, socket }) {
               <DummyMenuItem ignore key="5" />
               <DummyMenuItem ignore key="6" />
             </>
-          ) : (
-            filteredItems.map((item, i) => (
-              <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
-            ))
-          )}
-        </Pagination>
+            ) : (
+              filteredItems.map((item, i) => (
+                <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
+              ))
+            )}
+        </ul>
       </section>
     </>
   );
@@ -470,7 +473,7 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
-            Close
+            Back
           </Button>
           <Button className="submit-button" type="submit">
             Add Item

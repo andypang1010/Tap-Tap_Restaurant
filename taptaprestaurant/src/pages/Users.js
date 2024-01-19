@@ -25,16 +25,14 @@ const tempUsers = [
 ]
 
 export default function Users({ socket }) {
+  const [selectedUsers, setSelectedUsers] = useState(null);
+  const [filteredItems, setFilteredItems] = useState(null);
   const [data, setData] = useState(null);
 
   useEffect(() => {
     data !== null && (document.title = `${data.name} Users`);
     console.log(data);
   }, [data]);
-  
-  useEffect(() => {
-    console.log(tempUsers === null)
-  }, [tempUsers]);
 
   return (
     <main className="main-content">
@@ -48,17 +46,24 @@ export default function Users({ socket }) {
         socket={socket}
       />
 
-    <section className="user-list">
-      <Pagination itemsPerPage={10} noResults="No users" searchFields={["first", "last", "username", "phone", "email"]}>
-        {tempUsers === null ? 
-          null
-          :
-          tempUsers.map((item, i) => 
-            <User key={i} item={item} />
-          )
-        }
-      </Pagination>
-    </section>
+      <Pagination itemsPerPage={10} itemList={tempUsers} filteredItems={filteredItems} onFilteredItems={setFilteredItems} />
+      
+      <div className="user-list-header">
+        <div className="action-banner"></div>
+        <span></span>
+        <span>Full Name</span>
+        <span>Status</span>
+        <span>Phone</span>
+        <span>Email</span>
+        <span>Roles</span>
+        <span>Actions</span>
+      </div>
+
+      <ul className="user-list">
+        {filteredItems?.map((item, i) => 
+          <User key={i} item={item}  />
+        )}
+      </ul>
 
     </main>
   );
@@ -82,7 +87,7 @@ function User({item}) {
           <span>{role}</span>
         ))}</div>
         <button className="user-actions-button">
-          <i class='bx bx-dots-horizontal'></i>
+          <i className='bx bx-dots-horizontal'></i>
         </button>
       </label>
     </li>

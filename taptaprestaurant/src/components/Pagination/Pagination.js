@@ -1,41 +1,38 @@
-import { useState, useEffect, Children } from "react";
+import { useState, useEffect } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import "./Pagination.css";
 
 export default function Pagination({
   itemsPerPage = 10,
-  children,
-  noResults = "No Results",
-  searchFields = []
+  itemList = [],
+  onFilteredItems
 }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalEntries, setTotalEntries] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [filteredItems, setFilteredItems] = useState(
-    Children.toArray(children)
-  );
-
-  const listLength = filteredItems.filter((item) => !item.props.ignore).length;
 
   useEffect(() => {
 
-    setFilteredItems(
-      Children.toArray(children).filter(
+    const newList = 
+      itemList.filter(
         (item) => {
-          if (item.props.ignore) return true;
-
-          for (let searchField of searchFields) {
-            if (item.props.item[searchField].toLowerCase().includes(searchTerm.toLowerCase())) return true;
+          for (let val of Object.values(item)) {
+            if (typeof val !== 'string' && typeof val !== 'number') continue;
+            val = val.toString();
+            if (val.toLowerCase().includes(searchTerm.toLowerCase())) return true;
           }
-      })
-    );
-  }, [searchTerm, children]);
+          return false;
+        });
+
+    setTotalEntries(newList.length);
+    onFilteredItems(newList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+  }, [searchTerm, itemList, currentPage, itemsPerPage, onFilteredItems]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [children]);
+  }, [itemList]);
 
-  const totalPages = Math.ceil(listLength / itemsPerPage);
+  const totalPages = Math.ceil(totalEntries / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -44,7 +41,7 @@ export default function Pagination({
   return (
     <div>
       <div className="pagination-addon-container">
-        <InputGroup className="w-75">
+        <InputGroup className="w-75 light-bx-shadow">
           <Form.Control
             type="text"
             placeholder="Search..."
@@ -72,49 +69,39 @@ export default function Pagination({
             <i className="bx bx-chevron-left"></i>
           </button>
           <span className="page-details">
-            {listLength > itemsPerPage &&
+            {totalEntries > itemsPerPage &&
               `Page ${currentPage} of ${totalPages}`}
           </span>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages || listLength === 0}
+            disabled={currentPage === totalPages || totalEntries === 0}
             className="increment-button"
           >
             <i className="bx bx-chevron-right"></i>
           </button>
           <button
             onClick={() => handlePageChange(totalPages)}
-            disabled={currentPage === totalPages || listLength === 0}
+            disabled={currentPage === totalPages || totalEntries === 0}
             className="last-page-button"
           >
             <i className="bx bx-last-page"></i>
           </button>
         </div>
         <div className="pagination-stats">
-          {listLength > 0 && (
+          {totalEntries > 0 && (
             <span>
               Showing{" "}
               <strong>
                 {(currentPage - 1) * itemsPerPage + 1} -{" "}
-                {itemsPerPage * currentPage > listLength
-                  ? listLength
+                {itemsPerPage * currentPage > totalEntries
+                  ? totalEntries
                   : itemsPerPage * currentPage}
               </strong>{" "}
-              of <strong>{listLength}</strong> entries
+              of <strong>{totalEntries}</strong> entries
             </span>
           )}
         </div>
       </div>
-
-      <ul className="d-flex flex-wrap align-items-center justify-content-start mb-4">
-        {listLength > 0 ? (
-          filteredItems
-            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((item, index) => item)
-        ) : (
-          <h5>{noResults}</h5>
-        )}
-      </ul>
     </div>
   );
 }

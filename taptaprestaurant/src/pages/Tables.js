@@ -1,14 +1,127 @@
 import { useState, useEffect } from "react";
+import io from "socket.io-client";
 import RestaurantDataListener from "../components/RestaurantDataListener";
-import StatusSelect from "../components/StatusSelect";
+import "./Tables.css";
+import {
+  Button,
+  Modal,
+  Form,
+} from "react-bootstrap";
 
-export default function Tables({ socket }) {
+const tempTableData = [
+  {
+    item: {
+      name: "White Wine",
+      price: 800,
+      available: true
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Tendered",
+    customer_name: "Avery"
+  },
+  {
+    item: {
+      name: "Whitefish Usuzukuri",
+      price: 3000,
+      available: true
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Placed",
+    customer_name: "Avery"
+  },
+  {
+    item: {
+      name: "Sake",
+      price: 600,
+      available: true
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Tendered",
+    customer_name: "Jeff"
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy"
+  }
+]
+
+function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (socket) {
+      socket.emit("closeTab", {
+        restaurantName,
+        table: tabName,
+      });
+
+      socket.on("success", (newData) => {
+        console.log("newdata: ", newData);
+      });
+
+      socket.on("error", (error) => {
+        console.log("error: ", error);
+      });
+    }
+  }
+
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Form
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Close Tab</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to close tab '{tabName}'?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            Back
+          </Button>
+          <Button className="submit-button" variant="delete" type="submit">
+            Close
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+}
+
+export default function Tables({ socket = io("http://localhost:8008") }) {
   const [data, setData] = useState(null);
+  const [showCloseModal, setShowCloseModal] = useState(false);
+  const [tabToClose, setTabToClose] = useState("");
 
   useEffect(() => {
     data !== null && (document.title = `${data.name} Tables`);
     console.log(data);
   }, [data]);
+
+  const handleShowCloseModal = (name) => {
+    setShowCloseModal(true);
+    setTabToClose(name);
+  }
+
+  const handleHideCloseModal = () => {
+    setShowCloseModal(false);
+    setTabToClose("");
+  }
 
   return (
     <main className="main-content">
@@ -22,6 +135,14 @@ export default function Tables({ socket }) {
         socket={socket}
       />
 
+      <CloseTabModal 
+        show={showCloseModal}
+        onHide={handleHideCloseModal}
+        socket={socket}
+        restaurantName={data?.username}
+        tabName={tabToClose}
+      />
+
       <section>
         <ul className="table-list">
           {data === null ? (
@@ -31,10 +152,9 @@ export default function Tables({ socket }) {
           <DummyTable key="3" />*/}
             </>
           ) : (
-            <>
-              <Table tab={data.tables["1"]} name={"1"} />
-              <Table tab={data.tables["2"]} name={"2"} />
-            </>
+            <Table key={1} tab={tempTableData} name={"1"} onCloseTab={handleShowCloseModal} />
+            /*Object.entries(data.tables).map(([name,tab], i) => 
+              <Table key={i} tab={tab} name={name} onCloseTab={handleShowCloseModal} />)*/
           )}
         </ul>
       </section>
@@ -42,8 +162,8 @@ export default function Tables({ socket }) {
   );
 }
 
-function Table({ tab, name }) {
-  const totalPrice = tab.reduce((total, item) => total + item.item.price, 0);
+function Table({ tab, name, onCloseTab }) {
+  const totalPrice = tab?.reduce((total, item) => total + item.item.price, 0);
 
   useEffect(() => {
     console.log(tab);
@@ -54,7 +174,7 @@ function Table({ tab, name }) {
       <header className="table-header">
         <span className="table-name">#{name}</span>
         <ul className="button-list">
-          <button className="circle-button close-tab-button">
+          <button className="circle-button close-tab-button" onClick={() => onCloseTab(name)}>
             <i class="bx bx-window-close"></i>
           </button>
         </ul>
@@ -62,24 +182,50 @@ function Table({ tab, name }) {
 
       <ul className="item-list">
         {tab &&
-          tab.map((item, i) => (
-            <li className="item" key={i}>
-              <div className="item-name">{item.item.name}</div>
-              <div className="item-quantity">&#x2715; {item.quantity}</div>
-              <div className="item-status">{item.status}</div>
-              <div className="item-price">&yen; {item.item.price}</div>
-              {item.special_instructions !== "None" ? (
-                <em className="item-special-instructions">
-                  {item.special_instructions}
-                </em>
-              ) : null}
-            </li>
-          ))}
+          tab.map((item, i) => {
+            let statusClass;
+
+            switch (item.status) {
+              case "Placed":
+                statusClass = "order-placed";
+                break;
+              case "Prepared":
+                statusClass = "order-prepared";
+                break;
+              case "Delivered":
+                statusClass = "order-delivered";
+                break;
+              case "Tendered":
+                statusClass = "order-tendered";
+                break;
+              case "Error":
+                statusClass = "order-error";
+                break;
+              default:
+                statusClass = "";
+            }
+          
+            return (
+              <li className="item" key={i}>
+                <input className="item-check" type="checkbox" />
+                <div className="item-name">{item.item.name}</div>
+                <div className="item-quantity">&#x2715; {item.quantity}</div>
+                <div className={`item-status ${statusClass}`}>{item.status}</div>
+                <div className="item-customer-name"><em>{item.customer_name}</em></div>
+                <div className="item-price"><strong>&yen; {item.item.price}</strong></div>
+                {item.special_instructions !== "None" ? (
+                  <em className="item-special-instructions">
+                    {item.special_instructions}
+                  </em>
+                ) : null}
+              </li>
+            )
+          })}
       </ul>
 
       <footer className="table-footer">
         <span className="table-total">Grand Total:</span>
-        <span>&yen; {totalPrice}</span>
+        <strong>&yen; {totalPrice}</strong>
       </footer>
     </li>
   );

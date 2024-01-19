@@ -66,7 +66,7 @@ function SideBarItem({ icon, linkTo, text }) {
   const location = useLocation();
 
   return (
-    <div className="sidebar-item">
+    <div className="sidebar-item light-bx-shadow">
       <Link
         className={`sidebar-link ${
           location.pathname === linkTo ? "active-sidebar-link" : ""

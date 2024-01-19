@@ -4,6 +4,7 @@ import EditableField from "../components/EditableField";
 import IconContainer from "../components/IconContainer";
 import "./Account.css";
 import io from "socket.io-client";
+import axios from "axios";
 
 export default function Account({ socket = io("http://localhost:8008") }) {
   const [data, setData] = useState(null);
@@ -74,10 +75,7 @@ export default function Account({ socket = io("http://localhost:8008") }) {
         </>
       ) : (
         <>
-          <section className="info account-box box mb-4">
-            <h4 className="mb-3">User Info</h4>
-            <IconContainer icon="bx bx-user" text={data.username} />
-          </section>
+          <UserAccountBox />
           <section className="restaurant-container mb-4">
             <div className="restaurant-info account-box box">
               <h4 className="mb-3">Restaurant Info</h4>
@@ -162,5 +160,27 @@ export default function Account({ socket = io("http://localhost:8008") }) {
         </>
       )}
     </main>
+  );
+}
+
+function UserAccountBox() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8008/user/getUserAccount")
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+    <section className="info account-box box mb-4">
+      <h4 className="mb-3">User Info</h4>
+      <IconContainer icon="bx bx-user" text={user?.username} />
+    </section>
   );
 }
