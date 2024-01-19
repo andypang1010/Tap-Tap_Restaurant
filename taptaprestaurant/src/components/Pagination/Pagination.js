@@ -5,27 +5,29 @@ import "./Pagination.css";
 export default function Pagination({
   itemsPerPage = 10,
   itemList = [],
-  onFilteredItems
+  onFilteredItems,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEntries, setTotalEntries] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-
-    const newList = 
-      itemList.filter(
-        (item) => {
-          for (let val of Object.values(item)) {
-            if (typeof val !== 'string' && typeof val !== 'number') continue;
-            val = val.toString();
-            if (val.toLowerCase().includes(searchTerm.toLowerCase())) return true;
-          }
-          return false;
-        });
+    const newList = itemList.filter((item) => {
+      for (let val of Object.values(item)) {
+        if (typeof val !== "string" && typeof val !== "number") continue;
+        val = val.toString();
+        if (val.toLowerCase().includes(searchTerm.toLowerCase())) return true;
+      }
+      return false;
+    });
 
     setTotalEntries(newList.length);
-    onFilteredItems(newList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+    onFilteredItems(
+      newList.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    );
   }, [searchTerm, itemList, currentPage, itemsPerPage, onFilteredItems]);
 
   useEffect(() => {

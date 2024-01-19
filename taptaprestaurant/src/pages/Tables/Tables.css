@@ -1,0 +1,168 @@
+.order-status {
+  background-color: #a5d8ff;
+  color: #339af0;
+  border: 1px solid #339af0;
+}
+
+.order-placed {
+  background-color: #fff3bf;
+  color: #fd7e14;
+  border: 2px solid #fd7e14;
+}
+
+.order-prepared {
+  background-color: #eebefa;
+  color: #be4bdb;
+  border: 2px solid #be4bdb;
+}
+
+.order-delivered {
+  background-color: #ffec99;
+  color: #fab005;
+  border: 2px solid #fab005;
+}
+
+.order-tendered {
+  background-color: #b2f2bb;
+  color: #40c057;
+  border: 2px solid #40c057;
+}
+
+.order-error {
+  background-color: #ffc9c9;
+  color: #fa5252;
+  border: 2px solid #fa5252;
+}
+
+.table-list {
+  grid-row: 2 / 3;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 8px;
+  justify-items: center;
+  align-items: center;
+}
+
+.tab {
+  background-color: #fff;
+  min-width: 36rem;
+}
+
+.table-name {
+  font-size: 1.4rem;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button-list {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.circle-button {
+  line-height: 1;
+  border-radius: 100px;
+  border: 0.5px solid #ccc;
+  transition: 0.3s all;
+  font-size: 1.6rem;
+}
+
+.close-tab-button {
+  color: red;
+}
+
+.circle-button:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: none;
+}
+
+.circle-button i {
+  padding: 0.4rem;
+  background-color: transparent;
+}
+
+.item-list {
+  width: 100%;
+  height: 12rem;
+  padding: 10px;
+  background-color: #eaeaea;
+  border-radius: 6px;
+  overflow-x: hidden;
+  margin-bottom: 1.2rem;
+}
+
+.item-list li:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+.item-list li:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.item {
+  padding: 0.2rem 1.6rem;
+  display: grid;
+  grid-template-columns: 0.8fr 5fr 3rem 3fr 3fr 4.5rem;
+  align-items: center;
+}
+
+.item-check {
+  margin-right: 1rem;
+}
+
+.item-name {
+  font-size: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-quantity {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 0.8rem;
+}
+
+.item-status {
+  padding: 0 0.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  justify-self: center;
+  width: 6rem;
+  text-align: center;
+}
+
+.item-special-instructions {
+  font-size: 0.9rem;
+  padding-left: 1.6rem;
+  color: #666;
+}
+
+.item-customer-name {
+  padding-left: 0.8rem;
+  color: #666;
+}
+
+.item-price {
+  white-space: nowrap;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

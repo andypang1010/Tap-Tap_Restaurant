@@ -1,0 +1,79 @@
+.user-list {
+  list-style: none;
+}
+
+.user {
+  width: 100%;
+}
+
+.user-list-header {
+  display: grid;
+  align-items: center;
+  position: relative;
+  grid-template-columns: 0.5fr 12rem 0.75fr 0.75fr 1.25fr 1fr 1fr;
+  padding: 0.8rem 2rem;
+}
+
+.action-banner {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: red;
+  transition: all 0.3s;
+  transform: translateY(100%);
+  opacity: 0.75;
+  z-index: -1;
+}
+
+.action-banner--open {
+  transform: translateY(0);
+  opacity: 1;
+  z-index: 1;
+}
+
+.user label {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 0.5fr 12rem 0.75fr 0.75fr 1.25fr 1fr 1fr;
+  text-wrap: nowrap;
+  background: #fff;
+  padding: 0.4rem 2rem;
+  transition: all 0.3s;
+  border: 1px solid #ddd;
+  color: #444;
+}
+
+.user label > *,
+.user-list-header {
+}
+
+.user label:hover {
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.user-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 10rem;
+}
+
+.user-fullname {
+  font-weight: 600;
+}
+
+.user-username {
+  font-size: 90%;
+  color: #666;
+}
+
+.user-actions-button {
+  display: inline-block;
+  height: 3rem;
+  width: 3rem;
+  line-height: 1;
+  padding: 0;
+  border: none;
+  background-color: #fff;
+}

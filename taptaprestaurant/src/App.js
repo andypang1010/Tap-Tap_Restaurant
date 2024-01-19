@@ -1,15 +1,15 @@
-import Login from "./pages/Login";
-import SignUp from "./pages/Register";
-import Account from "./pages/Account";
-import Menu from "./pages/Menu";
-import Tables from "./pages/Tables";
+import Login from "./pages/Login/Login.js";
+import SignUp from "./pages/Register/Register.js";
+import Account from "./pages/Account/Account.js";
+import Menu from "./pages/Menu/Menu.js";
+import Tables from "./pages/Tables/Tables.js";
 import LoginScreen from "./components/accountManage/LoginScreen/main.js";
 import SignUpEmail from "./components/accountManage/SignUp/email.js";
 import SignUpPassword from "./components/accountManage/SignUp/password";
-import Users from "./pages/Users";
+import Users from "./pages/Users/Users.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideBar from "./components/SideBar";
-import OrderHistory from "./pages/OrderHistory";
+import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
 import io from "socket.io-client";
 
 function App() {

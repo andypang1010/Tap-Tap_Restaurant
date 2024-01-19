@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import RestaurantDataListener from "../components/RestaurantDataListener";
-import OrderHistoryList from "../components/OrderHistoryList";
+import RestaurantDataListener from "../../components/RestaurantDataListener";
+import OrderHistoryList from "../../components/OrderHistoryList";
 
 
 export default function OrderHistory({ socket }) {

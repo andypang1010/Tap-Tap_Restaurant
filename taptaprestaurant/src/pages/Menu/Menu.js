@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
-import RestaurantDataListener from "../components/RestaurantDataListener";
-import TypeSelect from "../components/TypeSelect";
-import CategorySelect from "../components/CategorySelect";
-import TagInput from "../components/TagInput/TagInput";
-import Pagination from "../components/Pagination/Pagination";
+import RestaurantDataListener from "../../components/RestaurantDataListener";
+import TypeSelect from "../../components/TypeSelect";
+import CategorySelect from "../../components/CategorySelect";
+import TagInput from "../../components/TagInput/TagInput";
+import Pagination from "../../components/Pagination/Pagination";
 import "./Menu.css";
 import {
   Button,
@@ -128,19 +128,23 @@ function MenuBox({ data, onMenuUpdate, socket }) {
   const [activeButton, setActiveButton] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
   const [filteredItems, setFilteredItems] = useState(data?.menu);
-  const [paginationFilteredItems, setPaginationFilteredItems] = useState(data?.menu);
+  const [paginationFilteredItems, setPaginationFilteredItems] = useState(
+    data?.menu
+  );
 
   const handleButtonClick = (buttonType) => setActiveButton(buttonType);
 
   const handleClose = () => setShowAddModal(false);
   const handleShow = () => setShowAddModal(true);
 
-  useEffect(() =>  {
+  useEffect(() => {
     setFilteredItems(
       paginationFilteredItems?.filter(
-        (item) => 
-          item.type.toLowerCase() === activeButton.toLowerCase() || activeButton === "All"))
-        
+        (item) =>
+          item.type.toLowerCase() === activeButton.toLowerCase() ||
+          activeButton === "All"
+      )
+    );
   }, [activeButton, paginationFilteredItems]);
 
   return (
@@ -179,7 +183,11 @@ function MenuBox({ data, onMenuUpdate, socket }) {
       </div>
 
       <section className="content-box box">
-        <Pagination itemsPerPage={10} itemList={data?.menu} onFilteredItems={setPaginationFilteredItems} />
+        <Pagination
+          itemsPerPage={10}
+          itemList={data?.menu}
+          onFilteredItems={setPaginationFilteredItems}
+        />
         <ul className="menu-list">
           {data === null ? (
             <>
@@ -190,11 +198,11 @@ function MenuBox({ data, onMenuUpdate, socket }) {
               <DummyMenuItem ignore key="5" />
               <DummyMenuItem ignore key="6" />
             </>
-            ) : (
-              filteredItems.map((item, i) => (
-                <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
-              ))
-            )}
+          ) : (
+            filteredItems.map((item, i) => (
+              <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
+            ))
+          )}
         </ul>
       </section>
     </>

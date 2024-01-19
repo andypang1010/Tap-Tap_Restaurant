@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import RestaurantDataListener from "../components/RestaurantDataListener";
-import EditableField from "../components/EditableField";
-import IconContainer from "../components/IconContainer";
+import RestaurantDataListener from "../../components/RestaurantDataListener";
+import EditableField from "../../components/EditableField";
+import IconContainer from "../../components/IconContainer";
 import "./Account.css";
 import io from "socket.io-client";
 import axios from "axios";

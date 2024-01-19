@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import RestaurantDataListener from "../components/RestaurantDataListener";
-import Pagination from "../components/Pagination/Pagination";
+import RestaurantDataListener from "../../components/RestaurantDataListener";
+import Pagination from "../../components/Pagination/Pagination";
 import "./Users.css";
 
 const tempUsers = [
@@ -21,8 +21,8 @@ const tempUsers = [
     phone: "717-476-6211",
     email: "averydeemer@gmail.com",
     roles: ["Admin", "User"],
-  }
-]
+  },
+];
 
 export default function Users({ socket }) {
   const [selectedUsers, setSelectedUsers] = useState(null);
@@ -46,8 +46,13 @@ export default function Users({ socket }) {
         socket={socket}
       />
 
-      <Pagination itemsPerPage={10} itemList={tempUsers} filteredItems={filteredItems} onFilteredItems={setFilteredItems} />
-      
+      <Pagination
+        itemsPerPage={10}
+        itemList={tempUsers}
+        filteredItems={filteredItems}
+        onFilteredItems={setFilteredItems}
+      />
+
       <div className="user-list-header">
         <div className="action-banner"></div>
         <span></span>
@@ -60,34 +65,37 @@ export default function Users({ socket }) {
       </div>
 
       <ul className="user-list">
-        {filteredItems?.map((item, i) => 
-          <User key={i} item={item}  />
-        )}
+        {filteredItems?.map((item, i) => (
+          <User key={i} item={item} />
+        ))}
       </ul>
-
     </main>
   );
 }
 
-function User({item}) {
+function User({ item }) {
   return (
     <li className="user">
       <label>
         <input type="checkbox" />
 
         <div className="user-name">
-          <span className="user-fullname">{item.first} {item.last}</span>
+          <span className="user-fullname">
+            {item.first} {item.last}
+          </span>
           <span className="user-username">@{item.username}</span>
         </div>
 
         <div>{item.status}</div>
         <div>{item.phone}</div>
         <div>{item.email}</div>
-        <div>{item.roles.map((role, i) => (
-          <span>{role}</span>
-        ))}</div>
+        <div>
+          {item.roles.map((role, i) => (
+            <span>{role}</span>
+          ))}
+        </div>
         <button className="user-actions-button">
-          <i className='bx bx-dots-horizontal'></i>
+          <i className="bx bx-dots-horizontal"></i>
         </button>
       </label>
     </li>
