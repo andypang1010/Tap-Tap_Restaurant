@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Users.css";
 
@@ -33,29 +34,39 @@ export default function Users({ socket, data }) {
         <h2>Users</h2>
       </header>
 
-      <Pagination
-        itemsPerPage={10}
-        itemList={tempUsers}
-        filteredItems={filteredItems}
-        onFilteredItems={setFilteredItems}
-      />
+      <div className="user-list-wrapper">
+        <Pagination
+          itemsPerPage={10}
+          itemList={data?.users}
+          filteredItems={filteredItems}
+          onFilteredItems={setFilteredItems}
+        />
 
-      <div className="user-list-header">
-        <div className="action-banner"></div>
-        <span></span>
-        <span>Full Name</span>
-        <span>Status</span>
-        <span>Phone</span>
-        <span>Email</span>
-        <span>Roles</span>
-        <span>Actions</span>
+        <div className="user-list-header">
+          <div className="action-banner"></div>
+          <span></span>
+          <span>Full Name</span>
+          <span>Status</span>
+          <span>Phone</span>
+          <span>Email</span>
+          <span>Roles</span>
+          <span>Actions</span>
+        </div>
+
+        <ul className="user-list">
+          {filteredItems?.map((item, i) => (
+            <User key={i} item={item} />
+          ))}
+        </ul>
+
+        <Link
+          to="/NewUser"
+          role="button"
+          className="add-user-button action-button"
+        >
+          Add New User
+        </Link>
       </div>
-
-      <ul className="user-list">
-        {filteredItems?.map((item, i) => (
-          <User key={i} item={item} />
-        ))}
-      </ul>
     </main>
   );
 }
@@ -77,7 +88,7 @@ function User({ item }) {
         <div>{item.phone}</div>
         <div>{item.email}</div>
         <div>
-          {item.roles.map((role, i) => (
+          {item.roles?.map((role, i) => (
             <span key={i}>{role}</span>
           ))}
         </div>

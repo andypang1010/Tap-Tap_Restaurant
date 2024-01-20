@@ -167,7 +167,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         />
       </div>
 
-      <section className="content-box box">
+      <section className="bg-white light-bx-shadow box">
         <Pagination
           itemsPerPage={10}
           itemList={data?.menu}

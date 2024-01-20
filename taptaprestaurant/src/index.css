@@ -4,6 +4,18 @@ GLOBAL VARIABLES
 
 :root {
   --main-taptap-color: rgba(212, 30, 30, 1);
+  --taptap-blue: #339af0;
+  --taptap-light-blue: #a5d8ff;
+  --taptap-orange: #fd7e14;
+  --taptap-light-orange: #fff3bf;
+  --taptap-purple: #be4bdb;
+  --taptap-light-purple: #eebefa;
+  --taptap-yellow: #fab005;
+  --taptap-light-yellow: #ffec99;
+  --taptap-green: #40c057;
+  --taptap-light-green: #b2f2bb;
+  --taptap-red: #fa5252;
+  --taptap-light-red: #ffc9c9;
 }
 
 /*
@@ -63,6 +75,31 @@ select.form-select option:hover {
 }
 
 /*
+UTILITY
+*/
+
+.grid {
+  display: grid;
+  gap: 0.4rem 2rem;
+}
+
+.grid--2-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid--3-cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--3-cols {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.light-bx-shadow {
+  box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.4);
+}
+
+/*
 START OF MAIN STYLING
 */
 
@@ -86,6 +123,24 @@ html {
   letter-spacing: 0.05rem;
 }
 
+fieldset,
+legend {
+  all: revert;
+}
+
+fieldset {
+  border-radius: 0.375rem;
+  border: 0.5px solid #eee;
+  background-color: #fff;
+}
+
+legend {
+  font-size: 140%;
+  background-color: #fafafa;
+  border-radius: 0.375rem;
+  padding: 0 1rem;
+}
+
 .contain {
   overflow: auto;
   scrollbar-gutter: stable;
@@ -100,14 +155,25 @@ p {
   margin-bottom: 0;
 }
 
-.contain {
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 10fr;
+.full-title {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+.sub-heading:link,
+.sub-heading:visited {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #999;
 }
 
-.light-bx-shadow > * {
-  box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.4);
+.sub-heading:hover {
+  text-decoration: underline;
+  color: #333;
+}
+
+.contain {
+  height: 100vh;
 }
 
 .bold {
@@ -123,6 +189,7 @@ input[type="number"] {
 }
 
 .sidebar {
+  position: fixed;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -131,6 +198,7 @@ input[type="number"] {
   background-color: #fff;
   box-shadow: 0.2rem 0rem 0.3rem rgba(0, 0, 0, 0.1);
   width: 6rem;
+  height: 100%;
 }
 
 .sidebar-items {
@@ -189,7 +257,6 @@ input[type="number"] {
   border-radius: 3px;
   border: none;
   background-color: #efefef;
-  width: 100%;
   font-size: 125%;
   color: #444;
   font-weight: bold;
@@ -220,7 +287,8 @@ input[type="number"] {
 }
 
 .main-content {
-  margin: 0 4rem;
+  margin: 0 4rem 0 10rem;
+  overflow-x: hidden;
 }
 
 .add-button {

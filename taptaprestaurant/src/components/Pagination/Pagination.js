@@ -41,68 +41,66 @@ export default function Pagination({
   };
 
   return (
-    <div>
-      <div className="pagination-addon-container">
-        <InputGroup className="w-75 light-bx-shadow">
-          <Form.Control
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <InputGroup.Text>
-            <i className="bx bx-search-alt-2"></i>
-          </InputGroup.Text>
-        </InputGroup>
+    <div className="pagination">
+      <InputGroup className="w-75">
+        <Form.Control
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <InputGroup.Text>
+          <i className="bx bx-search-alt-2"></i>
+        </InputGroup.Text>
+      </InputGroup>
 
-        <div className="page-buttons">
-          <button
-            onClick={() => handlePageChange(1)}
-            disabled={currentPage === 1}
-            className="first-page-button"
-          >
-            <i className="bx bx-first-page"></i>
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="increment-button"
-          >
-            <i className="bx bx-chevron-left"></i>
-          </button>
-          <span className="page-details">
-            {totalEntries > itemsPerPage &&
-              `Page ${currentPage} of ${totalPages}`}
+      <div className="page-buttons">
+        <button
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+          className="first-page-button"
+        >
+          <i className="bx bx-first-page"></i>
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="increment-button"
+        >
+          <i className="bx bx-chevron-left"></i>
+        </button>
+        <span className="page-details">
+          {totalEntries > itemsPerPage &&
+            `Page ${currentPage} of ${totalPages}`}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages || totalEntries === 0}
+          className="increment-button"
+        >
+          <i className="bx bx-chevron-right"></i>
+        </button>
+        <button
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages || totalEntries === 0}
+          className="last-page-button"
+        >
+          <i className="bx bx-last-page"></i>
+        </button>
+      </div>
+      <div className="pagination-stats">
+        {totalEntries > 0 && (
+          <span>
+            Showing{" "}
+            <strong>
+              {(currentPage - 1) * itemsPerPage + 1} -{" "}
+              {itemsPerPage * currentPage > totalEntries
+                ? totalEntries
+                : itemsPerPage * currentPage}
+            </strong>{" "}
+            of <strong>{totalEntries}</strong> entries
           </span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages || totalEntries === 0}
-            className="increment-button"
-          >
-            <i className="bx bx-chevron-right"></i>
-          </button>
-          <button
-            onClick={() => handlePageChange(totalPages)}
-            disabled={currentPage === totalPages || totalEntries === 0}
-            className="last-page-button"
-          >
-            <i className="bx bx-last-page"></i>
-          </button>
-        </div>
-        <div className="pagination-stats">
-          {totalEntries > 0 && (
-            <span>
-              Showing{" "}
-              <strong>
-                {(currentPage - 1) * itemsPerPage + 1} -{" "}
-                {itemsPerPage * currentPage > totalEntries
-                  ? totalEntries
-                  : itemsPerPage * currentPage}
-              </strong>{" "}
-              of <strong>{totalEntries}</strong> entries
-            </span>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );

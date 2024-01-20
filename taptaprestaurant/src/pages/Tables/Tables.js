@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Tables.css";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 
 const tempTableData = [
   {
@@ -11,7 +11,7 @@ const tempTableData = [
     },
     quantity: 4,
     special_instructions: null,
-    status: "Tendered",
+    status: "Placed",
     customer_name: "Avery",
   },
   {
@@ -48,6 +48,14 @@ const tempTableData = [
     customer_name: "Andy",
   },
 ];
+
+function CloseTabTooltip() {
+  return (
+    <Tooltip>
+      <strong>Close Tab</strong>
+    </Tooltip>
+  );
+}
 
 function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
   const handleSubmit = (e) => {
@@ -87,7 +95,7 @@ function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
           <Button variant="secondary" onClick={onHide}>
             Back
           </Button>
-          <Button className="submit-button" variant="delete" type="submit">
+          <Button variant="danger" type="submit">
             Close
           </Button>
         </Modal.Footer>
@@ -153,16 +161,18 @@ function Table({ tab, name, onCloseTab }) {
   const totalPrice = tab?.reduce((total, item) => total + item.item.price, 0);
 
   return (
-    <li className="tab box">
+    <fieldset className="tab box">
+      <legend className="light-bx-shadow">{name}</legend>
       <header className="table-header">
-        <span className="table-name">#{name}</span>
         <ul className="button-list">
-          <button
-            className="circle-button close-tab-button"
-            onClick={() => onCloseTab(name)}
-          >
-            <i className="bx bx-window-close"></i>
-          </button>
+          <OverlayTrigger placement="top" overlay={CloseTabTooltip()}>
+            <button
+              className="circle-button close-tab-button"
+              onClick={() => onCloseTab(name)}
+            >
+              <i className="bx bx-window-close"></i>
+            </button>
+          </OverlayTrigger>
         </ul>
       </header>
 
@@ -223,7 +233,7 @@ function Table({ tab, name, onCloseTab }) {
         <span className="table-total">Grand Total:</span>
         <strong>&yen; {totalPrice}</strong>
       </footer>
-    </li>
+    </fieldset>
   );
 }
 

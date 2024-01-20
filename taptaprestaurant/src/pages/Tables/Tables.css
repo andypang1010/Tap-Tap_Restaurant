@@ -1,37 +1,37 @@
 .order-status {
-  background-color: #a5d8ff;
-  color: #339af0;
-  border: 1px solid #339af0;
+  background-color: var(--taptap-light-blue);
+  color: var(--taptap-blue);
+  border: 1px solid var(--taptap-blue);
 }
 
 .order-placed {
-  background-color: #fff3bf;
-  color: #fd7e14;
-  border: 2px solid #fd7e14;
+  background-color: var(--taptap-light-orange);
+  color: var(--taptap-orange);
+  border: 2px solid var(--taptap-orange);
 }
 
 .order-prepared {
-  background-color: #eebefa;
-  color: #be4bdb;
-  border: 2px solid #be4bdb;
+  background-color: var(--taptap-light-purple);
+  color: var(--taptap-purple);
+  border: 2px solid var(--taptap-purple);
 }
 
 .order-delivered {
-  background-color: #ffec99;
-  color: #fab005;
-  border: 2px solid #fab005;
+  background-color: var(--taptap-light-yellow);
+  color: var(--taptap-yellow);
+  border: 2px solid var(--taptap-yellow);
 }
 
 .order-tendered {
-  background-color: #b2f2bb;
-  color: #40c057;
-  border: 2px solid #40c057;
+  background-color: var(--taptap-light-green);
+  color: var(--taptap-green);
+  border: 2px solid var(--taptap-green);
 }
 
 .order-error {
-  background-color: #ffc9c9;
-  color: #fa5252;
-  border: 2px solid #fa5252;
+  background-color: var(--taptap-light-red);
+  color: var(--taptap-red);
+  border: 2px solid var(--taptap-red);
 }
 
 .table-list {

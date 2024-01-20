@@ -1,3 +1,15 @@
+.user-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-list-header,
+.user-list,
+.user-list-wrapper .pagination {
+  align-self: stretch;
+}
+
 .user-list {
   list-style: none;
 }
@@ -76,4 +88,20 @@
   padding: 0;
   border: none;
   background-color: #fff;
+}
+
+.add-user-button:link,
+.add-user-button:visited {
+  color: var(--taptap-red);
+  background-color: var(--taptap-light-red);
+  border: 2px solid var(--taptap-red);
+  width: 15rem;
+  margin: 0 auto;
+  text-align: center;
+  text-decoration: none;
+}
+
+.add-user-button:hover,
+.add-user-button:active {
+  background-color: #fac0c0;
 }

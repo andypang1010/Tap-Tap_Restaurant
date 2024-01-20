@@ -67,8 +67,8 @@ export default function Account({ socket, data }) {
         <>
           <UserAccountBox />
           <section className="restaurant-container mb-4">
-            <div className="restaurant-info account-box box">
-              <h4 className="mb-3">Restaurant Info</h4>
+            <fieldset className="light-bx-shadow box">
+              <legend className="light-bx-shadow">Restaurant Info</legend>
               <EditableField
                 icon="bx bx-comment-detail"
                 text={data.name}
@@ -94,9 +94,10 @@ export default function Account({ socket, data }) {
                   handleAccountUpdate();
                 }}
               />
-            </div>
-            <div className="restaurant-settings account-box box">
-              <h4 className="mb-3">Restaurant Settings</h4>
+            </fieldset>
+
+            <fieldset className="light-bx-shadow box">
+              <legend className="light-bx-shadow">Restaurant Settings</legend>
               <EditableField
                 icon="bx bx-coin-stack"
                 type="number"
@@ -135,18 +136,20 @@ export default function Account({ socket, data }) {
                   handleAccountUpdate();
                 }}
               />
-            </div>
+            </fieldset>
           </section>
 
-          <section className="password-security account-box box">
-            <h4 className="mb-3">Password & Security</h4>
-            <button className="action-button red-hover mb-2">
-              Change Username
-            </button>
-            <button className="action-button red-hover mb-2">
-              Reset Password
-            </button>
-          </section>
+          <fieldset className="light-bx-shadow box">
+            <legend className="light-bx-shadow">Password & Security</legend>
+            <div className="account-button-list">
+              <button className="action-button red-hover mb-2">
+                Change Username
+              </button>
+              <button className="action-button red-hover mb-2">
+                Reset Password
+              </button>
+            </div>
+          </fieldset>
         </>
       )}
     </main>
@@ -168,9 +171,9 @@ function UserAccountBox() {
   }, []);
 
   return (
-    <section className="info account-box box mb-4">
-      <h4 className="mb-3">User Info</h4>
+    <fieldset className="light-bx-shadow box mb-4">
+      <legend className="light-bx-shadow">User Info</legend>
       <IconContainer icon="bx bx-user" text={user?.username} />
-    </section>
+    </fieldset>
   );
 }

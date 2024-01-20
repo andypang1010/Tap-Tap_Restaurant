@@ -4,6 +4,7 @@ import Account from "./pages/Account/Account.js";
 import Menu from "./pages/Menu/Menu.js";
 import Tables from "./pages/Tables/Tables.js";
 import Users from "./pages/Users/Users.js";
+import NewUser from "./pages/NewUser/NewUser.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideBar from "./components/SideBar";
 import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
@@ -80,6 +81,7 @@ function App({ socket = io("http://localhost:8008") }) {
               path="/Users"
               element={<Users socket={socket} data={data} />}
             />
+            <Route path="/NewUser" element={<NewUser data={data} />} />
           </Routes>
         </div>
       </Router>
