@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
-import RestaurantDataListener from "../../components/RestaurantDataListener";
 import TypeSelect from "../../components/TypeSelect";
 import CategorySelect from "../../components/CategorySelect";
 import TagInput from "../../components/TagInput/TagInput";
@@ -30,7 +28,7 @@ function AllergyTooltip(allergies) {
         <strong>Allergies:</strong>
       </p>
       {allergies.map((item, i) => (
-        <p>
+        <p key={i}>
           <em>{item}</em>
         </p>
       ))}
@@ -85,9 +83,7 @@ const menuButtonData = [
   },
 ];
 
-export default function Menu({ socket = io("http://localhost:8008") }) {
-  const [data, setData] = useState(null);
-
+export default function Menu({ socket, data }) {
   function handleMenuUpdate() {
     if (socket) {
       socket.emit("updateMenu", data);
@@ -102,22 +98,11 @@ export default function Menu({ socket = io("http://localhost:8008") }) {
     }
   }
 
-  useEffect(() => {
-    data !== null && (document.title = `${data.name} Menu`);
-    console.log(data);
-  }, [data]);
-
   return (
     <main className="main-content">
       <header className="page-title">
         <h2>Menu</h2>
       </header>
-
-      <RestaurantDataListener
-        onDataChange={setData}
-        authorizationFailureRedirect="/Login"
-        socket={socket}
-      />
 
       <MenuBox data={data} onMenuUpdate={handleMenuUpdate} socket={socket} />
     </main>
@@ -191,12 +176,12 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         <ul className="menu-list">
           {data === null ? (
             <>
-              <DummyMenuItem ignore key="1" />
-              <DummyMenuItem ignore key="2" />
-              <DummyMenuItem ignore key="3" />
-              <DummyMenuItem ignore key="4" />
-              <DummyMenuItem ignore key="5" />
-              <DummyMenuItem ignore key="6" />
+              <DummyMenuItem ignore key={1} />
+              <DummyMenuItem ignore key={2} />
+              <DummyMenuItem ignore key={3} />
+              <DummyMenuItem ignore key={4} />
+              <DummyMenuItem ignore key={5} />
+              <DummyMenuItem ignore key={6} />
             </>
           ) : (
             filteredItems.map((item, i) => (
@@ -364,10 +349,6 @@ function AddMenuItemModal({ show, onHide, socket, username }) {
       [name]: newValue,
     });
   };
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
 
   return (
     <Modal show={show} onHide={onHide}>

@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
-import RestaurantDataListener from "../../components/RestaurantDataListener";
 import "./Tables.css";
 import { Button, Modal, Form } from "react-bootstrap";
 
@@ -98,15 +96,10 @@ function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
   );
 }
 
-export default function Tables({ socket = io("http://localhost:8008") }) {
-  const [data, setData] = useState(null);
+export default function Tables({ socket, data }) {
+  //const [data, setData] = useState(null);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [tabToClose, setTabToClose] = useState("");
-
-  useEffect(() => {
-    data !== null && (document.title = `${data.name} Tables`);
-    console.log(data);
-  }, [data]);
 
   const handleShowCloseModal = (name) => {
     setShowCloseModal(true);
@@ -123,12 +116,6 @@ export default function Tables({ socket = io("http://localhost:8008") }) {
       <header className="page-title">
         <h2>Tables</h2>
       </header>
-
-      <RestaurantDataListener
-        onDataChange={setData}
-        authorizationFailureRedirect="/Login"
-        socket={socket}
-      />
 
       <CloseTabModal
         show={showCloseModal}
@@ -165,10 +152,6 @@ export default function Tables({ socket = io("http://localhost:8008") }) {
 function Table({ tab, name, onCloseTab }) {
   const totalPrice = tab?.reduce((total, item) => total + item.item.price, 0);
 
-  useEffect(() => {
-    console.log(tab);
-  }, [tab]);
-
   return (
     <li className="tab box">
       <header className="table-header">
@@ -178,7 +161,7 @@ function Table({ tab, name, onCloseTab }) {
             className="circle-button close-tab-button"
             onClick={() => onCloseTab(name)}
           >
-            <i class="bx bx-window-close"></i>
+            <i className="bx bx-window-close"></i>
           </button>
         </ul>
       </header>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import RestaurantDataListener from "../../components/RestaurantDataListener";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Users.css";
 
@@ -24,27 +23,15 @@ const tempUsers = [
   },
 ];
 
-export default function Users({ socket }) {
+export default function Users({ socket, data }) {
   const [selectedUsers, setSelectedUsers] = useState(null);
   const [filteredItems, setFilteredItems] = useState(null);
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    data !== null && (document.title = `${data.name} Users`);
-    console.log(data);
-  }, [data]);
 
   return (
     <main className="main-content">
       <header className="page-title">
         <h2>Users</h2>
       </header>
-
-      <RestaurantDataListener
-        onDataChange={setData}
-        authorizationFailureRedirect="/Login"
-        socket={socket}
-      />
 
       <Pagination
         itemsPerPage={10}
@@ -91,7 +78,7 @@ function User({ item }) {
         <div>{item.email}</div>
         <div>
           {item.roles.map((role, i) => (
-            <span>{role}</span>
+            <span key={i}>{role}</span>
           ))}
         </div>
         <button className="user-actions-button">
