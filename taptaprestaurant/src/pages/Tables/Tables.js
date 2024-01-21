@@ -2,7 +2,18 @@ import { useState } from "react";
 import "./Tables.css";
 import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 
-const tempTableData = [
+const tempTableData = {
+  1: {},
+  2: {},
+  3: {},
+  4: {},
+  5: {},
+  "Bar 1": {},
+  "Bar 2": {},
+  "Bar 3": {},
+};
+
+const tempTabData = [
   {
     item: {
       name: "White Wine",
@@ -142,14 +153,14 @@ export default function Tables({ socket, data }) {
           <DummyTable key="3" />*/}
             </>
           ) : (
-            <Table
-              key={1}
-              tab={tempTableData}
-              name={"1"}
-              onCloseTab={handleShowCloseModal}
-            />
-            /*Object.entries(data.tables).map(([name,tab], i) => 
-              <Table key={i} tab={tab} name={name} onCloseTab={handleShowCloseModal} />)*/
+            Object.entries(tempTableData).map(([name, tab], i) => (
+              <Table
+                key={i}
+                tab={tempTabData}
+                name={name}
+                onCloseTab={handleShowCloseModal}
+              />
+            ))
           )}
         </ul>
       </section>

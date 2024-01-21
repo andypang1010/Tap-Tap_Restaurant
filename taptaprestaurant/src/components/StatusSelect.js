@@ -15,11 +15,11 @@ const selectData = [
     value: "order-delivered",
   },
   {
-    text: "Payment Completed",
+    text: "Tendered",
     value: "payment-completed",
   },
   {
-    text: "Payment Failed",
+    text: "Error",
     value: "payment-failed",
   },
 ];
