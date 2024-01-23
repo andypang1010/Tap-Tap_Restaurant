@@ -6,6 +6,7 @@ import "./LoginForm.css";
 import "boxicons/css/boxicons.min.css";
 
 function LoginForm({ successRedirect = "/" }) {
+  const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function LoginForm({ successRedirect = "/" }) {
         navigate(successRedirect);
       })
       .catch((error) => {
-        console.log(error);
+        setErrorMessage(error.message);
       });
   };
 
@@ -66,6 +67,7 @@ function LoginForm({ successRedirect = "/" }) {
           Login
         </Button>
       </Form>
+      <p className="error-message">{errorMessage}</p>
       <p className="register-message">
         Don't have an account?{" "}
         <Link className="register-link" to={"/Register"}>

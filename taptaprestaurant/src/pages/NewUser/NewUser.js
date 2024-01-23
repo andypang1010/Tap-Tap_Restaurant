@@ -182,6 +182,7 @@ function NewUserForm({ socket }) {
             type="email"
             name="email"
             value={formData?.address}
+            onChange={handleInputChange}
           />
         </Form.Group>
       </fieldset>

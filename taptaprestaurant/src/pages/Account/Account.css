@@ -21,3 +21,15 @@
 .account-button-list .action-button {
   width: 100%;
 }
+
+.full-name {
+  font-size: 1.4rem;
+}
+
+.admin {
+  background-color: var(--taptap-light-blue);
+  color: var(--taptap-blue);
+  border: 1px solid var(--taptap-blue);
+  font-size: 1.2rem;
+  padding: 0.2rem 0.4rem;
+}

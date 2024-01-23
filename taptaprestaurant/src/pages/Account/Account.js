@@ -3,8 +3,9 @@ import EditableField from "../../components/EditableField";
 import IconContainer from "../../components/IconContainer";
 import "./Account.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-export default function Account({ socket, data }) {
+export default function Account({ socket, data, user }) {
   function handleAccountUpdate() {
     if (socket) {
       socket.emit("updateAccount", data);
@@ -18,10 +19,6 @@ export default function Account({ socket, data }) {
       });
     }
   }
-
-  useEffect(() => {
-    data !== null && (document.title = "Account");
-  }, [data]);
 
   return (
     <main className="main-content">
@@ -65,90 +62,47 @@ export default function Account({ socket, data }) {
         </>
       ) : (
         <>
-          <UserAccountBox />
-          <section className="restaurant-container mb-4">
-            <fieldset className="light-bx-shadow box">
-              <legend className="light-bx-shadow">Restaurant Info</legend>
-              <EditableField
-                icon="bx bx-comment-detail"
-                text={data.name}
-                onChange={(value) => {
-                  data.name = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-phone"
-                text={data.phone}
-                onChange={(value) => {
-                  data.phone = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                as="textarea"
-                icon="bx bx-building-house"
-                text={data.address}
-                onChange={(value) => {
-                  data.address = value;
-                  handleAccountUpdate();
-                }}
-              />
-            </fieldset>
+          <UserAccountBox user={user} />
 
-            <fieldset className="light-bx-shadow box">
-              <legend className="light-bx-shadow">Restaurant Settings</legend>
-              <EditableField
-                icon="bx bx-coin-stack"
-                type="number"
-                prependText="Max Quantity per Order:"
-                text={data.maxQuantity}
-                onChange={(value) => {
-                  data.maxQuantity = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-grid-alt"
-                type="number"
-                prependText="Number of Tables:"
-                text={data.maxTable}
-                onChange={(value) => {
-                  data.maxTable = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-globe"
-                prependText="Language:"
-                text={data.language}
-                onChange={(value) => {
-                  data.language = value;
-                  handleAccountUpdate();
-                }}
-              />
-              <EditableField
-                icon="bx bx-money"
-                prependText="Currency:"
-                text={data.currency}
-                onChange={(value) => {
-                  data.currency = value;
-                  handleAccountUpdate();
-                }}
-              />
-            </fieldset>
-          </section>
-
-          <fieldset className="light-bx-shadow box">
+          <fieldset className="light-bx-shadow box mb-4">
             <legend className="light-bx-shadow">Password & Security</legend>
             <div className="account-button-list">
-              <button className="action-button red-hover mb-2">
-                Change Username
-              </button>
-              <button className="action-button red-hover mb-2">
+              <Link
+                to="/Account/ResetPassword"
+                className="action-button red-hover mb-2"
+              >
                 Reset Password
-              </button>
+              </Link>
             </div>
+          </fieldset>
+
+          <fieldset className="light-bx-shadow box mb-4">
+            <legend className="light-bx-shadow">Restaurant Info</legend>
+            <EditableField
+              icon="bx bx-comment-detail"
+              text={data.name}
+              onChange={(value) => {
+                data.name = value;
+                handleAccountUpdate();
+              }}
+            />
+            <EditableField
+              icon="bx bx-phone"
+              text={data.phone}
+              onChange={(value) => {
+                data.phone = value;
+                handleAccountUpdate();
+              }}
+            />
+            <EditableField
+              as="textarea"
+              icon="bx bx-building-house"
+              text={data.address}
+              onChange={(value) => {
+                data.address = value;
+                handleAccountUpdate();
+              }}
+            />
           </fieldset>
         </>
       )}
@@ -156,24 +110,25 @@ export default function Account({ socket, data }) {
   );
 }
 
-function UserAccountBox() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8008/user/getUserAccount")
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
+function UserAccountBox({ user }) {
   return (
     <fieldset className="light-bx-shadow box mb-4">
       <legend className="light-bx-shadow">User Info</legend>
-      <IconContainer icon="bx bx-user" text={user?.username} />
+
+      <div className="d-flex justify-content-around">
+        <div className="d-flex flex-column">
+          <strong className="full-name">
+            {user?.first} {user?.last}{" "}
+            <span className="status-badge admin">{user?.roles[0]}</span>
+          </strong>
+          <span className="username">@{user?.username}</span>
+        </div>
+
+        <div className="d-flex flex-column">
+          <span>{user?.phone}</span>
+          <span>{user?.email}</span>
+        </div>
+      </div>
     </fieldset>
   );
 }

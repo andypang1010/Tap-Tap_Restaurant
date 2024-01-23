@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Users.css";
+import { Dropdown } from "react-bootstrap";
 
 const tempUsers = [
   {
@@ -24,7 +25,7 @@ const tempUsers = [
   },
 ];
 
-export default function Users({ socket, data }) {
+export default function Users({ socket, data, user }) {
   const [selectedUsers, setSelectedUsers] = useState(null);
   const [filteredItems, setFilteredItems] = useState(null);
 
@@ -55,14 +56,14 @@ export default function Users({ socket, data }) {
 
         <ul className="user-list">
           {filteredItems?.map((item, i) => (
-            <User key={i} item={item} />
+            <User key={i} item={item} user={user} />
           ))}
         </ul>
 
         <Link
-          to="/NewUser"
+          to="/Users/NewUser"
           role="button"
-          className="add-user-button action-button"
+          className="action-button red-hover"
         >
           Add New User
         </Link>
@@ -71,9 +72,15 @@ export default function Users({ socket, data }) {
   );
 }
 
-function User({ item }) {
+function User({ item, user }) {
   return (
-    <li className="user">
+    <li
+      className={
+        user.username === item.username
+          ? "user bg-light-green"
+          : "user bg-white"
+      }
+    >
       <label>
         <input type="checkbox" />
 
@@ -92,9 +99,16 @@ function User({ item }) {
             <span key={i}>{role}</span>
           ))}
         </div>
-        <button className="user-actions-button">
-          <i className="bx bx-dots-horizontal"></i>
-        </button>
+        <Dropdown>
+          <Dropdown.Toggle className="action-button">
+            <i className="bx bx-dots-horizontal"></i>
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </label>
     </li>
   );

@@ -17,14 +17,19 @@ const sideBarData = [
     text: "Menu",
   },
   {
-    icon: "bx bx-user-pin",
-    linkTo: "/Account",
-    text: "Account Details",
-  },
-  {
     icon: "bx bx-group",
     linkTo: "/Users",
     text: "Users",
+  },
+  {
+    icon: "bx bx-user-pin",
+    linkTo: "/Account",
+    text: "Account",
+  },
+  {
+    icon: "bx bx-cog",
+    linkTo: "/Settings",
+    text: "Settings",
   },
 ];
 

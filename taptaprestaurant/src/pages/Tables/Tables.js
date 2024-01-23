@@ -214,13 +214,15 @@ function Table({ tab, name, onCloseTab }) {
 
             return (
               <li className="item" key={i}>
-                <input className="item-check" type="checkbox" />
-                <div className="item-name">{item.item.name}</div>
+                <label className="item-label">
+                  <input className="item-check" type="checkbox" />
+                  <div className="item-name">{item.item.name}</div>
+                </label>
                 <div className="item-quantity">
                   <small>&#x2715;</small>
                   <span>{item.quantity}</span>
                 </div>
-                <div className={`item-status ${statusClass}`}>
+                <div className={`status-badge ${statusClass}`}>
                   {item.status}
                 </div>
                 <div className="item-customer-name">

@@ -5,36 +5,33 @@ import Menu from "./pages/Menu/Menu.js";
 import Tables from "./pages/Tables/Tables.js";
 import Users from "./pages/Users/Users.js";
 import NewUser from "./pages/NewUser/NewUser.js";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import SideBar from "./components/SideBar";
 import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
 import io from "socket.io-client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
+import Settings from "./pages/Settings/Settings.js";
 
-function authenticate() {
-  const jwt = localStorage.getItem("jwt");
-  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
-
-  axios
-    .get("http://localhost:8008/protected")
-    .then((response) => {
-      console.log("User is logged in!");
-      return true;
-    })
-    .catch((error) => {
-      //navigate("/Login");
-      return false;
-    });
-
-  return false;
+export default function App({ socket = io("http://localhost:8008") }) {
+  return (
+    <Router>
+      <Contain socket={socket} />
+    </Router>
+  );
 }
 
-function App({ socket = io("http://localhost:8008") }) {
+function Contain({ socket }) {
+  const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
-  const authenticated = useMemo(() => {
-    return authenticate();
-  }, []);
+  const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (socket) {
@@ -51,42 +48,80 @@ function App({ socket = io("http://localhost:8008") }) {
     };
   }, [socket]);
 
-  document.title = "Tap Tap Restaurant";
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+
+    axios
+      .get("http://localhost:8008/protected")
+      .then(() => {
+        console.log("User is logged in!");
+        setAuthenticated(true);
+        axios
+          .get("http://localhost:8008/user/getUserAccount")
+          .then((response) => {
+            setUser(response.data);
+          })
+          .catch((error) => {
+            console.log("GET USER: ", error);
+          });
+      })
+      .catch((error) => {
+        navigate("/Login");
+        setAuthenticated(false);
+      });
+  }, [navigate]);
+
   return (
-    <>
-      <Router>
-        <div className="contain">
-          <SideBar />
-          <Routes>
-            <Route path="/" element={<Tables socket={socket} data={data} />} />
-            <Route
-              path="/Tables"
-              element={<Tables socket={socket} data={data} />}
-            />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Register" element={<SignUp />} />
-            <Route
-              path="/Menu"
-              element={<Menu socket={socket} data={data} />}
-            />
-            <Route
-              path="/Account"
-              element={<Account socket={socket} data={data} />}
-            />
-            <Route
-              path="/OrderHistory"
-              element={<OrderHistory socket={socket} data={data} />}
-            />
-            <Route
-              path="/Users"
-              element={<Users socket={socket} data={data} />}
-            />
-            <Route path="/NewUser" element={<NewUser data={data} />} />
-          </Routes>
-        </div>
-      </Router>
-    </>
+    <div className="contain">
+      <div className="contain">
+        {authenticated && <SideBar />}
+        <Routes>
+          {authenticated ? (
+            <>
+              <Route
+                path="/"
+                element={<Tables socket={socket} data={data} />}
+              />
+              <Route
+                path="/Tables"
+                element={<Tables socket={socket} data={data} />}
+              />
+              <Route
+                path="/Menu"
+                element={<Menu socket={socket} data={data} />}
+              />
+              <Route
+                path="/Account"
+                element={<Account socket={socket} data={data} user={user} />}
+              />
+              <Route
+                path="/Account/ResetPassword"
+                element={<ResetPassword user={user} />}
+              />
+              <Route
+                path="/OrderHistory"
+                element={<OrderHistory socket={socket} data={data} />}
+              />
+              <Route
+                path="/Users"
+                element={<Users socket={socket} data={data} user={user} />}
+              />
+              <Route path="/Users/NewUser" element={<NewUser data={data} />} />
+              <Route
+                path="/Settings"
+                element={<Settings socket={socket} data={data} />}
+              />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Login />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/Register" element={<SignUp />} />
+            </>
+          )}
+        </Routes>
+      </div>
+    </div>
   );
 }
-
-export default App;

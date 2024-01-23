@@ -99,6 +99,14 @@ UTILITY
   box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.4);
 }
 
+.bg-light-green {
+  background-color: var(--taptap-light-green);
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
 /*
 START OF MAIN STYLING
 */
@@ -209,6 +217,10 @@ input[type="number"] {
   align-items: center;
 }
 
+.sidebar-items *:nth-child(6) {
+  margin-top: 16rem;
+}
+
 .sidebar-item {
   padding: 8px;
   line-height: 0.75rem;
@@ -252,7 +264,9 @@ input[type="number"] {
   font-size: 110%;
 }
 
-.action-button {
+.action-button,
+.action-button:link,
+.action-button:visited {
   padding: 10px;
   border-radius: 3px;
   border: none;
@@ -260,6 +274,8 @@ input[type="number"] {
   font-size: 125%;
   color: #444;
   font-weight: bold;
+  text-decoration: none;
+  text-align: center;
 }
 
 .red-hover {
@@ -404,4 +420,13 @@ button.dummy {
   width: 80vw;
   padding-bottom: 3rem;
   min-width: 80rem;
+}
+
+.status-badge {
+  padding: 0 0.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  justify-self: center;
+  width: 6rem;
+  text-align: center;
 }
