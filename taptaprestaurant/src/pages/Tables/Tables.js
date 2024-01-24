@@ -1,17 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Tables.css";
+import Pagination from "../../components/Pagination/Pagination";
 import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
-
-const tempTableData = {
-  1: {},
-  2: {},
-  3: {},
-  4: {},
-  5: {},
-  "Bar 1": {},
-  "Bar 2": {},
-  "Bar 3": {},
-};
 
 const tempTabData = [
   {
@@ -58,7 +48,370 @@ const tempTabData = [
     status: "Error",
     customer_name: "Andy",
   },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "White Wine",
+      price: 800,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Placed",
+    customer_name: "Avery",
+  },
+  {
+    item: {
+      name: "Whitefish Usuzukuri",
+      price: 3000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Placed",
+    customer_name: "Avery",
+  },
+  {
+    item: {
+      name: "Sake",
+      price: 600,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Tendered",
+    customer_name: "Jeff",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "White Wine",
+      price: 800,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Placed",
+    customer_name: "Avery",
+  },
+  {
+    item: {
+      name: "Whitefish Usuzukuri",
+      price: 3000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Placed",
+    customer_name: "Avery",
+  },
+  {
+    item: {
+      name: "Sake",
+      price: 600,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Tendered",
+    customer_name: "Jeff",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
+  {
+    item: {
+      name: "Avery Special",
+      price: 2000,
+      available: true,
+    },
+    quantity: 4,
+    special_instructions: null,
+    status: "Error",
+    customer_name: "Andy",
+  },
 ];
+
+const tempTableData = {
+  1: tempTabData,
+  2: [],
+  3: tempTabData,
+  4: [],
+  5: [],
+  "Bar 1": tempTabData,
+  "Bar 2": [],
+  "Bar 3": [],
+};
 
 function CloseTabTooltip() {
   return (
@@ -115,20 +468,110 @@ function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
   );
 }
 
+function CancelItemModal({
+  show,
+  onHide,
+  socket,
+  restaurantName,
+  tabName,
+  itemName,
+}) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (socket) {
+      socket.emit("cancelItem", {
+        restaurantName,
+        table: tabName,
+        itemName,
+      });
+
+      socket.on("success", (newData) => {
+        console.log("newdata: ", newData);
+      });
+
+      socket.on("error", (error) => {
+        console.log("error: ", error);
+      });
+    }
+  };
+
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Form
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Close Tab</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Are you sure you want to cancel item '{itemName}' at Table '
+            {tabName}'?
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            Back
+          </Button>
+          <Button variant="danger" type="submit">
+            Close
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+}
+
 export default function Tables({ socket, data }) {
-  //const [data, setData] = useState(null);
+  const [filteredItems, setFilteredItems] = useState(null);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [tabToClose, setTabToClose] = useState("");
+  const [showCancelItemModal, setShowCancelItemModal] = useState(false);
+  const [itemToCancel, setItemToCancel] = useState(null);
+  const [tableVisibility, setTableVisibility] = useState({});
 
-  const handleShowCloseModal = (name) => {
+  const handleToggleTable = (tableName) => {
+    setTableVisibility((prevVisibility) => {
+      const updatedVisibility = { ...prevVisibility };
+      updatedVisibility[tableName] = !updatedVisibility[tableName];
+      return updatedVisibility;
+    });
+  };
+
+  const handleShowCloseModal = (tableName) => {
     setShowCloseModal(true);
-    setTabToClose(name);
+    setTabToClose(tableName);
   };
 
   const handleHideCloseModal = () => {
     setShowCloseModal(false);
     setTabToClose("");
   };
+
+  const handleShowCancelItemModal = (item, table) => {
+    console.log(item, table);
+    setShowCancelItemModal(true);
+    setItemToCancel({
+      item,
+      table,
+    });
+  };
+
+  const handleHideCancelItemModal = () => {
+    setShowCancelItemModal(false);
+    setItemToCancel(null);
+  };
+
+  useEffect(() => {
+    Object.entries(tempTableData).forEach(([name, tab], i) => {
+      console.log(name, tab);
+      tableVisibility[name] = tab.length > 0;
+    });
+  }, [tempTableData]);
 
   return (
     <main className="main-content">
@@ -144,7 +587,28 @@ export default function Tables({ socket, data }) {
         tabName={tabToClose}
       />
 
+      <CancelItemModal
+        show={showCancelItemModal}
+        onHide={handleHideCancelItemModal}
+        socket={socket}
+        restaurantName={data?.username}
+        tabName={itemToCancel?.table}
+        itemName={itemToCancel?.item}
+      />
+
       <section>
+        <ul className="table-list-banner">
+          {Object.entries(tempTableData).map(([name, tab], i) => (
+            <TableButton
+              key={i}
+              name={name}
+              tab={tab}
+              isActive={tableVisibility[name]}
+              onToggleTable={handleToggleTable}
+            />
+          ))}
+        </ul>
+
         <ul className="table-list">
           {data === null ? (
             <>
@@ -153,14 +617,20 @@ export default function Tables({ socket, data }) {
           <DummyTable key="3" />*/}
             </>
           ) : (
-            Object.entries(tempTableData).map(([name, tab], i) => (
-              <Table
-                key={i}
-                tab={tempTabData}
-                name={name}
-                onCloseTab={handleShowCloseModal}
-              />
-            ))
+            Object.entries(tempTableData).map(([name, tab], i) => {
+              console.log(tab);
+
+              return (
+                <Table
+                  key={i}
+                  tab={tab}
+                  name={name}
+                  onCloseTab={handleShowCloseModal}
+                  onCancelItem={handleShowCancelItemModal}
+                  isActive={tableVisibility[name]}
+                />
+              );
+            })
           )}
         </ul>
       </section>
@@ -168,11 +638,45 @@ export default function Tables({ socket, data }) {
   );
 }
 
-function Table({ tab, name, onCloseTab }) {
-  const totalPrice = tab?.reduce((total, item) => total + item.item.price, 0);
+function TableButton({ tab, name, onToggleTable, isActive }) {
+  return (
+    <button
+      className={`table-button ${
+        isActive ? "" : "light-bx-shadow inactive-button"
+      }`}
+      onClick={(e) => {
+        e.preventDefault();
+        console.log("here");
+        onToggleTable(name);
+      }}
+    >
+      <Form.Check
+        className="pointer-events-none"
+        type="checkbox"
+        label={name}
+        checked={isActive}
+      />
+    </button>
+  );
+}
+
+function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
+  const [filteredItems, setFilteredItems] = useState(null);
+  const totalPrice = tab?.reduce(
+    (total, item) => total + item.item.price * item.quantity,
+    0
+  );
+
+  useEffect(() => {
+    console.log("tab:", tab);
+  }, [tab]);
 
   return (
-    <fieldset className="tab box">
+    <fieldset
+      className={`tab box ${tab?.length === 0 ? "empty-tab" : ""} ${
+        isActive ? "" : "inactive"
+      }`}
+    >
       <legend className="light-bx-shadow">{name}</legend>
       <header className="table-header">
         <ul className="button-list">
@@ -187,9 +691,15 @@ function Table({ tab, name, onCloseTab }) {
         </ul>
       </header>
 
+      <Pagination
+        itemsPerPage={10}
+        itemList={tab}
+        onFilteredItems={setFilteredItems}
+      />
+
       <ul className="item-list">
-        {tab &&
-          tab.map((item, i) => {
+        {filteredItems?.length > 0 ? (
+          filteredItems?.map((item, i) => {
             let statusClass;
 
             switch (item.status) {
@@ -230,7 +740,12 @@ function Table({ tab, name, onCloseTab }) {
                 </div>
                 <div className="item-price">
                   <span>&yen;</span>
-                  <strong>{item.item.price}</strong>
+                  <strong>{item.item.price * item.quantity}</strong>
+                </div>
+                <div className="item-delete-button">
+                  <button onClick={() => onCancelItem(item.item.name, name)}>
+                    <i className="bx bx-trash"></i>
+                  </button>
                 </div>
                 {item.special_instructions !== "None" ? (
                   <em className="item-special-instructions">
@@ -239,7 +754,10 @@ function Table({ tab, name, onCloseTab }) {
                 ) : null}
               </li>
             );
-          })}
+          })
+        ) : (
+          <p>No results</p>
+        )}
       </ul>
 
       <footer className="table-footer">

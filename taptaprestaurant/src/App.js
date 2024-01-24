@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
 import Settings from "./pages/Settings/Settings.js";
+import EditUser from "./pages/EditUser/EditUser.js";
 
 export default function App({ socket = io("http://localhost:8008") }) {
   return (
@@ -25,6 +26,10 @@ export default function App({ socket = io("http://localhost:8008") }) {
       <Contain socket={socket} />
     </Router>
   );
+}
+
+function RestaurantName({ name }) {
+  return <span className="restaurant-name-badge">{name}</span>;
 }
 
 function Contain({ socket }) {
@@ -75,7 +80,12 @@ function Contain({ socket }) {
   return (
     <div className="contain">
       <div className="contain">
-        {authenticated && <SideBar />}
+        {authenticated && (
+          <>
+            <SideBar />
+            <RestaurantName name={data?.username} />
+          </>
+        )}
         <Routes>
           {authenticated ? (
             <>
@@ -108,6 +118,10 @@ function Contain({ socket }) {
                 element={<Users socket={socket} data={data} user={user} />}
               />
               <Route path="/Users/NewUser" element={<NewUser data={data} />} />
+              <Route
+                path="/Users/EditUser"
+                element={<EditUser data={data} />}
+              />
               <Route
                 path="/Settings"
                 element={<Settings socket={socket} data={data} />}

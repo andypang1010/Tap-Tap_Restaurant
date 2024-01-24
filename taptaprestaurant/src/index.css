@@ -107,6 +107,10 @@ UTILITY
   background-color: #fff;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 /*
 START OF MAIN STYLING
 */
@@ -123,12 +127,23 @@ START OF MAIN STYLING
 
 body,
 html {
-  background-color: #efefef;
+  background-color: #fcfcfc;
   margin: 0;
   font-family: "SF Pro Display", sans-serif;
   color: #444;
   overflow: auto;
   letter-spacing: 0.05rem;
+}
+
+.restaurant-name-badge {
+  position: fixed;
+  right: 0.5rem;
+  background: rgb(100, 100, 138);
+  color: #fff;
+  z-index: 1000;
+  padding: 0.4rem 0.8rem;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 fieldset,
@@ -144,6 +159,7 @@ fieldset {
 
 legend {
   font-size: 140%;
+  font-weight: 500;
   background-color: #fafafa;
   border-radius: 0.375rem;
   padding: 0 1rem;
@@ -196,6 +212,11 @@ input[type="number"] {
   width: 3rem;
 }
 
+.custom-check {
+  height: 2.4rem;
+  width: 2.4rem;
+}
+
 .sidebar {
   position: fixed;
   display: flex;
@@ -210,15 +231,17 @@ input[type="number"] {
 }
 
 .sidebar-items {
-  height: 40rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  height: 100%;
+  margin-bottom: 1.6rem;
 }
 
 .sidebar-items *:nth-child(6) {
-  margin-top: 16rem;
+  margin-top: auto;
+  margin-bottom: 0;
 }
 
 .sidebar-item {
@@ -252,6 +275,11 @@ input[type="number"] {
   background-color: rgb(210, 115, 115, 0.15);
 }
 
+.footer-sidebar.sidebar-item .sidebar-link {
+  height: 3.2rem;
+  width: 3.2rem;
+}
+
 .page-title h2 {
   padding: 2rem;
   font-weight: 700;
@@ -267,7 +295,7 @@ input[type="number"] {
 .action-button,
 .action-button:link,
 .action-button:visited {
-  padding: 10px;
+  padding: 1rem 1.6rem;
   border-radius: 3px;
   border: none;
   background-color: #efefef;
@@ -429,4 +457,48 @@ button.dummy {
   justify-self: center;
   width: 6rem;
   text-align: center;
+}
+
+.dropbtn {
+  background-color: transparent;
+  color: #444;
+  padding: 0.6rem 1rem;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  line-height: 1;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #444;
+  padding: 0.8rem 1.2rem;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #f1f1f1;
 }

@@ -14,6 +14,16 @@ export default function Pagination({
   useEffect(() => {
     const newList = itemList.filter((item) => {
       for (let val of Object.values(item)) {
+        if (typeof val === "object") {
+          for (let val2 in val) {
+            if (typeof val[val2] !== "string" && typeof val[val2] !== "number")
+              continue;
+            val[val2] = val[val2].toString();
+            if (val[val2].toLowerCase().includes(searchTerm.toLowerCase()))
+              return true;
+          }
+        }
+
         if (typeof val !== "string" && typeof val !== "number") continue;
         val = val.toString();
         if (val.toLowerCase().includes(searchTerm.toLowerCase())) return true;
@@ -32,7 +42,7 @@ export default function Pagination({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [itemList]);
+  }, [searchTerm, itemList]);
 
   const totalPages = Math.ceil(totalEntries / itemsPerPage);
 
@@ -42,7 +52,7 @@ export default function Pagination({
 
   return (
     <div className="pagination">
-      <InputGroup className="w-75">
+      <InputGroup className="search-bar">
         <Form.Control
           type="text"
           placeholder="Search..."
@@ -70,8 +80,7 @@ export default function Pagination({
           <i className="bx bx-chevron-left"></i>
         </button>
         <span className="page-details">
-          {totalEntries > itemsPerPage &&
-            `Page ${currentPage} of ${totalPages}`}
+          {totalEntries > itemsPerPage && `${currentPage} of ${totalPages}`}
         </span>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
@@ -91,14 +100,13 @@ export default function Pagination({
       <div className="pagination-stats">
         {totalEntries > 0 && (
           <span>
-            Showing{" "}
             <strong>
               {(currentPage - 1) * itemsPerPage + 1} -{" "}
               {itemsPerPage * currentPage > totalEntries
                 ? totalEntries
                 : itemsPerPage * currentPage}
             </strong>{" "}
-            of <strong>{totalEntries}</strong> entries
+            of <strong>{totalEntries}</strong>
           </span>
         )}
       </div>

@@ -124,13 +124,13 @@ function MenuBox({ data, onMenuUpdate, socket }) {
 
   useEffect(() => {
     setFilteredItems(
-      paginationFilteredItems?.filter(
+      data?.menu.filter(
         (item) =>
           item.type.toLowerCase() === activeButton.toLowerCase() ||
           activeButton === "All"
       )
     );
-  }, [activeButton, paginationFilteredItems]);
+  }, [activeButton, data?.menu]);
 
   return (
     <>
@@ -170,7 +170,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
       <section className="bg-white light-bx-shadow box">
         <Pagination
           itemsPerPage={10}
-          itemList={data?.menu}
+          itemList={filteredItems}
           onFilteredItems={setPaginationFilteredItems}
         />
         <ul className="menu-list">
@@ -183,10 +183,12 @@ function MenuBox({ data, onMenuUpdate, socket }) {
               <DummyMenuItem ignore key={5} />
               <DummyMenuItem ignore key={6} />
             </>
-          ) : (
-            filteredItems.map((item, i) => (
+          ) : paginationFilteredItems.length > 0 ? (
+            paginationFilteredItems.map((item, i) => (
               <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
             ))
+          ) : (
+            <p>No results</p>
           )}
         </ul>
       </section>
@@ -263,7 +265,8 @@ function MenuItem({ item, onUpdate = () => {} }) {
             placement="top"
             overlay={AllergyTooltip(item.allergies)}
           >
-            <i className="bx bx-body text-danger"></i>
+            {/*<i className="bx bx-body text-danger"></i>*/}
+            <span>&#10071;</span>
           </OverlayTrigger>
         )}
         {item.vegetarian && (

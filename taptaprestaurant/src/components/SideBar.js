@@ -21,15 +21,16 @@ const sideBarData = [
     linkTo: "/Users",
     text: "Users",
   },
+];
+
+const footerSideBarData = [
   {
-    icon: "bx bx-user-pin",
+    icon: "bx bxs-user-pin",
     linkTo: "/Account",
-    text: "Account",
   },
   {
-    icon: "bx bx-cog",
+    icon: "bx bxs-cog",
     linkTo: "/Settings",
-    text: "Settings",
   },
 ];
 
@@ -63,6 +64,13 @@ function SideBarItems() {
           key={item.text}
         />
       ))}
+      {footerSideBarData.map((item) => (
+        <FooterSideBarItem
+          icon={item.icon}
+          linkTo={item.linkTo}
+          key={item.text}
+        />
+      ))}
     </div>
   );
 }
@@ -80,6 +88,23 @@ function SideBarItem({ icon, linkTo, text }) {
       >
         <i className={icon} />
         <span>{text}</span>
+      </Link>
+    </div>
+  );
+}
+
+function FooterSideBarItem({ icon, linkTo }) {
+  const location = useLocation();
+
+  return (
+    <div className="footer-sidebar sidebar-item">
+      <Link
+        className={`sidebar-link ${
+          location.pathname === linkTo ? "active-sidebar-link" : ""
+        }`}
+        to={linkTo}
+      >
+        <i className={icon} />
       </Link>
     </div>
   );

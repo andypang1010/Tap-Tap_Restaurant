@@ -32,7 +32,7 @@ export default function TagInput({ tags, onSetTags }) {
         </small>
       </p>
       <ul className="tag-list form-control">
-        {tags.map((tag, i) => (
+        {tags?.map((tag, i) => (
           <li key={i} className="tag">
             <span>{tag}</span>
             <i
@@ -54,7 +54,7 @@ export default function TagInput({ tags, onSetTags }) {
       </ul>
       <div className="tag-input-details">
         <small className="text-muted">
-          {tags.length === 0 ? "None" : tags.length}
+          {tags?.length === 0 ? "None" : tags?.length}
         </small>
         <button className="remove-all-tags" onClick={handleRemoveAllTags}>
           Remove All

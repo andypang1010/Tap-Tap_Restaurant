@@ -3,7 +3,7 @@ import EditableField from "../../components/EditableField";
 import IconContainer from "../../components/IconContainer";
 import "./Account.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Account({ socket, data, user }) {
   function handleAccountUpdate() {
@@ -77,7 +77,7 @@ export default function Account({ socket, data, user }) {
           </fieldset>
 
           <fieldset className="light-bx-shadow box mb-4">
-            <legend className="light-bx-shadow">Restaurant Info</legend>
+            <legend className="light-bx-shadow">Restaurant</legend>
             <EditableField
               icon="bx bx-comment-detail"
               text={data.name}
@@ -111,9 +111,18 @@ export default function Account({ socket, data, user }) {
 }
 
 function UserAccountBox({ user }) {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    localStorage.removeItem("jwt");
+    navigate("/Login");
+  };
+
   return (
     <fieldset className="light-bx-shadow box mb-4">
-      <legend className="light-bx-shadow">User Info</legend>
+      <legend className="light-bx-shadow">User</legend>
 
       <div className="d-flex justify-content-around">
         <div className="d-flex flex-column">
@@ -128,6 +137,10 @@ function UserAccountBox({ user }) {
           <span>{user?.phone}</span>
           <span>{user?.email}</span>
         </div>
+
+        <button className="action-button red-hover" onClick={handleClick}>
+          Sign Out
+        </button>
       </div>
     </fieldset>
   );
