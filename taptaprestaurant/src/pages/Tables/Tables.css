@@ -47,19 +47,13 @@
 }
 
 .tab {
+  position: relative;
   background-color: #fff;
   min-width: 36rem;
 }
 
 .table-name {
   font-size: 1.4rem;
-}
-
-.table-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
 }
 
 .table-footer {
@@ -99,6 +93,9 @@
 }
 
 .button-list {
+  position: absolute;
+  top: -2rem;
+  right: 4rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -113,7 +110,8 @@
 }
 
 .close-tab-button {
-  color: red;
+  background-color: var(--main-taptap-color);
+  color: #fff;
 }
 
 .circle-button:hover {
@@ -126,6 +124,12 @@
   background-color: transparent;
 }
 
+.item-list-header {
+  position: relative;
+  width: 100%;
+  height: 2rem;
+}
+
 .item-list {
   width: 100%;
   height: 12rem;
@@ -134,6 +138,7 @@
   border-radius: 6px;
   overflow-x: hidden;
   margin-bottom: 1.2rem;
+  z-index: 1000;
 }
 
 .item-list li:nth-child(odd) {
@@ -154,6 +159,7 @@
 .item-label {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .item-check {
@@ -218,9 +224,15 @@
 
 .empty-tab {
   background-color: #eee;
+  color: #999;
 }
 
 .empty-tab .search-bar,
 .empty-tab button {
   pointer-events: none;
+}
+
+.empty-tab .close-tab-button {
+  color: #aaa;
+  background-color: #eee;
 }

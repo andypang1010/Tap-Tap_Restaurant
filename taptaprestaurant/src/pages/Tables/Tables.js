@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./Tables.css";
 import Pagination from "../../components/Pagination/Pagination";
 import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
+import ActionBanner from "../../components/ActionBanner/ActionBanner";
 
 const tempTabData = [
   {
@@ -505,7 +506,7 @@ function CancelItemModal({
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Close Tab</Modal.Title>
+          <Modal.Title>Cancel Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>
@@ -553,7 +554,6 @@ export default function Tables({ socket, data }) {
   };
 
   const handleShowCancelItemModal = (item, table) => {
-    console.log(item, table);
     setShowCancelItemModal(true);
     setItemToCancel({
       item,
@@ -568,7 +568,6 @@ export default function Tables({ socket, data }) {
 
   useEffect(() => {
     Object.entries(tempTableData).forEach(([name, tab], i) => {
-      console.log(name, tab);
       tableVisibility[name] = tab.length > 0;
     });
   }, [tempTableData]);
@@ -618,8 +617,6 @@ export default function Tables({ socket, data }) {
             </>
           ) : (
             Object.entries(tempTableData).map(([name, tab], i) => {
-              console.log(tab);
-
               return (
                 <Table
                   key={i}
@@ -646,7 +643,6 @@ function TableButton({ tab, name, onToggleTable, isActive }) {
       }`}
       onClick={(e) => {
         e.preventDefault();
-        console.log("here");
         onToggleTable(name);
       }}
     >
@@ -661,15 +657,28 @@ function TableButton({ tab, name, onToggleTable, isActive }) {
 }
 
 function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
+  const [selectedItems, setSelectedItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);
   const totalPrice = tab?.reduce(
     (total, item) => total + item.item.price * item.quantity,
     0
   );
 
+  const handleToggleItem = (itemName) => {
+    const updatedSelectedItems = [...selectedItems];
+
+    const index = updatedSelectedItems.indexOf(itemName);
+
+    index === -1
+      ? updatedSelectedItems.push(itemName)
+      : updatedSelectedItems.splice(index, 1);
+
+    setSelectedItems(updatedSelectedItems);
+  };
+
   useEffect(() => {
-    console.log("tab:", tab);
-  }, [tab]);
+    setSelectedItems([]);
+  }, [filteredItems]);
 
   return (
     <fieldset
@@ -678,24 +687,27 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
       }`}
     >
       <legend className="light-bx-shadow">{name}</legend>
-      <header className="table-header">
-        <ul className="button-list">
-          <OverlayTrigger placement="top" overlay={CloseTabTooltip()}>
-            <button
-              className="circle-button close-tab-button"
-              onClick={() => onCloseTab(name)}
-            >
-              <i className="bx bx-window-close"></i>
-            </button>
-          </OverlayTrigger>
-        </ul>
-      </header>
+      <ul className="button-list">
+        <OverlayTrigger placement="top" overlay={CloseTabTooltip()}>
+          <button
+            className="circle-button close-tab-button"
+            onClick={() => onCloseTab(name)}
+          >
+            <i className="bx bx-window-close"></i>
+          </button>
+        </OverlayTrigger>
+      </ul>
 
       <Pagination
         itemsPerPage={10}
         itemList={tab}
         onFilteredItems={setFilteredItems}
       />
+
+      <div className="item-list-header">
+        <div className=""></div>
+        <ActionBanner selectedItems={selectedItems} />
+      </div>
 
       <ul className="item-list">
         {filteredItems?.length > 0 ? (
@@ -725,7 +737,12 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
             return (
               <li className="item" key={i}>
                 <label className="item-label">
-                  <input className="item-check" type="checkbox" />
+                  <input
+                    className="item-check"
+                    type="checkbox"
+                    checked={selectedItems.includes(item.item.name)}
+                    onChange={() => handleToggleItem(item.item.name)}
+                  />
                   <div className="item-name">{item.item.name}</div>
                 </label>
                 <div className="item-quantity">

@@ -64,12 +64,8 @@ function SideBarItems() {
           key={item.text}
         />
       ))}
-      {footerSideBarData.map((item) => (
-        <FooterSideBarItem
-          icon={item.icon}
-          linkTo={item.linkTo}
-          key={item.text}
-        />
+      {footerSideBarData.map((item, i) => (
+        <FooterSideBarItem icon={item.icon} linkTo={item.linkTo} key={i} />
       ))}
     </div>
   );

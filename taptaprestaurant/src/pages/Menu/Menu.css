@@ -59,6 +59,8 @@
   padding: 1rem 1.4rem;
   box-shadow: 1px 1px 2px #ccc;
   font-size: 80%;
+  display: grid;
+  grid-template-rows: 1.2fr 0.5fr 1fr;
 }
 
 .menu-item-description {
@@ -75,6 +77,14 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 24px;
+}
+
+.allergy-icon {
+  color: var(--taptap-red);
+}
+
+.vegetarian-icon {
+  color: var(--taptap-green);
 }
 
 .current-filter-name {

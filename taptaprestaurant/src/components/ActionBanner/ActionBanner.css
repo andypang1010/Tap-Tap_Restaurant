@@ -1,0 +1,37 @@
+.action-banner {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #eee;
+  transition: all 0.2s;
+  transform: translateY(100%);
+  opacity: 0.75;
+  z-index: -1;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding-left: 4rem;
+}
+
+.action-banner-button-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 3.2rem;
+}
+
+.action-banner-button {
+  border: none;
+  background-color: #fff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.action-banner--open {
+  transform: translateY(0%);
+  opacity: 1;
+  z-index: 1;
+}

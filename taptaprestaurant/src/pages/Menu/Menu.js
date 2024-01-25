@@ -150,7 +150,9 @@ function MenuBox({ data, onMenuUpdate, socket }) {
       <div className="d-flex align-items-center justify-content-between mb-4 lh-1">
         <h4 className="current-filter-name">
           <span>{activeButton}</span>
-          {/*{filteredItems?.length > 10 ? <small>({filteredItems.length})</small> : <small>({})</small>}*/}
+          {filteredItems?.length > 0 && (
+            <small>({filteredItems?.length})</small>
+          )}
         </h4>
         <button
           className="add-button small-shadow d-flex align-items-center"
@@ -169,7 +171,7 @@ function MenuBox({ data, onMenuUpdate, socket }) {
 
       <section className="bg-white light-bx-shadow box">
         <Pagination
-          itemsPerPage={10}
+          itemsPerPage={20}
           itemList={filteredItems}
           onFilteredItems={setPaginationFilteredItems}
         />
@@ -255,10 +257,7 @@ function MenuItem({ item, onUpdate = () => {} }) {
       <p>
         <em>{item.category}</em>
       </p>
-      <p>
-        <small>&#165;{item.price}</small>
-      </p>
-      <span className="menu-item-description"></span>
+      <strong>&#165;{item.price}</strong>
       <div className="menu-item-icons">
         {item.allergies.length > 0 && (
           <OverlayTrigger
@@ -266,12 +265,12 @@ function MenuItem({ item, onUpdate = () => {} }) {
             overlay={AllergyTooltip(item.allergies)}
           >
             {/*<i className="bx bx-body text-danger"></i>*/}
-            <span>&#10071;</span>
+            <i className="bx bx-plus-medical allergy-icon"></i>
           </OverlayTrigger>
         )}
         {item.vegetarian && (
           <OverlayTrigger placement="top" overlay={VegetarianTooltip()}>
-            <i className="bx bxs-leaf text-success"></i>
+            <i className="bx bxs-leaf vegetarian-icon"></i>
           </OverlayTrigger>
         )}
       </div>

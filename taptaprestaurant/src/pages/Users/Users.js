@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Users.css";
 import { Form, Button, Modal } from "react-bootstrap";
 import axios from "axios";
+import ActionBanner from "../../components/ActionBanner/ActionBanner";
 
-function DeleteUserModal({ show, onHide, user }) {
+function DeleteUserModal({ show, onHide, usernames }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let err = null;
 
     axios
       .post("http://localhost:8008/user/deleteUser", {
-        user,
+        usernames,
         restaurantName: "makoto", // TODO
       })
       .then((response) => {
-        onHide();
+        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        err = error;
         setErrorMessage(error.message);
       });
+
+    if (err !== null) {
+      console.log(err);
+    } else {
+      onHide();
+    }
   };
 
   return (
@@ -34,12 +42,18 @@ function DeleteUserModal({ show, onHide, user }) {
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Delete User</Modal.Title>
+          <Modal.Title>Delete Users</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>
-            Are you sure you want to delete '{user?.username}'
-            {user?.first && user?.last ? ` (${user?.first} ${user?.last})` : ""}
+            Are you sure you want to delete '
+            {usernames?.length === 1
+              ? `${usernames[0]}'`
+              : usernames?.map((username, i) => {
+                  if (i === usernames.length - 1) return `'${username}'`;
+                  if (i === usernames.length - 2) return `${username}' and `;
+                  else return `${username}, `;
+                })}
             ? This is permanent.
           </p>
           <p className="error-message">{errorMessage}</p>
@@ -59,19 +73,35 @@ function DeleteUserModal({ show, onHide, user }) {
 
 export default function Users({ socket, data, user }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState(null);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);
-  const [userToDelete, setUserToDelete] = useState(null);
+  const [usersToDelete, setUsersToDelete] = useState(null);
 
-  const handleShowDeleteModal = (userToDelete) => {
+  const handleShowDeleteModal = (usersToDelete) => {
     setShowDeleteModal(true);
-    setUserToDelete(userToDelete);
+    setUsersToDelete(usersToDelete);
   };
 
   const handleHideDeleteModal = () => {
     setShowDeleteModal(false);
-    setUserToDelete(null);
+    setUsersToDelete(null);
   };
+
+  const handleToggleUser = (username) => {
+    const updatedSelectedUsers = [...selectedUsers];
+
+    const index = updatedSelectedUsers.indexOf(username);
+
+    index === -1
+      ? updatedSelectedUsers.push(username)
+      : updatedSelectedUsers.splice(index, 1);
+
+    setSelectedUsers(updatedSelectedUsers);
+  };
+
+  useEffect(() => {
+    setSelectedUsers([]);
+  }, [filteredItems]);
 
   return (
     <main className="main-content">
@@ -90,11 +120,14 @@ export default function Users({ socket, data, user }) {
         <DeleteUserModal
           show={showDeleteModal}
           onHide={handleHideDeleteModal}
-          user={userToDelete}
+          usernames={usersToDelete}
         />
 
         <div className="user-list-header">
-          <div className="action-banner"></div>
+          <ActionBanner
+            selectedItems={selectedUsers}
+            onDelete={handleShowDeleteModal}
+          />
           <span></span>
           <span>Full Name</span>
           <span>Status</span>
@@ -112,6 +145,8 @@ export default function Users({ socket, data, user }) {
                 item={item}
                 user={user}
                 onShowDeleteModal={handleShowDeleteModal}
+                onToggleUser={handleToggleUser}
+                selected={selectedUsers.includes(item.username)}
               />
             ))
           ) : (
@@ -131,17 +166,21 @@ export default function Users({ socket, data, user }) {
   );
 }
 
-function User({ item, user, onShowDeleteModal }) {
+function User({ item, user, onShowDeleteModal, onToggleUser, selected }) {
   return (
     <li
       className={
         user?.username === item?.username
-          ? "user bg-light-green"
-          : "user bg-white"
+          ? "user light-bx-shadow youuu"
+          : "user light-bx-shadow"
       }
     >
       <label>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          checked={selected}
+          onChange={() => onToggleUser(item.username)}
+        />
         <div className="user-name">
           <span className="user-fullname">
             {item.first} {item.last}
@@ -161,10 +200,24 @@ function User({ item, user, onShowDeleteModal }) {
             <i className="bx bx-dots-horizontal"></i>
           </button>
           <div className="dropdown-content">
-            <Link to="/Users/EditUser" state={{ user: item }}>
-              Edit
+            <Link
+              to="/Users/EditUser"
+              className="d-flex align-items-center justify-content-between gap-2"
+              state={{ user: item }}
+            >
+              <span>Edit</span>
+              <i className="bx bx-edit-alt"></i>
             </Link>
-            <a onClick={() => onShowDeleteModal(item)}>Delete</a>
+            <button
+              className="d-flex align-items-center justify-content-between gap-2"
+              onClick={(e) => {
+                e.preventDefault();
+                onShowDeleteModal([item.username]);
+              }}
+            >
+              <span>Delete</span>
+              <i className="bx bx-trash"></i>
+            </button>
           </div>
         </div>
 
