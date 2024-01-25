@@ -45,7 +45,7 @@ const tempTabData = [
       available: true,
     },
     quantity: 4,
-    special_instructions: null,
+    special_instructions: "Please add cheese",
     status: "Error",
     customer_name: "Andy",
   },
@@ -705,8 +705,13 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
       />
 
       <div className="item-list-header">
-        <div className=""></div>
         <ActionBanner selectedItems={selectedItems} />
+        <span>Item</span>
+        <span>#</span>
+        <span>Status</span>
+        <span>Customer</span>
+        <span>Total</span>
+        <span></span>
       </div>
 
       <ul className="item-list">
@@ -737,7 +742,7 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
             return (
               <li className="item" key={i}>
                 <label className="item-label">
-                  <input
+                  <Form.Check
                     className="item-check"
                     type="checkbox"
                     checked={selectedItems.includes(item.item.name)}

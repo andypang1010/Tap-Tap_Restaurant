@@ -1,8 +1,14 @@
 .menu-list {
-  display: flex;
-  gap: 0.7rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.6rem 0.8rem;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.menu-list .action-button {
+  width: 13rem;
 }
 
 .menu-button-list {
@@ -60,7 +66,16 @@
   box-shadow: 1px 1px 2px #ccc;
   font-size: 80%;
   display: grid;
-  grid-template-rows: 1.2fr 0.5fr 1fr;
+  grid-template-rows: 1.75fr 0.75fr 1fr;
+  align-items: center;
+}
+
+.menu-item-name {
+  align-self: flex-end;
+  font-size: 1rem;
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
 }
 
 .menu-item-description {
@@ -69,14 +84,14 @@
   font-style: italic;
 }
 
-.menu-item-icons {
-  position: absolute;
-  bottom: 0.7rem;
-  right: 1rem;
+.menu-item-price {
+  font-size: 120%;
+}
+
+.menu-item-datalists {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 24px;
 }
 
 .allergy-icon {

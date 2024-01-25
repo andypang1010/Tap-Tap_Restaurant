@@ -69,10 +69,10 @@ function LoginForm({ successRedirect = "/" }) {
       </Form>
       <p className="error-message">{errorMessage}</p>
       <p className="register-message">
-        Don't have an account?{" "}
-        <Link className="register-link" to={"/Register"}>
+        Don't have an account? Contact your system administrator to set you up.
+        {/*<Link className="register-link" to={"/Register"}>
           Register
-        </Link>
+  </Link>*/}
       </p>
     </div>
   );

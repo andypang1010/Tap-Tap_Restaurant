@@ -147,27 +147,16 @@ function MenuBox({ data, onMenuUpdate, socket }) {
           />
         ))}
       </div>
-      <div className="d-flex align-items-center justify-content-between mb-4 lh-1">
-        <h4 className="current-filter-name">
-          <span>{activeButton}</span>
-          {filteredItems?.length > 0 && (
-            <small>({filteredItems?.length})</small>
-          )}
-        </h4>
-        <button
-          className="add-button small-shadow d-flex align-items-center"
-          onClick={handleShow}
-        >
-          <i className="bx bx-plus"></i>
-          <span>Add New Item</span>
-        </button>
-        <AddMenuItemModal
-          show={showAddModal}
-          onHide={handleClose}
-          socket={socket}
-          username={data !== null ? data.username : ""}
-        />
-      </div>
+      <h4 className="current-filter-name mb-3">
+        <span>{activeButton}</span>
+        {filteredItems?.length > 0 && <small>({filteredItems?.length})</small>}
+      </h4>
+      <AddMenuItemModal
+        show={showAddModal}
+        onHide={handleClose}
+        socket={socket}
+        username={data !== null ? data.username : ""}
+      />
 
       <section className="bg-white light-bx-shadow box">
         <Pagination
@@ -192,6 +181,12 @@ function MenuBox({ data, onMenuUpdate, socket }) {
           ) : (
             <p>No results</p>
           )}
+          <button
+            className="action-button light-bx-shadow red-hover"
+            onClick={handleShow}
+          >
+            New Menu Item
+          </button>
         </ul>
       </section>
     </>
@@ -253,18 +248,51 @@ function MenuItem({ item, onUpdate = () => {} }) {
 
   return (
     <li className={`menu-item-box ${border}`}>
-      <h6 className="menu-item-name">{item.name}</h6>
-      <p>
+      <span className="menu-item-name">
+        {item.name}{" "}
+        {item.vegetarian && (
+          <OverlayTrigger placement="top" overlay={VegetarianTooltip()}>
+            <i className="bx bxs-leaf vegetarian-icon"></i>
+          </OverlayTrigger>
+        )}
+      </span>
+      <div className="d-flex align-items-center justify-content-between">
         <em>{item.category}</em>
-      </p>
-      <strong>&#165;{item.price}</strong>
-      <div className="menu-item-icons">
+        <strong className="menu-item-price">&#165;{item.price}</strong>
+      </div>
+
+      <div className="menu-item-datalists">
+        {item.ingredients.length > 0 && (
+          <div className="dropdown">
+            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
+              <span>Ingred.:</span>
+              <i className="bx bx-chevron-down"></i>
+            </button>
+            <div className="dropdown-content">
+              {item.ingredients.map((ingredient) => (
+                <span>{ingredient}</span>
+              ))}
+            </div>
+          </div>
+        )}
         {item.allergies.length > 0 && (
+          <div className="dropdown">
+            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
+              <span>Allergies:</span>
+              <i className="bx bx-chevron-down"></i>
+            </button>
+            <div className="dropdown-content">
+              {item.allergies.map((allergy) => (
+                <span>{allergy}</span>
+              ))}
+            </div>
+          </div>
+        )}
+        {/*{item.allergies.length > 0 && (
           <OverlayTrigger
             placement="top"
             overlay={AllergyTooltip(item.allergies)}
           >
-            {/*<i className="bx bx-body text-danger"></i>*/}
             <i className="bx bx-plus-medical allergy-icon"></i>
           </OverlayTrigger>
         )}
@@ -272,7 +300,7 @@ function MenuItem({ item, onUpdate = () => {} }) {
           <OverlayTrigger placement="top" overlay={VegetarianTooltip()}>
             <i className="bx bxs-leaf vegetarian-icon"></i>
           </OverlayTrigger>
-        )}
+        )}*/}
       </div>
     </li>
   );

@@ -3,9 +3,9 @@ import LoginForm from "../../components/LoginForm/LoginForm";
 
 function Login() {
   return (
-    <div className="d-flex justify-content-center container">
+    <main className="d-flex align-items-center justify-content-center h-100">
       <LoginForm />
-    </div>
+    </main>
   );
 }
 

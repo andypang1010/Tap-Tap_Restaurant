@@ -124,7 +124,7 @@ function UserAccountBox({ user }) {
     <fieldset className="light-bx-shadow box mb-4">
       <legend className="light-bx-shadow">User</legend>
 
-      <div className="d-flex justify-content-around">
+      <div className="d-flex justify-content-around align-items-center">
         <div className="d-flex flex-column">
           <strong className="full-name">
             {user?.first} {user?.last}{" "}
@@ -138,8 +138,15 @@ function UserAccountBox({ user }) {
           <span>{user?.email}</span>
         </div>
 
-        <button className="action-button red-hover" onClick={handleClick}>
-          Sign Out
+        <button
+          className="action-button red-hover d-flex align-items-center gap-2"
+          onClick={handleClick}
+        >
+          <span>Sign Out</span>
+          <span className="d-flex align-items-center">
+            <small>&rarr;</small>
+            <i className="bx bx-door-open"></i>
+          </span>
         </button>
       </div>
     </fieldset>

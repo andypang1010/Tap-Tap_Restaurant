@@ -176,11 +176,13 @@ function User({ item, user, onShowDeleteModal, onToggleUser, selected }) {
       }
     >
       <label>
-        <input
+        <Form.Check
+          className="pointer-events-none center"
           type="checkbox"
           checked={selected}
           onChange={() => onToggleUser(item.username)}
         />
+
         <div className="user-name">
           <span className="user-fullname">
             {item.first} {item.last}
@@ -220,7 +222,6 @@ function User({ item, user, onShowDeleteModal, onToggleUser, selected }) {
             </button>
           </div>
         </div>
-
         {/*<Dropdown>
           <Dropdown.Toggle className="action-button">
             <i className="bx bx-dots-horizontal"></i>

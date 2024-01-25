@@ -125,9 +125,12 @@
 }
 
 .item-list-header {
+  display: grid;
+  align-items: center;
   position: relative;
+  grid-template-columns: 6fr 3rem 3fr 3fr 4.5rem 1fr;
+  padding: 0.2rem 1.6rem 0.2rem 0.8rem;
   width: 100%;
-  height: 2rem;
 }
 
 .item-list {

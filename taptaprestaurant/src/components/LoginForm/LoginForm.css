@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");
+/*@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");*/
 
 .login-container {
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
   width: 420px;
   background-color: #fff;
   border: 2px solid rgba(255, 255, 255, 0.2);
