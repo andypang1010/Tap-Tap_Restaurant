@@ -1,17 +1,9 @@
-import { useState, useEffect } from "react";
-import TypeSelect from "../../components/TypeSelect";
-import CategorySelect from "../../components/CategorySelect";
-import TagInput from "../../components/TagInput/TagInput";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Menu.css";
-import {
-  Button,
-  Modal,
-  Form,
-  InputGroup,
-  Tooltip,
-  OverlayTrigger,
-} from "react-bootstrap";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import MenuItemModal from "../../components/MenuItemModal";
+import { SocketContext } from "../../App";
 
 function VegetarianTooltip() {
   return (
@@ -83,20 +75,8 @@ const menuButtonData = [
   },
 ];
 
-export default function Menu({ socket, data }) {
-  function handleMenuUpdate() {
-    if (socket) {
-      socket.emit("updateMenu", data);
-
-      socket.on("success", (newData) => {
-        console.log("newdata: ", newData);
-      });
-
-      socket.on("server-error", (error) => {
-        console.log("error: ", error);
-      });
-    }
-  }
+export default function Menu() {
+  const { socket, data } = useContext(SocketContext);
 
   return (
     <main className="main-content">
@@ -104,14 +84,16 @@ export default function Menu({ socket, data }) {
         <h2>Menu</h2>
       </header>
 
-      <MenuBox data={data} onMenuUpdate={handleMenuUpdate} socket={socket} />
+      <MenuBox data={data} socket={socket} />
     </main>
   );
 }
 
-function MenuBox({ data, onMenuUpdate, socket }) {
+function MenuBox({ data, socket }) {
   const [activeButton, setActiveButton] = useState("All");
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [mode, setMode] = useState("New");
+  const [itemToEdit, setItemToEdit] = useState(null);
   const [filteredItems, setFilteredItems] = useState(data?.menu);
   const [paginationFilteredItems, setPaginationFilteredItems] = useState(
     data?.menu
@@ -119,8 +101,21 @@ function MenuBox({ data, onMenuUpdate, socket }) {
 
   const handleButtonClick = (buttonType) => setActiveButton(buttonType);
 
-  const handleClose = () => setShowAddModal(false);
-  const handleShow = () => setShowAddModal(true);
+  const handleShowNewModal = () => {
+    setShowModal(true);
+  };
+
+  const handleHideModal = () => {
+    setMode("New");
+    setItemToEdit(null);
+    setShowModal(false);
+  };
+
+  const handleShowEditModal = (item) => {
+    setMode("Edit");
+    setItemToEdit(item);
+    setShowModal(true);
+  };
 
   useEffect(() => {
     setFilteredItems(
@@ -151,11 +146,13 @@ function MenuBox({ data, onMenuUpdate, socket }) {
         <span>{activeButton}</span>
         {filteredItems?.length > 0 && <small>({filteredItems?.length})</small>}
       </h4>
-      <AddMenuItemModal
-        show={showAddModal}
-        onHide={handleClose}
+      <MenuItemModal
+        mode={mode}
+        show={showModal}
+        onHide={handleHideModal}
         socket={socket}
         username={data !== null ? data.username : ""}
+        {...(itemToEdit !== null ? { defaultData: itemToEdit } : {})}
       />
 
       <section className="bg-white light-bx-shadow box">
@@ -176,14 +173,18 @@ function MenuBox({ data, onMenuUpdate, socket }) {
             </>
           ) : paginationFilteredItems.length > 0 ? (
             paginationFilteredItems.map((item, i) => (
-              <MenuItem key={i} item={item} onUpdate={onMenuUpdate} />
+              <MenuItem
+                key={i}
+                item={item}
+                onShowEditModal={handleShowEditModal}
+              />
             ))
           ) : (
             <p>No results</p>
           )}
           <button
             className="action-button light-bx-shadow red-hover"
-            onClick={handleShow}
+            onClick={handleShowNewModal}
           >
             New Menu Item
           </button>
@@ -206,7 +207,7 @@ function MenuButton({ text, color, onClick = () => {}, active = false }) {
   );
 }
 
-function MenuItem({ item, onUpdate = () => {} }) {
+function MenuItem({ item, onShowEditModal }) {
   const [border, setBorder] = useState("border-main");
 
   useEffect(() => {
@@ -248,6 +249,31 @@ function MenuItem({ item, onUpdate = () => {} }) {
 
   return (
     <li className={`menu-item-box ${border}`}>
+      <div className="dropdown action-list">
+        <button className="dropbtn">
+          <i className="bx bx-dots-horizontal"></i>
+        </button>
+        <div className="dropdown-content">
+          <button
+            className="d-flex align-items-center justify-content-between gap-2"
+            onClick={() => onShowEditModal(item)}
+          >
+            <span>Edit</span>
+            <i className="bx bx-edit-alt"></i>
+          </button>
+          <button
+            className="d-flex align-items-center justify-content-between gap-2"
+            onClick={(e) => {
+              e.preventDefault();
+              //onShowDeleteModal([item.username]);
+            }}
+          >
+            <span>Delete</span>
+            <i className="bx bx-trash"></i>
+          </button>
+        </div>
+      </div>
+
       <span className="menu-item-name">
         {item.name}{" "}
         {item.vegetarian && (
@@ -264,26 +290,26 @@ function MenuItem({ item, onUpdate = () => {} }) {
       <div className="menu-item-datalists">
         {item.ingredients.length > 0 && (
           <div className="dropdown">
-            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
+            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow red-hover">
               <span>Ingred.:</span>
               <i className="bx bx-chevron-down"></i>
             </button>
             <div className="dropdown-content">
-              {item.ingredients.map((ingredient) => (
-                <span>{ingredient}</span>
+              {item.ingredients.map((ingredient, i) => (
+                <span key={i}>{ingredient}</span>
               ))}
             </div>
           </div>
         )}
         {item.allergies.length > 0 && (
           <div className="dropdown">
-            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
+            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow red-hover">
               <span>Allergies:</span>
               <i className="bx bx-chevron-down"></i>
             </button>
             <div className="dropdown-content">
-              {item.allergies.map((allergy) => (
-                <span>{allergy}</span>
+              {item.allergies.map((allergy, i) => (
+                <span key={i}>{allergy}</span>
               ))}
             </div>
           </div>
@@ -303,203 +329,6 @@ function MenuItem({ item, onUpdate = () => {} }) {
         )}*/}
       </div>
     </li>
-  );
-}
-
-function AddMenuItemModal({ show, onHide, socket, username }) {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    price: 0,
-    type: "",
-    category: "",
-    vegetarian: false,
-    available: true,
-    allergies: [],
-    ingredients: [],
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      if (socket) {
-        socket.emit("addMenuItem", {
-          item: formData,
-          username,
-        });
-
-        socket.on("success", () => {
-          onHide();
-          clearFormData();
-        });
-
-        socket.on("failed", (error) => {
-          console.log("error: ", error);
-          setErrorMessage("Failed to create new menu item");
-        });
-
-        socket.on("server-error", (error) => {
-          console.log("error: ", error);
-          setErrorMessage("Something went wrong. Try refreshing the page.");
-        });
-      } else {
-        console.log("socket not enabled");
-      }
-    } catch (error) {
-      console.error("error", error);
-    }
-  };
-
-  function clearFormData() {
-    setFormData({
-      name: "",
-      description: "",
-      price: 0,
-      type: "",
-      category: "",
-      vegetarian: false,
-      available: true,
-      allergies: [],
-      ingredients: [],
-    });
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue =
-      type === "checkbox"
-        ? checked
-        : type === "number"
-        ? parseInt(value)
-        : value;
-    setFormData({
-      ...formData,
-      [name]: newValue,
-    });
-  };
-
-  return (
-    <Modal show={show} onHide={onHide}>
-      <Form
-        onSubmit={handleSubmit}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") e.preventDefault();
-        }}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Add Menu Item</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Name:</Form.Label>
-            <Form.Control
-              placeholder="Enter new item name"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Description:</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Enter brief item description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Price:</Form.Label>
-            <InputGroup className="mb-3 price-input">
-              <InputGroup.Text>
-                <i className="bx bx-yen"></i>
-              </InputGroup.Text>
-              <Form.Control
-                type="number"
-                min="0"
-                step="100"
-                placeholder="100"
-                name="price"
-                value={formData.price}
-                onChange={handleInputChange}
-              />
-            </InputGroup>
-          </Form.Group>
-          <Form.Group className="mb-3 d-flex align-items-center justify-content-between">
-            <div>
-              <Form.Label>Type:</Form.Label>
-              <TypeSelect value={formData.type} onChange={handleInputChange} />
-            </div>
-            <div>
-              <Form.Label>Category:</Form.Label>
-              <CategorySelect
-                value={formData.category}
-                onChange={handleInputChange}
-              />
-            </div>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Ingredients:</Form.Label>
-            <TagInput
-              tags={formData.ingredients}
-              onSetTags={(tags) => {
-                setFormData({
-                  ...formData,
-                  ingredients: tags,
-                });
-              }}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Allergies:</Form.Label>
-            <TagInput
-              tags={formData.allergies}
-              onSetTags={(tags) => {
-                setFormData({
-                  ...formData,
-                  allergies: tags,
-                });
-              }}
-            />
-          </Form.Group>
-          <Form.Group className="mb-2">
-            <Form.Check
-              id="vegetarian"
-              type="checkbox"
-              label="Is this item vegetarian?"
-              name="vegetarian"
-              value={formData.vegetarian}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Check
-              id="available"
-              type="checkbox"
-              label="Is this item currently available?"
-              name="available"
-              value={formData.available}
-              onChange={handleInputChange}
-              defaultChecked
-            />
-          </Form.Group>
-          <p className="error-message">{errorMessage}</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>
-            Back
-          </Button>
-          <Button className="submit-button" type="submit">
-            Add Item
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
   );
 }
 

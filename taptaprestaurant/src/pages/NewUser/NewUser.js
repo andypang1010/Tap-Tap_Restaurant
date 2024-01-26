@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./NewUser.css";
 import UserForm from "../../components/UserForm";
 
-export default function NewUser({ socket, data }) {
+export default function NewUser() {
   return (
     <main className="main-content">
       <header className="page-title">

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Tables.css";
 import Pagination from "../../components/Pagination/Pagination";
 import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
+import { SocketContext } from "../../App";
 
 const tempTabData = [
   {
@@ -527,8 +528,9 @@ function CancelItemModal({
   );
 }
 
-export default function Tables({ socket, data }) {
-  const [filteredItems, setFilteredItems] = useState(null);
+export default function Tables() {
+  const { socket, data } = useContext(SocketContext);
+  //const [filteredItems, setFilteredItems] = useState(null);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [tabToClose, setTabToClose] = useState("");
   const [showCancelItemModal, setShowCancelItemModal] = useState(false);

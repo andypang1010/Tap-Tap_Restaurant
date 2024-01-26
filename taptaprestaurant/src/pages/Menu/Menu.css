@@ -260,3 +260,9 @@
   box-shadow: none;
   border: none;
 }
+
+.dropdown.action-list {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

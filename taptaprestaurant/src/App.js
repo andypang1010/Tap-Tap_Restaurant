@@ -14,11 +14,14 @@ import {
 import SideBar from "./components/SideBar";
 import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
 import io from "socket.io-client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import axios from "axios";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
 import Settings from "./pages/Settings/Settings.js";
 import EditUser from "./pages/EditUser/EditUser.js";
+
+export const AuthContext = createContext();
+export const SocketContext = createContext();
 
 export default function App({ socket = io("http://localhost:8008") }) {
   return (
@@ -79,63 +82,41 @@ function Contain({ socket }) {
 
   return (
     <div className="contain">
-      <div className="contain">
-        {authenticated && (
-          <>
-            <SideBar />
-            <RestaurantName name={data?.username} />
-          </>
-        )}
-        <Routes>
-          {authenticated ? (
+      <AuthContext.Provider value={{ authenticated, user }}>
+        <SocketContext.Provider value={{ socket, data }}>
+          {authenticated && (
             <>
-              <Route
-                path="/"
-                element={<Tables socket={socket} data={data} />}
-              />
-              <Route
-                path="/Tables"
-                element={<Tables socket={socket} data={data} />}
-              />
-              <Route
-                path="/Menu"
-                element={<Menu socket={socket} data={data} />}
-              />
-              <Route
-                path="/Account"
-                element={<Account socket={socket} data={data} user={user} />}
-              />
-              <Route
-                path="/Account/ResetPassword"
-                element={<ResetPassword user={user} />}
-              />
-              <Route
-                path="/OrderHistory"
-                element={<OrderHistory socket={socket} data={data} />}
-              />
-              <Route
-                path="/Users"
-                element={<Users socket={socket} data={data} user={user} />}
-              />
-              <Route path="/Users/NewUser" element={<NewUser data={data} />} />
-              <Route
-                path="/Users/EditUser"
-                element={<EditUser data={data} />}
-              />
-              <Route
-                path="/Settings"
-                element={<Settings socket={socket} data={data} />}
-              />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<Login />} />
-              <Route path="/Login" element={<Login />} />
-              <Route path="/Register" element={<SignUp />} />
+              <SideBar />
+              <RestaurantName name={data?.username} />
             </>
           )}
-        </Routes>
-      </div>
+          <Routes>
+            {authenticated ? (
+              <>
+                <Route path="/" element={<Tables />} />
+                <Route path="/Tables" element={<Tables />} />
+                <Route path="/Menu" element={<Menu />} />
+                <Route path="/Account" element={<Account />} />
+                <Route
+                  path="/Account/ResetPassword"
+                  element={<ResetPassword />}
+                />
+                <Route path="/OrderHistory" element={<OrderHistory />} />
+                <Route path="/Users" element={<Users />} />
+                <Route path="/Users/NewUser" element={<NewUser />} />
+                <Route path="/Users/EditUser" element={<EditUser />} />
+                <Route path="/Settings" element={<Settings />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Login />} />
+                <Route path="/Login" element={<Login />} />
+                <Route path="/Register" element={<SignUp />} />
+              </>
+            )}
+          </Routes>
+        </SocketContext.Provider>
+      </AuthContext.Provider>
     </div>
   );
 }

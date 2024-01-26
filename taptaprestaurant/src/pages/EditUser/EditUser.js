@@ -3,7 +3,7 @@ import "./EditUser.css";
 import UserForm from "../../components/UserForm";
 import { useEffect, useState } from "react";
 
-export default function EditUser({ socket, data }) {
+export default function EditUser() {
   const [userToEdit, setUserToEdit] = useState(null);
   const location = useLocation();
 

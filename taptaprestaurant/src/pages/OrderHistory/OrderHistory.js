@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
 import OrderHistoryList from "../../components/OrderHistoryList";
 
-export default function OrderHistory({ socket, data }) {
+export default function OrderHistory() {
   return (
     <main className="main-content">
       <header className="page-title">

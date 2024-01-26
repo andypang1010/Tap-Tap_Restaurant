@@ -111,6 +111,10 @@ UTILITY
   background: #ccc;
 }
 
+.red-border {
+  border: 2px solid var(--taptap-red);
+}
+
 .pointer-events-none {
   pointer-events: none;
 }
@@ -331,9 +335,9 @@ input[type="number"] {
 }
 
 .red-hover:hover {
-  background-color: var(--main-taptap-color);
-  color: #fff;
-  box-shadow: none;
+  background-color: var(--main-taptap-color) !important;
+  color: #fff !important;
+  box-shadow: none !important;
 }
 
 .blank-button {
@@ -502,7 +506,7 @@ button.dummy {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 5rem;
-  box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -515,17 +519,20 @@ button.dummy {
   cursor: pointer;
 }
 
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+  background-color: #f1f1f1;
+  text-decoration: underline;
+}
+
 .dropdown-content > * {
   color: #444;
-  padding: 0.4rem 0.6rem;
+  padding: 0.2rem 0.6rem;
   text-decoration: none;
   display: block;
   border: none;
   background-color: inherit;
-}
-
-.dropdown-content > *:hover {
-  background-color: #f1f1f1;
+  width: 100%;
 }
 
 .dropdown:hover .dropdown-content {

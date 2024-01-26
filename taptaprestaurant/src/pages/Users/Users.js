@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Users.css";
 import { Form, Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
+import { AuthContext, SocketContext } from "../../App";
 
 function DeleteUserModal({ show, onHide, usernames }) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -71,7 +72,9 @@ function DeleteUserModal({ show, onHide, usernames }) {
   );
 }
 
-export default function Users({ socket, data, user }) {
+export default function Users() {
+  const { data } = useContext(SocketContext);
+  const { user } = useContext(AuthContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);

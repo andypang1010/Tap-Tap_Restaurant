@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TagInput from "../../components/TagInput/TagInput";
 import "./Settings.css";
 import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 import EditableField from "../../components/EditableField";
+import { SocketContext } from "../../App";
 
-export default function Settings({ socket, data }) {
+export default function Settings() {
+  const { socket, data } = useContext(SocketContext);
+
   return (
     <main className="main-content">
       <header className="page-title">

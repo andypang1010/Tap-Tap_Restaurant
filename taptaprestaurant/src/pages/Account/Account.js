@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import EditableField from "../../components/EditableField";
-import IconContainer from "../../components/IconContainer";
 import "./Account.css";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext, SocketContext } from "../../App";
 
-export default function Account({ socket, data, user }) {
-  function handleAccountUpdate() {
+export default function Account() {
+  const { socket, data } = useContext(SocketContext);
+  const { user } = useContext(AuthContext);
+
+  const handleAccountUpdate = () => {
     if (socket) {
       socket.emit("updateAccount", data);
 
@@ -18,7 +20,7 @@ export default function Account({ socket, data, user }) {
         console.log("error: ", error);
       });
     }
-  }
+  };
 
   return (
     <main className="main-content">

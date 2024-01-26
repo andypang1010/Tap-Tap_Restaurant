@@ -33,10 +33,10 @@ const selectData = [
   },
 ];
 
-export default function TypeSelect({ onChange }) {
+export default function TypeSelect({ val, onChange }) {
   return (
     <Form.Select
-      defaultValue="default"
+      value={val === "" ? "default" : val}
       name="type"
       onChange={onChange}
       className="select"

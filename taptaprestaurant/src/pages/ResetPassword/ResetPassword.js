@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ResetPassword.css";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import axios from "axios";
+import { AuthContext } from "../../App";
 
 const passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,!@#$%^&*])(?=.{8,})"
@@ -12,7 +13,8 @@ const minimumOneLowercaseAndUppercase = new RegExp("[a-z][A-Z]*");
 const minimumOneNumber = new RegExp("[0-9]+");
 const minimumOneSpecialCharacter = new RegExp("[!@#$%^&*]+");
 
-export default function ResetPassword({ user }) {
+export default function ResetPassword() {
+  const { user } = useContext(AuthContext);
   return (
     <main className="main-content">
       <header className="page-title">
