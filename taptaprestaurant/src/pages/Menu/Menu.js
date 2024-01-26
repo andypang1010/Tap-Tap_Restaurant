@@ -1,29 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import "./Menu.css";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Tooltip, OverlayTrigger, Modal, Form, Button } from "react-bootstrap";
 import MenuItemModal from "../../components/MenuItemModal";
 import { SocketContext } from "../../App";
+import axios from "axios";
 
 function VegetarianTooltip() {
   return (
     <Tooltip>
       <strong>Vegetarian</strong>
-    </Tooltip>
-  );
-}
-
-function AllergyTooltip(allergies) {
-  return (
-    <Tooltip>
-      <p>
-        <strong>Allergies:</strong>
-      </p>
-      {allergies.map((item, i) => (
-        <p key={i}>
-          <em>{item}</em>
-        </p>
-      ))}
     </Tooltip>
   );
 }
@@ -92,12 +78,12 @@ export default function Menu() {
 function MenuBox({ data, socket }) {
   const [activeButton, setActiveButton] = useState("All");
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [mode, setMode] = useState("New");
   const [itemToEdit, setItemToEdit] = useState(null);
   const [filteredItems, setFilteredItems] = useState(data?.menu);
-  const [paginationFilteredItems, setPaginationFilteredItems] = useState(
-    data?.menu
-  );
+  const [paginationFilteredItems, setPaginationFilteredItems] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const handleButtonClick = (buttonType) => setActiveButton(buttonType);
 
@@ -115,6 +101,16 @@ function MenuBox({ data, socket }) {
     setMode("Edit");
     setItemToEdit(item);
     setShowModal(true);
+  };
+
+  const handleShowDeleteModal = (item) => {
+    setShowDeleteModal(true);
+    setItemToDelete(item);
+  };
+
+  const handleHideDeleteModal = () => {
+    setShowDeleteModal(false);
+    setItemToDelete(null);
   };
 
   useEffect(() => {
@@ -155,6 +151,12 @@ function MenuBox({ data, socket }) {
         {...(itemToEdit !== null ? { defaultData: itemToEdit } : {})}
       />
 
+      <DeleteItemModal
+        show={showDeleteModal}
+        onHide={handleHideDeleteModal}
+        item={itemToDelete}
+      />
+
       <section className="bg-white light-bx-shadow box">
         <Pagination
           itemsPerPage={20}
@@ -171,12 +173,13 @@ function MenuBox({ data, socket }) {
               <DummyMenuItem ignore key={5} />
               <DummyMenuItem ignore key={6} />
             </>
-          ) : paginationFilteredItems.length > 0 ? (
+          ) : paginationFilteredItems?.length > 0 ? (
             paginationFilteredItems.map((item, i) => (
               <MenuItem
                 key={i}
                 item={item}
                 onShowEditModal={handleShowEditModal}
+                onShowDeleteModal={handleShowDeleteModal}
               />
             ))
           ) : (
@@ -207,7 +210,58 @@ function MenuButton({ text, color, onClick = () => {}, active = false }) {
   );
 }
 
-function MenuItem({ item, onShowEditModal }) {
+function DeleteItemModal({ show, onHide, item }) {
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .post("http://localhost:8008/menu/deleteMenuItem", {
+        item,
+        restaurantName: "makoto", // TODO
+      })
+      .then((response) => {
+        console.log(response.data);
+        onHide();
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrorMessage(error.message);
+      });
+  };
+
+  return (
+    <Modal show={show} onHide={onHide}>
+      <Form
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Menu Item</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Are you sure you want to delete '{item?.name}'? This is permanent.
+          </p>
+          <p className="error-message">{errorMessage}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            Back
+          </Button>
+          <Button variant="danger" type="submit">
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+}
+
+function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
   const [border, setBorder] = useState("border-main");
 
   useEffect(() => {
@@ -245,7 +299,7 @@ function MenuItem({ item, onShowEditModal }) {
       default:
         return;
     }
-  }, [item]);
+  }, [item.type]);
 
   return (
     <li className={`menu-item-box ${border}`}>
@@ -265,7 +319,7 @@ function MenuItem({ item, onShowEditModal }) {
             className="d-flex align-items-center justify-content-between gap-2"
             onClick={(e) => {
               e.preventDefault();
-              //onShowDeleteModal([item.username]);
+              onShowDeleteModal(item);
             }}
           >
             <span>Delete</span>
@@ -290,7 +344,7 @@ function MenuItem({ item, onShowEditModal }) {
       <div className="menu-item-datalists">
         {item.ingredients.length > 0 && (
           <div className="dropdown">
-            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow red-hover">
+            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
               <span>Ingred.:</span>
               <i className="bx bx-chevron-down"></i>
             </button>
@@ -303,7 +357,7 @@ function MenuItem({ item, onShowEditModal }) {
         )}
         {item.allergies.length > 0 && (
           <div className="dropdown">
-            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow red-hover">
+            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
               <span>Allergies:</span>
               <i className="bx bx-chevron-down"></i>
             </button>

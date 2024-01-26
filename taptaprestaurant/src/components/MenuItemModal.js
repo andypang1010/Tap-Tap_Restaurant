@@ -3,6 +3,8 @@ import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import TypeSelect from "./TypeSelect";
 import CategorySelect from "./CategorySelect";
 import TagInput from "./TagInput/TagInput";
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const blankFormData = {
   name: "",
@@ -24,6 +26,7 @@ export default function MenuItemModal({
   username,
   defaultData,
 }) {
+  const [prevItemName, setPrevItemName] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState(null);
 
@@ -32,25 +35,43 @@ export default function MenuItemModal({
 
     try {
       if (socket) {
-        socket.emit("addMenuItem", {
-          item: formData,
-          username,
-        });
+        if (mode === "New") {
+          socket.emit("addMenuItem", {
+            item: formData,
+            username,
+          });
 
-        socket.on("success", () => {
-          onHide();
-          handleClearFormData();
-        });
+          socket.on("success", () => {
+            onHide();
+            handleClearFormData();
+          });
 
-        socket.on("failed", (error) => {
-          console.log("error: ", error);
-          setErrorMessage("Failed to create new menu item");
-        });
+          socket.on("failed", (error) => {
+            console.log("error: ", error);
+            setErrorMessage("Failed to create new menu item");
+          });
 
-        socket.on("server-error", (error) => {
-          console.log("error: ", error);
-          setErrorMessage("Something went wrong. Try refreshing the page.");
-        });
+          socket.on("server-error", (error) => {
+            console.log("error: ", error);
+            setErrorMessage("Something went wrong. Try refreshing the page.");
+          });
+        } else if (mode === "Edit") {
+          axios
+            .post("http://localhost:8008/menu/updateMenuItem", {
+              item: formData,
+              prevItemName,
+              restaurantName: "makoto", // TODO
+            })
+            .then((response) => {
+              console.log(response);
+              onHide();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log("Unknown mode");
+        }
       } else {
         console.log("socket not enabled");
       }
@@ -83,6 +104,7 @@ export default function MenuItemModal({
         ...blankFormData,
         ...defaultData,
       });
+      setPrevItemName(defaultData.name);
     } else {
       setFormData(blankFormData);
     }
@@ -202,7 +224,7 @@ export default function MenuItemModal({
             Back
           </Button>
           <Button className="submit-button" type="submit">
-            Add Item
+            {mode === "New" ? "Create" : "Save Changes"}
           </Button>
         </Modal.Footer>
       </Form>
