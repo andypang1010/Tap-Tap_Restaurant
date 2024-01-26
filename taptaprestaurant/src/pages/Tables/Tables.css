@@ -225,6 +225,12 @@
   color: #666;
 }
 
+.inactive--tab-open {
+  color: var(--main-taptap-color);
+  box-shadow: 0 0 0.25rem var(--main-taptap-color);
+  background-color: var(--taptap-light-red);
+}
+
 .empty-tab {
   background-color: #eee;
   color: #999;

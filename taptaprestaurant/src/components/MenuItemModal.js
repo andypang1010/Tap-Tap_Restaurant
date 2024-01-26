@@ -223,7 +223,7 @@ export default function MenuItemModal({
           <Button variant="secondary" onClick={onHide}>
             Back
           </Button>
-          <Button className="submit-button" type="submit">
+          <Button className="submit-button" variant="danger" type="submit">
             {mode === "New" ? "Create" : "Save Changes"}
           </Button>
         </Modal.Footer>

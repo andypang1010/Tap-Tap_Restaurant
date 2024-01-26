@@ -4,6 +4,7 @@ import "./ResetPassword.css";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { AuthContext } from "../../App";
+import PageTitle from "../../components/PageTitle";
 
 const passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,!@#$%^&*])(?=.{8,})"
@@ -18,6 +19,7 @@ export default function ResetPassword() {
   return (
     <main className="main-content">
       <header className="page-title">
+        <PageTitle title="Reset Password" />
         <h2 className="full-title">
           <Link to="/Account" className="sub-heading">
             Account

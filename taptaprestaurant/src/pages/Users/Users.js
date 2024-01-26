@@ -6,6 +6,7 @@ import { Form, Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { AuthContext, SocketContext } from "../../App";
+import PageTitle from "../../components/PageTitle";
 
 function DeleteUserModal({ show, onHide, usernames }) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -109,6 +110,7 @@ export default function Users() {
   return (
     <main className="main-content">
       <header className="page-title">
+        <PageTitle title="Users" />
         <h2>Users</h2>
       </header>
 

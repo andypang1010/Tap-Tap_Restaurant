@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./EditUser.css";
 import UserForm from "../../components/UserForm";
 import { useEffect, useState } from "react";
+import PageTitle from "../../components/PageTitle";
 
 export default function EditUser() {
   const [userToEdit, setUserToEdit] = useState(null);
@@ -15,6 +16,7 @@ export default function EditUser() {
   return (
     <main className="main-content">
       <header className="page-title">
+        <PageTitle title={"Edit User"} />
         <h2 className="full-title">
           <Link to="/Users" className="sub-heading">
             Users

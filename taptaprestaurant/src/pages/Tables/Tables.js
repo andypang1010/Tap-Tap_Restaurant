@@ -4,6 +4,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { SocketContext } from "../../App";
+import PageTitle from "../../components/PageTitle";
 
 const tempTabData = [
   {
@@ -577,6 +578,7 @@ export default function Tables() {
   return (
     <main className="main-content">
       <header className="page-title">
+        <PageTitle title="Tables" />
         <h2>Tables</h2>
       </header>
 
@@ -603,7 +605,7 @@ export default function Tables() {
             <TableButton
               key={i}
               name={name}
-              tab={tab}
+              tabLength={tab.length}
               isActive={tableVisibility[name]}
               onToggleTable={handleToggleTable}
             />
@@ -637,11 +639,15 @@ export default function Tables() {
   );
 }
 
-function TableButton({ tab, name, onToggleTable, isActive }) {
+function TableButton({ tabLength, name, onToggleTable, isActive }) {
   return (
     <button
       className={`table-button ${
-        isActive ? "" : "light-bx-shadow inactive-button"
+        isActive
+          ? ""
+          : tabLength > 0
+          ? "inactive--tab-open"
+          : "light-bx-shadow inactive-button"
       }`}
       onClick={(e) => {
         e.preventDefault();

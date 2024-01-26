@@ -1,30 +1,17 @@
 import { useContext } from "react";
-import EditableField from "../../components/EditableField";
 import "./Account.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext, SocketContext } from "../../App";
+import PageTitle from "../../components/PageTitle";
 
 export default function Account() {
   const { socket, data } = useContext(SocketContext);
   const { user } = useContext(AuthContext);
 
-  const handleAccountUpdate = () => {
-    if (socket) {
-      socket.emit("updateAccount", data);
-
-      socket.on("success", (newData) => {
-        console.log("newdata: ", newData);
-      });
-
-      socket.on("server-error", (error) => {
-        console.log("error: ", error);
-      });
-    }
-  };
-
   return (
     <main className="main-content">
       <header className="page-title">
+        <PageTitle title={"Account"} />
         <h2>Account Details</h2>
       </header>
 
@@ -76,35 +63,6 @@ export default function Account() {
                 Reset Password
               </Link>
             </div>
-          </fieldset>
-
-          <fieldset className="light-bx-shadow box mb-4">
-            <legend className="light-bx-shadow">Restaurant</legend>
-            <EditableField
-              icon="bx bx-comment-detail"
-              text={data.name}
-              onChange={(value) => {
-                data.name = value;
-                handleAccountUpdate();
-              }}
-            />
-            <EditableField
-              icon="bx bx-phone"
-              text={data.phone}
-              onChange={(value) => {
-                data.phone = value;
-                handleAccountUpdate();
-              }}
-            />
-            <EditableField
-              as="textarea"
-              icon="bx bx-building-house"
-              text={data.address}
-              onChange={(value) => {
-                data.address = value;
-                handleAccountUpdate();
-              }}
-            />
           </fieldset>
         </>
       )}

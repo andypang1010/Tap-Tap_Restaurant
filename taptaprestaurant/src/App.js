@@ -1,10 +1,14 @@
 import Login from "./pages/Login/Login.js";
 import SignUp from "./pages/Register/Register.js";
-import Account from "./pages/Account/Account.js";
-import Menu from "./pages/Menu/Menu.js";
 import Tables from "./pages/Tables/Tables.js";
+import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
+import Menu from "./pages/Menu/Menu.js";
+import Account from "./pages/Account/Account.js";
+import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
 import Users from "./pages/Users/Users.js";
+import EditUser from "./pages/EditUser/EditUser.js";
 import NewUser from "./pages/NewUser/NewUser.js";
+import Settings from "./pages/Settings/Settings.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,13 +16,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 import SideBar from "./components/SideBar";
-import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
 import io from "socket.io-client";
 import { useState, useEffect, createContext } from "react";
 import axios from "axios";
-import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
-import Settings from "./pages/Settings/Settings.js";
-import EditUser from "./pages/EditUser/EditUser.js";
 
 export const AuthContext = createContext();
 export const SocketContext = createContext();
@@ -49,7 +49,6 @@ function Contain({ socket }) {
     }
 
     return () => {
-      // Clean up the socket connection when the component unmounts
       if (socket) {
         socket.disconnect();
       }

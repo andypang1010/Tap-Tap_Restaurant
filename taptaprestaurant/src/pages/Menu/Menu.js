@@ -5,6 +5,7 @@ import { Tooltip, OverlayTrigger, Modal, Form, Button } from "react-bootstrap";
 import MenuItemModal from "../../components/MenuItemModal";
 import { SocketContext } from "../../App";
 import axios from "axios";
+import PageTitle from "../../components/PageTitle";
 
 function VegetarianTooltip() {
   return (
@@ -67,6 +68,7 @@ export default function Menu() {
   return (
     <main className="main-content">
       <header className="page-title">
+        <PageTitle title="Menu" />
         <h2>Menu</h2>
       </header>
 
