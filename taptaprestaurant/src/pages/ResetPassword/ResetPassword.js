@@ -5,6 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { AuthContext } from "../../App";
 import PageTitle from "../../components/PageTitle";
+import { useNotification } from "../../components/NotificationContext";
 
 const passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,!@#$%^&*])(?=.{8,})"
@@ -35,8 +36,8 @@ export default function ResetPassword() {
 }
 
 function ResetPasswordForm({ username }) {
+  const { sendNotification } = useNotification();
   const [retypePassword, setRetypePassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     oldPassword: "",
     newPassword: "",
@@ -75,19 +76,20 @@ function ResetPasswordForm({ username }) {
               username,
               restaurantName: "makoto", // TODO
             })
-            .then((response) => {
-              console.log(response);
+            .then(() => {
+              sendNotification("success", `Successfully updated password`);
               navigate("/Account");
             })
             .catch((error) => {
-              setErrorMessage("New password is invalid");
+              sendNotification("error", "New password is invalid");
             });
         })
         .catch((error) => {
-          setErrorMessage("Old password is invalid.");
+          sendNotification("error", "Old password is invalid.");
         });
     } catch (error) {
       console.error("error", error);
+      sendNotification("error", error.message);
     }
   };
 
@@ -192,8 +194,6 @@ function ResetPasswordForm({ username }) {
           Reset
         </Button>
       </footer>
-
-      <p className="error-message">{errorMessage}</p>
     </Form>
   );
 }

@@ -6,6 +6,7 @@ import MenuItemModal from "../../components/MenuItemModal";
 import { SocketContext } from "../../App";
 import axios from "axios";
 import PageTitle from "../../components/PageTitle";
+import { useNotification } from "../../components/NotificationContext";
 
 function VegetarianTooltip() {
   return (
@@ -213,7 +214,7 @@ function MenuButton({ text, color, onClick = () => {}, active = false }) {
 }
 
 function DeleteItemModal({ show, onHide, item }) {
-  const [errorMessage, setErrorMessage] = useState("");
+  const { sendNotification } = useNotification();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -224,12 +225,12 @@ function DeleteItemModal({ show, onHide, item }) {
         restaurantName: "makoto", // TODO
       })
       .then((response) => {
-        console.log(response.data);
+        sendNotification("info", `Deleted menu item ${item?.name}`);
         onHide();
       })
       .catch((error) => {
         console.log(error);
-        setErrorMessage(error.message);
+        sendNotification("error", error.message);
       });
   };
 
@@ -248,7 +249,6 @@ function DeleteItemModal({ show, onHide, item }) {
           <p>
             Are you sure you want to delete '{item?.name}'? This is permanent.
           </p>
-          <p className="error-message">{errorMessage}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>

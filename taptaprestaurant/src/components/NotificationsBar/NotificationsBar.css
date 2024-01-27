@@ -1,0 +1,39 @@
+.notifications-bar {
+  position: fixed;
+  top: 4rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.6rem;
+}
+
+.notification {
+  background-color: #fff;
+  padding: 1.2rem 2.4rem;
+  border-radius: 10px;
+  box-shadow: 0 0 1.2rem rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.notification i {
+  font-size: 2.4rem;
+}
+
+.notification--info {
+  color: var(--taptap-blue);
+  border: 2px solid var(--taptap-blue);
+}
+
+.notification--success {
+  color: var(--taptap-green);
+  border: 2px solid var(--taptap-green);
+}
+
+.notification--error {
+  color: var(--taptap-red);
+  border: 2px solid var(--taptap-red);
+}

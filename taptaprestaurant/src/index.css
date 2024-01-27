@@ -195,6 +195,7 @@ legend {
 .contain {
   overflow: auto;
   scrollbar-gutter: stable;
+  position: relative;
 }
 
 ul {

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import TagInput from "./TagInput/TagInput";
 
+import { useNotification } from "./NotificationContext";
+
 const blankFormData = {
   first: "",
   last: "",
@@ -16,7 +18,7 @@ const blankFormData = {
 };
 
 export default function UserForm({ mode = "New", defaultValues = null }) {
-  const [errorMessage, setErrorMessage] = useState("");
+  const { sendNotification } = useNotification();
   const [showClearModal, setShowClearModal] = useState(false);
   const [formData, setFormData] = useState(blankFormData);
   const navigate = useNavigate();
@@ -58,11 +60,15 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
             restaurantName: "makoto", // TODO
           })
           .then((response) => {
-            console.log(response);
+            sendNotification(
+              "success",
+              `Successfully created new user '${formData?.username}'`
+            );
             navigate("/Users");
           })
           .catch((error) => {
             console.log(error);
+            sendNotification("error", error.message);
           });
       } else {
         axios
@@ -71,11 +77,15 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
             restaurantName: "makoto", // TODO
           })
           .then((response) => {
-            console.log(response);
+            sendNotification(
+              "success",
+              `Successfully updated user '${formData?.username}'`
+            );
             navigate("/Users");
           })
           .catch((error) => {
             console.log(error);
+            sendNotification("error", error.message);
           });
       }
     } catch (error) {
@@ -203,8 +213,6 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
           {mode === "New" ? "Create User" : "Save User"}
         </Button>
       </footer>
-
-      <p className="error-message">{errorMessage}</p>
     </Form>
   );
 }

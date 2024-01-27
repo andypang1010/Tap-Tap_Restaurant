@@ -10,6 +10,7 @@
   color: #444;
   border-radius: 10px;
   padding: 30px 40px;
+  z-index: 5;
 }
 
 .login-container h1 {
@@ -98,4 +99,16 @@
 
 .forgot-password .forgot-password-link:hover {
   text-decoration: underline;
+}
+
+.login-background {
+  position: absolute;
+  background-image: url("./../../media/login-bg.webp");
+  -webkit-filter: blur(0.5rem);
+  filter: blur(0.5rem);
+  height: 100%;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

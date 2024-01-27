@@ -19,6 +19,11 @@ import SideBar from "./components/SideBar";
 import io from "socket.io-client";
 import { useState, useEffect, createContext } from "react";
 import axios from "axios";
+import {
+  NotificationProvider,
+  useNotification,
+} from "./components/NotificationContext.js";
+import NotificationsBar from "./components/NotificationsBar/NotificationsBar.js";
 
 export const AuthContext = createContext();
 export const SocketContext = createContext();
@@ -83,37 +88,40 @@ function Contain({ socket }) {
     <div className="contain">
       <AuthContext.Provider value={{ authenticated, user }}>
         <SocketContext.Provider value={{ socket, data }}>
-          {authenticated && (
-            <>
-              <SideBar />
-              <RestaurantName name={data?.username} />
-            </>
-          )}
-          <Routes>
-            {authenticated ? (
+          <NotificationProvider>
+            <NotificationsBar />
+            {authenticated && (
               <>
-                <Route path="/" element={<Tables />} />
-                <Route path="/Tables" element={<Tables />} />
-                <Route path="/Menu" element={<Menu />} />
-                <Route path="/Account" element={<Account />} />
-                <Route
-                  path="/Account/ResetPassword"
-                  element={<ResetPassword />}
-                />
-                <Route path="/OrderHistory" element={<OrderHistory />} />
-                <Route path="/Users" element={<Users />} />
-                <Route path="/Users/NewUser" element={<NewUser />} />
-                <Route path="/Users/EditUser" element={<EditUser />} />
-                <Route path="/Settings" element={<Settings />} />
-              </>
-            ) : (
-              <>
-                <Route path="/" element={<Login />} />
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Register" element={<SignUp />} />
+                <SideBar />
+                <RestaurantName name={data?.username} />
               </>
             )}
-          </Routes>
+            <Routes>
+              {authenticated ? (
+                <>
+                  <Route path="/" element={<Tables />} />
+                  <Route path="/Tables" element={<Tables />} />
+                  <Route path="/Menu" element={<Menu />} />
+                  <Route path="/Account" element={<Account />} />
+                  <Route
+                    path="/Account/ResetPassword"
+                    element={<ResetPassword />}
+                  />
+                  <Route path="/OrderHistory" element={<OrderHistory />} />
+                  <Route path="/Users" element={<Users />} />
+                  <Route path="/Users/NewUser" element={<NewUser />} />
+                  <Route path="/Users/EditUser" element={<EditUser />} />
+                  <Route path="/Settings" element={<Settings />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/" element={<Login />} />
+                  <Route path="/Login" element={<Login />} />
+                  <Route path="/Register" element={<SignUp />} />
+                </>
+              )}
+            </Routes>
+          </NotificationProvider>
         </SocketContext.Provider>
       </AuthContext.Provider>
     </div>

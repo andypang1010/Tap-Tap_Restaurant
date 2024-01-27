@@ -3,9 +3,10 @@ import "./Account.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext, SocketContext } from "../../App";
 import PageTitle from "../../components/PageTitle";
+import { useNotification } from "../../components/NotificationContext";
 
 export default function Account() {
-  const { socket, data } = useContext(SocketContext);
+  const { data } = useContext(SocketContext);
   const { user } = useContext(AuthContext);
 
   return (
@@ -71,12 +72,14 @@ export default function Account() {
 }
 
 function UserAccountBox({ user }) {
+  const { sendNotification } = useNotification();
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
 
     localStorage.removeItem("jwt");
+    sendNotification("info", `Logged out user ${user?.username}`);
     navigate("/Login");
   };
 

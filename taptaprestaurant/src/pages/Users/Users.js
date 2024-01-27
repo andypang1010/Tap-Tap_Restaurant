@@ -7,9 +7,18 @@ import axios from "axios";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { AuthContext, SocketContext } from "../../App";
 import PageTitle from "../../components/PageTitle";
+import { useNotification } from "../../components/NotificationContext";
 
-function DeleteUserModal({ show, onHide, usernames }) {
-  const [errorMessage, setErrorMessage] = useState("");
+function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
+
+  const userString =
+    usernames?.length === 1
+      ? `${usernames[0]}'`
+      : usernames?.map((username, i) => {
+          if (i === usernames.length - 1) return `'${username}'`;
+          if (i === usernames.length - 2) return `${username}' and `;
+          else return `${username}, `;
+        });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,15 +30,15 @@ function DeleteUserModal({ show, onHide, usernames }) {
         restaurantName: "makoto", // TODO
       })
       .then((response) => {
-        console.log(response.data);
+        sendNotification("info", `Deleted ${userString}`);
       })
       .catch((error) => {
         err = error;
-        setErrorMessage(error.message);
       });
 
     if (err !== null) {
       console.log(err);
+      sendNotification("error", err.message);
     } else {
       onHide();
     }
@@ -48,17 +57,8 @@ function DeleteUserModal({ show, onHide, usernames }) {
         </Modal.Header>
         <Modal.Body>
           <p>
-            Are you sure you want to delete '
-            {usernames?.length === 1
-              ? `${usernames[0]}'`
-              : usernames?.map((username, i) => {
-                  if (i === usernames.length - 1) return `'${username}'`;
-                  if (i === usernames.length - 2) return `${username}' and `;
-                  else return `${username}, `;
-                })}
-            ? This is permanent.
+            Are you sure you want to delete '{userString}? This is permanent.
           </p>
-          <p className="error-message">{errorMessage}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
@@ -74,6 +74,7 @@ function DeleteUserModal({ show, onHide, usernames }) {
 }
 
 export default function Users() {
+  const { sendNotification } = useNotification();
   const { data } = useContext(SocketContext);
   const { user } = useContext(AuthContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -126,6 +127,7 @@ export default function Users() {
           show={showDeleteModal}
           onHide={handleHideDeleteModal}
           usernames={usersToDelete}
+          sendNotification={sendNotification}
         />
 
         <div className="user-list-header">

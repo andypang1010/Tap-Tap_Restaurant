@@ -5,6 +5,7 @@ import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { SocketContext } from "../../App";
 import PageTitle from "../../components/PageTitle";
+import { useNotification } from "../../components/NotificationContext";
 
 const tempTabData = [
   {
@@ -424,7 +425,14 @@ function CloseTabTooltip() {
   );
 }
 
-function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
+function CloseTabModal({
+  show,
+  onHide,
+  socket,
+  restaurantName,
+  tabName,
+  sendNotification,
+}) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -435,11 +443,12 @@ function CloseTabModal({ show, onHide, socket, restaurantName, tabName }) {
       });
 
       socket.on("success", (newData) => {
-        console.log("newdata: ", newData);
+        sendNotification("info", `Closed tab at table '${tabName}'`);
       });
 
       socket.on("error", (error) => {
         console.log("error: ", error);
+        sendNotification("error", error.message);
       });
     }
   };
@@ -478,6 +487,7 @@ function CancelItemModal({
   restaurantName,
   tabName,
   itemName,
+  sendNotification,
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -490,11 +500,15 @@ function CancelItemModal({
       });
 
       socket.on("success", (newData) => {
-        console.log("newdata: ", newData);
+        sendNotification(
+          "info",
+          `Canceled item ${itemName} at table '${tabName}'`
+        );
       });
 
       socket.on("error", (error) => {
         console.log("error: ", error);
+        sendNotification("error", error.message);
       });
     }
   };
@@ -530,6 +544,7 @@ function CancelItemModal({
 }
 
 export default function Tables() {
+  const { sendNotification } = useNotification();
   const { socket, data } = useContext(SocketContext);
   //const [filteredItems, setFilteredItems] = useState(null);
   const [showCloseModal, setShowCloseModal] = useState(false);
@@ -588,6 +603,7 @@ export default function Tables() {
         socket={socket}
         restaurantName={data?.username}
         tabName={tabToClose}
+        sendNotification={sendNotification}
       />
 
       <CancelItemModal
@@ -597,6 +613,7 @@ export default function Tables() {
         restaurantName={data?.username}
         tabName={itemToCancel?.table}
         itemName={itemToCancel?.item}
+        sendNotification={sendNotification}
       />
 
       <section>
