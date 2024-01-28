@@ -59,7 +59,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
             ...formData,
             restaurantName: "makoto", // TODO
           })
-          .then((response) => {
+          .then(() => {
             sendNotification(
               "success",
               `Successfully created new user '${formData?.username}'`
@@ -76,7 +76,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
             ...formData,
             restaurantName: "makoto", // TODO
           })
-          .then((response) => {
+          .then(() => {
             sendNotification(
               "success",
               `Successfully updated user '${formData?.username}'`

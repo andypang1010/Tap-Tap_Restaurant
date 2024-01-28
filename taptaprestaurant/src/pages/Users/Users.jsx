@@ -10,7 +10,6 @@ import PageTitle from "../../components/PageTitle";
 import { useNotification } from "../../components/NotificationContext";
 
 function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
-
   const userString =
     usernames?.length === 1
       ? `${usernames[0]}'`
@@ -29,7 +28,7 @@ function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
         usernames,
         restaurantName: "makoto", // TODO
       })
-      .then((response) => {
+      .then(() => {
         sendNotification("info", `Deleted ${userString}`);
       })
       .catch((error) => {

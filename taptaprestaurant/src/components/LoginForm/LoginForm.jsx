@@ -2,10 +2,12 @@ import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../components/LoginForm/LoginForm";
+import "./LoginForm.css";
 import "boxicons/css/boxicons.min.css";
+import { useNotification } from "../NotificationContext";
 
-function RegisterForm({ successRedirect = "/Login" }) {
+function LoginForm({ successRedirect = "/" }) {
+  const { sendNotification } = useNotification();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -17,20 +19,21 @@ function RegisterForm({ successRedirect = "/Login" }) {
       .post("http://localhost:8008/auth/login", {
         username,
         password,
+        restaurantName: "makoto",
       })
       .then((response) => {
-        console.log(response);
+        sendNotification("info", `Logged in as user ${username}`);
         localStorage.setItem("jwt", response.data);
         navigate(successRedirect);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        sendNotification("error", `Username or password is incorrect`);
       });
   };
 
   return (
     <div className="login-container">
-      <h1>Register</h1>
+      <h1>Login</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formUsername">
           <div className="input-container">
@@ -56,18 +59,23 @@ function RegisterForm({ successRedirect = "/Login" }) {
             />
           </div>
         </Form.Group>
-        <Button variant="primary" type="submit" className="btn">
-          Register
+        <p className="forgot-password">
+          <Link className="forgot-password-link" to={"/signup"}>
+            Forgot password?
+          </Link>
+        </p>
+        <Button variant="danger" type="submit" className="btn">
+          Login
         </Button>
       </Form>
       <p className="register-message">
-        Already have an account?{" "}
-        <Link className="register-link" to={"/Login"}>
-          Login
-        </Link>
+        Don't have an account? Contact your system administrator to set you up.
+        {/*<Link className="register-link" to={"/Register"}>
+          Register
+  </Link>*/}
       </p>
     </div>
   );
 }
 
-export default RegisterForm;
+export default LoginForm;

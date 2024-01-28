@@ -1,14 +1,14 @@
-import Login from "./pages/Login/Login.js";
-import SignUp from "./pages/Register/Register.js";
-import Tables from "./pages/Tables/Tables.js";
-import OrderHistory from "./pages/OrderHistory/OrderHistory.js";
-import Menu from "./pages/Menu/Menu.js";
-import Account from "./pages/Account/Account.js";
-import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
-import Users from "./pages/Users/Users.js";
-import EditUser from "./pages/EditUser/EditUser.js";
-import NewUser from "./pages/NewUser/NewUser.js";
-import Settings from "./pages/Settings/Settings.js";
+import Login from "./pages/Login/Login.jsx";
+import SignUp from "./pages/Register/Register.jsx";
+import Tables from "./pages/Tables/Tables.jsx";
+import OrderHistory from "./pages/OrderHistory/OrderHistory.jsx";
+import Menu from "./pages/Menu/Menu.jsx";
+import Account from "./pages/Account/Account.jsx";
+import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
+import Users from "./pages/Users/Users.jsx";
+import EditUser from "./pages/EditUser/EditUser.jsx";
+import NewUser from "./pages/NewUser/NewUser.jsx";
+import Settings from "./pages/Settings/Settings.jsx";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,11 +19,8 @@ import SideBar from "./components/SideBar";
 import io from "socket.io-client";
 import { useState, useEffect, createContext } from "react";
 import axios from "axios";
-import {
-  NotificationProvider,
-  useNotification,
-} from "./components/NotificationContext.js";
-import NotificationsBar from "./components/NotificationsBar/NotificationsBar.js";
+import { NotificationProvider } from "./components/NotificationContext.jsx";
+import NotificationsBar from "./components/NotificationsBar/NotificationsBar.jsx";
 
 export const AuthContext = createContext();
 export const SocketContext = createContext();
@@ -78,7 +75,7 @@ function Contain({ socket }) {
             console.log("GET USER: ", error);
           });
       })
-      .catch((error) => {
+      .catch(() => {
         navigate("/Login");
         setAuthenticated(false);
       });

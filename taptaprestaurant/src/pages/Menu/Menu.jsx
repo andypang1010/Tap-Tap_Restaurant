@@ -224,7 +224,7 @@ function DeleteItemModal({ show, onHide, item }) {
         item,
         restaurantName: "makoto", // TODO
       })
-      .then((response) => {
+      .then(() => {
         sendNotification("info", `Deleted menu item ${item?.name}`);
         onHide();
       })

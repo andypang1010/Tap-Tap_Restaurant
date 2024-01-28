@@ -442,7 +442,7 @@ function CloseTabModal({
         table: tabName,
       });
 
-      socket.on("success", (newData) => {
+      socket.on("success", () => {
         sendNotification("info", `Closed tab at table '${tabName}'`);
       });
 
@@ -499,7 +499,7 @@ function CancelItemModal({
         itemName,
       });
 
-      socket.on("success", (newData) => {
+      socket.on("success", () => {
         sendNotification(
           "info",
           `Canceled item ${itemName} at table '${tabName}'`
@@ -585,7 +585,7 @@ export default function Tables() {
   };
 
   useEffect(() => {
-    Object.entries(tempTableData).forEach(([name, tab], i) => {
+    Object.entries(tempTableData).forEach(([name, tab]) => {
       tableVisibility[name] = tab.length > 0;
     });
   }, [tempTableData]);
@@ -718,7 +718,7 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
             className="circle-button close-tab-button"
             onClick={() => onCloseTab(name)}
           >
-            <i className="bx bx-window-close"></i>
+            &#x2715;
           </button>
         </OverlayTrigger>
       </ul>

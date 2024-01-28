@@ -4,7 +4,7 @@ import TypeSelect from "./TypeSelect";
 import CategorySelect from "./CategorySelect";
 import TagInput from "./TagInput/TagInput";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { useNotification } from "./NotificationContext";
 
 const blankFormData = {
   name: "",
@@ -26,8 +26,8 @@ export default function MenuItemModal({
   username,
   defaultData,
 }) {
+  const { sendNotification } = useNotification();
   const [prevItemName, setPrevItemName] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -42,18 +42,25 @@ export default function MenuItemModal({
           });
 
           socket.on("success", () => {
+            sendNotification(
+              "success",
+              `Successfully created menu item ${formData.name}`
+            );
             onHide();
             handleClearFormData();
           });
 
           socket.on("failed", (error) => {
             console.log("error: ", error);
-            setErrorMessage("Failed to create new menu item");
+            sendNotification("error", "Failed to create new menu item");
           });
 
           socket.on("server-error", (error) => {
             console.log("error: ", error);
-            setErrorMessage("Something went wrong. Try refreshing the page.");
+            sendNotification(
+              "error",
+              "Something went wrong. Try refreshing the page."
+            );
           });
         } else if (mode === "Edit") {
           axios
@@ -70,13 +77,13 @@ export default function MenuItemModal({
               console.log(error);
             });
         } else {
-          console.log("Unknown mode");
+          sendNotification("error", "Unknown mode");
         }
       } else {
-        console.log("socket not enabled");
+        sendNotification("error", "socket not enabled");
       }
     } catch (error) {
-      console.error("error", error);
+      sendNotification("error", error);
     }
   };
 
@@ -217,7 +224,6 @@ export default function MenuItemModal({
               onChange={handleInputChange}
             />
           </Form.Group>
-          <p className="error-message">{errorMessage}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>

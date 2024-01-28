@@ -80,11 +80,11 @@ function ResetPasswordForm({ username }) {
               sendNotification("success", `Successfully updated password`);
               navigate("/Account");
             })
-            .catch((error) => {
+            .catch(() => {
               sendNotification("error", "New password is invalid");
             });
         })
-        .catch((error) => {
+        .catch(() => {
           sendNotification("error", "Old password is invalid.");
         });
     } catch (error) {
