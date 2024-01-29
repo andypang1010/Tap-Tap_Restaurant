@@ -63,6 +63,49 @@ const menuButtonData = [
   },
 ];
 
+const categoryData = [
+  {
+    value: "Course",
+  },
+  {
+    value: "Sushi",
+  },
+  {
+    value: "Sashimi",
+  },
+  {
+    value: "Grilled Dishes",
+  },
+  {
+    value: "Boiled Dishes",
+  },
+  {
+    value: "Beer",
+  },
+  {
+    value: "Sake",
+  },
+  {
+    value: "Spirits",
+  },
+  {
+    value: "Soft Drink",
+  },
+  {
+    value: "Tea",
+  },
+];
+
+const selectOptions = [
+  "Type",
+  "Category",
+  "Alphabetical",
+  "Price: Low to High",
+  "Price: High to Low",
+  "Last modified: Oldest to newest",
+  "Last modified: Newest to Oldest",
+];
+
 export default function Menu() {
   const { socket, data } = useContext(SocketContext);
 
@@ -79,6 +122,7 @@ export default function Menu() {
 }
 
 function MenuBox({ data, socket }) {
+  const [sortOption, setSortOption] = useState("Type");
   const [activeButton, setActiveButton] = useState("All");
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -117,14 +161,64 @@ function MenuBox({ data, socket }) {
   };
 
   useEffect(() => {
-    setFilteredItems(
-      data?.menu.filter(
-        (item) =>
-          item.type.toLowerCase() === activeButton.toLowerCase() ||
-          activeButton === "All"
-      )
+    let newItems = data?.menu.filter(
+      (item) =>
+        item.type.toLowerCase() === activeButton.toLowerCase() ||
+        activeButton === "All"
     );
-  }, [activeButton, data?.menu]);
+
+    switch (sortOption) {
+      case "Type":
+        newItems?.sort((a, b) => {
+          const indexA = menuButtonData.findIndex((item) => {
+            return item.text.toLowerCase() === a.type.toLowerCase();
+          });
+          const indexB = menuButtonData.findIndex((item) => {
+            return item.text.toLowerCase() === b.type.toLowerCase();
+          });
+
+          if (indexA === -1 || indexB === -1) {
+            console.log("A: ", indexA, "B: ", indexB);
+          }
+
+          return indexA - indexB;
+        });
+        break;
+      case "Category":
+        newItems?.sort((a, b) => {
+          const indexA = categoryData.findIndex((item) => {
+            return item.value.toLowerCase() === a.category.toLowerCase();
+          });
+          const indexB = categoryData.findIndex((item) => {
+            return item.value.toLowerCase() === b.category.toLowerCase();
+          });
+
+          if (indexA === -1 || indexB === -1) {
+            console.log("A: ", indexA, "B: ", indexB);
+          }
+
+          return indexA - indexB;
+        });
+        break;
+      case "Alphabetical":
+        newItems?.sort((a, b) => (a.name < b.name ? -1 : 1));
+        break;
+      case "Price: Low to High":
+        newItems?.sort((a, b) => (a.price < b.price ? -1 : 1));
+        break;
+      case "Price: High to Low":
+        newItems?.sort((a, b) => (a.price > b.price ? -1 : 1));
+        break;
+      case "Last modified: Oldest to newest":
+        break;
+      case "Last modified: Newest to Oldest":
+        newItems?.reverse();
+        break;
+      default:
+        break;
+    }
+    setFilteredItems(newItems);
+  }, [activeButton, sortOption, data?.menu]);
 
   return (
     <>
@@ -166,6 +260,23 @@ function MenuBox({ data, socket }) {
           itemList={filteredItems}
           onFilteredItems={setPaginationFilteredItems}
         />
+
+        <div className="d-flex align-items-center gap-3 mb-4">
+          <span>Sort by:</span>
+          <Form.Select
+            value={sortOption}
+            name="sortOption"
+            onChange={(e) => setSortOption(e.target.value)}
+            className="menu-filter"
+          >
+            {selectOptions.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
+          </Form.Select>
+        </div>
+
         <ul className="menu-list">
           {data === null ? (
             <>
@@ -267,6 +378,7 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
   const [border, setBorder] = useState("border-main");
 
   useEffect(() => {
+    if (item.category === "Grilled Dishes") console.log(item);
     switch (item.type) {
       case "Course":
         setBorder("border-course");
@@ -289,7 +401,8 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
       case "Dessert":
         setBorder("border-dessert");
         break;
-      case "A la carte":
+      case "A La Carte":
+        console.log(item);
         setBorder("border-alacarte");
         break;
       case "Alcohol":
@@ -301,7 +414,7 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
       default:
         return;
     }
-  }, [item.type]);
+  }, [item]);
 
   return (
     <li className={`menu-item-box ${border}`}>

@@ -11,6 +11,10 @@
   width: 13rem;
 }
 
+.menu-filter {
+  width: 20rem;
+}
+
 .menu-button-list {
   display: flex;
   align-items: center;
