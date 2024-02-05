@@ -1,421 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import "./Tables.css";
 import Pagination from "../../components/Pagination/Pagination";
-import { Button, Modal, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
-import { SocketContext } from "../../App";
-import PageTitle from "../../components/PageTitle";
 import { useNotification } from "../../components/NotificationContext";
-
-const tempTabData = [
-  {
-    item: {
-      name: "White Wine",
-      price: 800,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Placed",
-    customer_name: "Avery",
-  },
-  {
-    item: {
-      name: "Whitefish Usuzukuri",
-      price: 3000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Placed",
-    customer_name: "Avery",
-  },
-  {
-    item: {
-      name: "Sake",
-      price: 600,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Tendered",
-    customer_name: "Jeff",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: "Please add cheese",
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "White Wine",
-      price: 800,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Placed",
-    customer_name: "Avery",
-  },
-  {
-    item: {
-      name: "Whitefish Usuzukuri",
-      price: 3000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Placed",
-    customer_name: "Avery",
-  },
-  {
-    item: {
-      name: "Sake",
-      price: 600,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Tendered",
-    customer_name: "Jeff",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "White Wine",
-      price: 800,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Placed",
-    customer_name: "Avery",
-  },
-  {
-    item: {
-      name: "Whitefish Usuzukuri",
-      price: 3000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Placed",
-    customer_name: "Avery",
-  },
-  {
-    item: {
-      name: "Sake",
-      price: 600,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Tendered",
-    customer_name: "Jeff",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-  {
-    item: {
-      name: "Avery Special",
-      price: 2000,
-      available: true,
-    },
-    quantity: 4,
-    special_instructions: null,
-    status: "Error",
-    customer_name: "Andy",
-  },
-];
-
-const tempTableData = {
-  1: tempTabData,
-  2: [],
-  3: tempTabData,
-  4: [],
-  5: [],
-  "Bar 1": tempTabData,
-  "Bar 2": [],
-  "Bar 3": [],
-};
+import { SocketContext } from "../../App";
+import Header from "../../components/Header";
 
 function CloseTabTooltip() {
   return (
@@ -546,7 +136,6 @@ function CancelItemModal({
 export default function Tables() {
   const { sendNotification } = useNotification();
   const { socket, data } = useContext(SocketContext);
-  //const [filteredItems, setFilteredItems] = useState(null);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [tabToClose, setTabToClose] = useState("");
   const [showCancelItemModal, setShowCancelItemModal] = useState(false);
@@ -585,17 +174,18 @@ export default function Tables() {
   };
 
   useEffect(() => {
-    Object.entries(tempTableData).forEach(([name, tab]) => {
-      tableVisibility[name] = tab.length > 0;
+    Object.entries(data?.tables || {}).forEach(([name, data]) => {
+      tableVisibility[name] = data.tab.length > 0;
     });
-  }, [tempTableData]);
+  }, [data?.tables]);
+
+  useEffect(() => {
+    console.log(data?.tables, data?.tables.length);
+  }, [data?.tables]);
 
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title="Tables" />
-        <h2>Tables</h2>
-      </header>
+      <Header title="Tables" pageTitle="Tables" />
 
       <CloseTabModal
         show={showCloseModal}
@@ -618,11 +208,11 @@ export default function Tables() {
 
       <section>
         <ul className="table-list-banner">
-          {Object.entries(tempTableData).map(([name, tab], i) => (
+          {Object.entries(data?.tables || {}).map(([name, data], i) => (
             <TableButton
               key={i}
               name={name}
-              tabLength={tab.length}
+              tabLength={data.tab.length}
               isActive={tableVisibility[name]}
               onToggleTable={handleToggleTable}
             />
@@ -637,11 +227,11 @@ export default function Tables() {
           <DummyTable key="3" />*/}
             </>
           ) : (
-            Object.entries(tempTableData).map(([name, tab], i) => {
+            Object.entries(data.tables).map(([name, data], i) => {
               return (
                 <Table
                   key={i}
-                  tab={tab}
+                  tab={data.tab}
                   name={name}
                   onCloseTab={handleShowCloseModal}
                   onCancelItem={handleShowCancelItemModal}
@@ -814,39 +404,6 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
     </fieldset>
   );
 }
-
-/*<ul className="item-list">
-        {tab &&
-          tab.map((item, i) => (
-            <li className="item" key={i}>
-              <div className="item-info">
-                <div className="item-description">
-                  <p>{item.item.name}</p>
-                  <span className="item-quantity">
-                    <em>Quantity: {item.quantity}</em>
-                  </span>
-                </div>
-                <div className="item-status">
-                  <StatusSelect menuItem={item} />
-                </div>
-                {item.special_instructions !== "None" &&
-                  item.special_instructions !== "" && (
-                    <div className="item-special-instructions">
-                      <span>
-                        <strong className="text-danger">
-                          Special Instructions:
-                        </strong>{" "}
-                        {item.special_instructions}
-                      </span>
-                    </div>
-                  )}
-                <span className="item-price">
-                  &#165;{parseInt(item.item.price) * parseInt(item.quantity)}
-                </span>
-              </div>
-            </li>
-          ))}
-      </ul>*/
 
 function DummyTable() {
   return (

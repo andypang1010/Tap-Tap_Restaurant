@@ -23,7 +23,6 @@ export default function MenuItemModal({
   show,
   onHide,
   socket,
-  username,
   defaultData,
 }) {
   const { sendNotification } = useNotification();
@@ -36,7 +35,27 @@ export default function MenuItemModal({
     try {
       if (socket) {
         if (mode === "New") {
-          socket.emit("addMenuItem", {
+          axios
+            .post("http://localhost:8008/menu/addMenuItem", {
+              item: formData,
+              restaurantName: "makoto", // TODO
+            })
+            .then(() => {
+              sendNotification(
+                "success",
+                `Successfully created menu item ${formData.name}`
+              );
+              onHide();
+              handleClearFormData();
+            })
+            .catch((error) => {
+              console.log("error: ", error);
+              sendNotification(
+                "error",
+                `Failed to create new menu item: ${error.response.data}`
+              );
+            });
+          /*socket.emit("addMenuItem", {
             item: formData,
             username,
           });
@@ -61,7 +80,7 @@ export default function MenuItemModal({
               "error",
               "Something went wrong. Try refreshing the page."
             );
-          });
+          });*/
         } else if (mode === "Edit") {
           axios
             .post("http://localhost:8008/menu/updateMenuItem", {

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TagInput from "../../components/TagInput/TagInput";
 import "./Settings.css";
@@ -6,17 +6,15 @@ import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 import EditableField from "../../components/EditableField";
 import { SocketContext } from "../../App";
-import PageTitle from "../../components/PageTitle";
+import Header from "../../components/Header";
+import { useNotification } from "../../components/NotificationContext";
 
 export default function Settings() {
   const { socket, data } = useContext(SocketContext);
 
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title="Settings" />
-        <h2>Settings</h2>
-      </header>
+      <Header title="Settings" pageTitle="Settings" />
 
       <SettingsPanel socket={socket} data={data} />
     </main>
@@ -39,6 +37,8 @@ const defaultOptions = {
 };
 
 function SettingsPanel({ socket, data }) {
+  const { sendNotification } = useNotification();
+  const [tableNames, setTableNames] = useState([]);
   const [formData, setFormData] = useState(defaultOptions);
 
   const handleInputChange = (e) => {
@@ -68,6 +68,30 @@ function SettingsPanel({ socket, data }) {
       });
     }
   }
+
+  const handleUpdateTables = (e) => {
+    e.preventDefault();
+
+    axios
+      .post("http://localhost:8008/table/createTableTemplate", {
+        tableNames,
+        restaurantName: "makoto", // TODO
+      })
+      .then(() => {
+        sendNotification("success", `Successfully set new table names`);
+      })
+      .catch((error) => {
+        console.log(error);
+        sendNotification("error", error.message);
+      });
+  };
+
+  useEffect(() => {
+    if (data?.tables !== undefined) {
+      console.log(data?.tables, Object.keys(data?.tables));
+      setTableNames(Object.keys(data?.tables));
+    }
+  }, [data?.tables]);
 
   return (
     <section className="settings-panel">
@@ -129,6 +153,20 @@ function SettingsPanel({ socket, data }) {
 
         <fieldset className="light-bx-shadow box mb-3">
           <legend className="light-bx-shadow">Tables</legend>
+
+          <TagInput
+            tags={tableNames}
+            onSetTags={(tags) => {
+              setTableNames(tags);
+            }}
+          />
+
+          <button
+            className="light-bx-shadow action-button red-hover"
+            onClick={handleUpdateTables}
+          >
+            Set Table Names
+          </button>
         </fieldset>
 
         <fieldset className="light-bx-shadow box mb-3">

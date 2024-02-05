@@ -2,8 +2,8 @@ import { useContext } from "react";
 import "./Account.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext, SocketContext } from "../../App";
-import PageTitle from "../../components/PageTitle";
 import { useNotification } from "../../components/NotificationContext";
+import Header from "../../components/Header";
 
 export default function Account() {
   const { data } = useContext(SocketContext);
@@ -11,10 +11,7 @@ export default function Account() {
 
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title={"Account"} />
-        <h2>Account Details</h2>
-      </header>
+      <Header title="Account Details" pageTitle="Account" />
 
       {data === null ? (
         <>
@@ -72,12 +69,14 @@ export default function Account() {
 }
 
 function UserAccountBox({ user }) {
+  const { setAuthenticated } = useContext(AuthContext);
   const { sendNotification } = useNotification();
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
 
+    setAuthenticated(false);
     localStorage.removeItem("jwt");
     sendNotification("info", `Logged out user ${user?.username}`);
     navigate("/Login");

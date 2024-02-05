@@ -6,8 +6,8 @@ import { Form, Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { AuthContext, SocketContext } from "../../App";
-import PageTitle from "../../components/PageTitle";
 import { useNotification } from "../../components/NotificationContext";
+import Header from "../../components/Header";
 
 function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
   const userString =
@@ -109,10 +109,7 @@ export default function Users() {
 
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title="Users" />
-        <h2>Users</h2>
-      </header>
+      <Header title="Users" pageTitle="Users" />
 
       <div className="user-list-wrapper">
         <Pagination

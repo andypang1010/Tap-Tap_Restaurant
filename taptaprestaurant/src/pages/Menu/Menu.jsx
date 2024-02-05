@@ -5,8 +5,8 @@ import { Tooltip, OverlayTrigger, Modal, Form, Button } from "react-bootstrap";
 import MenuItemModal from "../../components/MenuItemModal";
 import { SocketContext } from "../../App";
 import axios from "axios";
-import PageTitle from "../../components/PageTitle";
 import { useNotification } from "../../components/NotificationContext";
+import Header from "../../components/Header";
 
 function VegetarianTooltip() {
   return (
@@ -111,10 +111,7 @@ export default function Menu() {
 
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title="Menu" />
-        <h2>Menu</h2>
-      </header>
+      <Header title="Menu" pageTitle="Menu" />
 
       <MenuBox data={data} socket={socket} />
     </main>
@@ -244,7 +241,6 @@ function MenuBox({ data, socket }) {
         show={showModal}
         onHide={handleHideModal}
         socket={socket}
-        username={data !== null ? data.username : ""}
         {...(itemToEdit !== null ? { defaultData: itemToEdit } : {})}
       />
 
@@ -378,7 +374,6 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
   const [border, setBorder] = useState("border-main");
 
   useEffect(() => {
-    if (item.category === "Grilled Dishes") console.log(item);
     switch (item.type) {
       case "Course":
         setBorder("border-course");
@@ -402,7 +397,6 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
         setBorder("border-dessert");
         break;
       case "A La Carte":
-        console.log(item);
         setBorder("border-alacarte");
         break;
       case "Alcohol":

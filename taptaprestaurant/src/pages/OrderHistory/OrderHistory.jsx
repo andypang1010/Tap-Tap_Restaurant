@@ -1,13 +1,10 @@
+import Header from "../../components/Header";
 import OrderHistoryList from "../../components/OrderHistoryList";
-import PageTitle from "../../components/PageTitle";
 
 export default function OrderHistory() {
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title="Order History" />
-        <h2>Order History</h2>
-      </header>
+      <Header title="Order History" pageTitle="Order History" />
 
       <OrderHistoryList />
     </main>

@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ResetPassword.css";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { AuthContext } from "../../App";
-import PageTitle from "../../components/PageTitle";
 import { useNotification } from "../../components/NotificationContext";
+import Header from "../../components/Header";
 
 const passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,!@#$%^&*])(?=.{8,})"
@@ -19,16 +19,12 @@ export default function ResetPassword() {
   const { user } = useContext(AuthContext);
   return (
     <main className="main-content">
-      <header className="page-title">
-        <PageTitle title="Reset Password" />
-        <h2 className="full-title">
-          <Link to="/Account" className="sub-heading">
-            Account
-          </Link>
-          <i className="bx bx-chevrons-right"></i>
-          <span>Reset Password</span>
-        </h2>
-      </header>
+      <Header
+        title="Reset Password"
+        pageTitle="Reset Password"
+        subtitle="Account"
+        subtitleLink="/Account"
+      />
 
       <ResetPasswordForm username={user?.username} />
     </main>

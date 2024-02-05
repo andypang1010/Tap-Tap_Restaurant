@@ -58,32 +58,34 @@ function Contain({ socket }) {
   }, [socket]);
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+    if (!authenticated) {
+      const jwt = localStorage.getItem("jwt");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
-    axios
-      .get("http://localhost:8008/protected")
-      .then(() => {
-        console.log("User is logged in!");
-        setAuthenticated(true);
-        axios
-          .get("http://localhost:8008/user/getUserAccount")
-          .then((response) => {
-            setUser(response.data);
-          })
-          .catch((error) => {
-            console.log("GET USER: ", error);
-          });
-      })
-      .catch(() => {
-        navigate("/Login");
-        setAuthenticated(false);
-      });
-  }, [navigate]);
+      axios
+        .get("http://localhost:8008/protected")
+        .then(() => {
+          console.log("User is logged in!");
+          setAuthenticated(true);
+          axios
+            .get("http://localhost:8008/user/getUserAccount")
+            .then((response) => {
+              setUser(response.data);
+            })
+            .catch((error) => {
+              console.log("GET USER: ", error);
+            });
+        })
+        .catch(() => {
+          navigate("/Login");
+          setAuthenticated(false);
+        });
+    }
+  }, [navigate, authenticated]);
 
   return (
     <div className="contain">
-      <AuthContext.Provider value={{ authenticated, user }}>
+      <AuthContext.Provider value={{ authenticated, setAuthenticated, user }}>
         <SocketContext.Provider value={{ socket, data }}>
           <NotificationProvider>
             <NotificationsBar />
