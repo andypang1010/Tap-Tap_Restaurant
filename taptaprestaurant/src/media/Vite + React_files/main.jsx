@@ -1,0 +1,12 @@
+import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=d37d00c1"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import __vite__cjsImport1_reactDom_client from "/node_modules/.vite/deps/react-dom_client.js?v=d37d00c1"; const ReactDOM = __vite__cjsImport1_reactDom_client.__esModule ? __vite__cjsImport1_reactDom_client.default : __vite__cjsImport1_reactDom_client;
+import App from "/src/components/App.jsx";
+import "/node_modules/boxicons/css/boxicons.min.css";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
+  fileName: "C:/Users/avery.deemer/Documents/Tap-Tap_POS/taptappos/src/main.jsx",
+  lineNumber: 7,
+  columnNumber: 13
+}, this));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJtYXBwaW5ncyI6IkFBTVk7QUFOWixPQUFPQSxjQUFjO0FBQ3JCLE9BQU9DLFNBQVM7QUFDaEIsT0FBTztBQUVQLE1BQU1DLE9BQU9GLFNBQVNHLFdBQVdDLFNBQVNDLGVBQWUsTUFBTSxDQUFDO0FBRWhFSCxLQUFLSSxPQUFPLHVCQUFDLFNBQUQ7QUFBQTtBQUFBO0FBQUE7QUFBQSxPQUFJLENBQUciLCJuYW1lcyI6WyJSZWFjdERPTSIsIkFwcCIsInJvb3QiLCJjcmVhdGVSb290IiwiZG9jdW1lbnQiLCJnZXRFbGVtZW50QnlJZCIsInJlbmRlciJdLCJzb3VyY2VzIjpbIm1haW4uanN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdERPTSBmcm9tIFwicmVhY3QtZG9tL2NsaWVudFwiO1xyXG5pbXBvcnQgQXBwIGZyb20gXCIuL2NvbXBvbmVudHMvQXBwXCI7XHJcbmltcG9ydCBcImJveGljb25zL2Nzcy9ib3hpY29ucy5taW4uY3NzXCI7XHJcblxyXG5jb25zdCByb290ID0gUmVhY3RET00uY3JlYXRlUm9vdChkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcInJvb3RcIikpO1xyXG5cclxucm9vdC5yZW5kZXIoPEFwcCAvPik7XHJcbiJdLCJmaWxlIjoiQzovVXNlcnMvYXZlcnkuZGVlbWVyL0RvY3VtZW50cy9UYXAtVGFwX1BPUy90YXB0YXBwb3Mvc3JjL21haW4uanN4In0=

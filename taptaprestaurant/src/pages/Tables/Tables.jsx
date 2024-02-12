@@ -6,6 +6,8 @@ import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { useNotification } from "../../components/NotificationContext";
 import { SocketContext } from "../../App";
 import Header from "../../components/Header";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CloseTabTooltip() {
   return (
@@ -18,29 +20,26 @@ function CloseTabTooltip() {
 function CloseTabModal({
   show,
   onHide,
-  socket,
   restaurantName,
-  tabName,
+  tableName,
   sendNotification,
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (socket) {
-      socket.emit("closeTab", {
-        restaurantName,
-        table: tabName,
-      });
-
-      socket.on("success", () => {
-        sendNotification("info", `Closed tab at table '${tabName}'`);
-      });
-
-      socket.on("error", (error) => {
-        console.log("error: ", error);
+    axios
+      .post("http://localhost:8008/pos/closeTableSession", {
+        restaurantName, // TODO
+        tableName: tableName,
+      })
+      .then(() => {
+        sendNotification("info", `Closed tab at table '${tableName}'`);
+        onHide();
+      })
+      .catch((error) => {
+        console.log(error);
         sendNotification("error", error.message);
       });
-    }
   };
 
   return (
@@ -55,7 +54,7 @@ function CloseTabModal({
           <Modal.Title>Close Tab</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Are you sure you want to close tab '{tabName}'?</p>
+          <p>Are you sure you want to close the tab at table '{tableName}'?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
@@ -141,6 +140,7 @@ export default function Tables() {
   const [showCancelItemModal, setShowCancelItemModal] = useState(false);
   const [itemToCancel, setItemToCancel] = useState(null);
   const [tableVisibility, setTableVisibility] = useState({});
+  const navigate = useNavigate();
 
   const handleToggleTable = (tableName) => {
     setTableVisibility((prevVisibility) => {
@@ -174,10 +174,16 @@ export default function Tables() {
   };
 
   useEffect(() => {
+    const visibility = tableVisibility;
     Object.entries(data?.tables || {}).forEach(([name, data]) => {
-      tableVisibility[name] = data.tab.length > 0;
+      visibility[name] = data.sessionActive;
     });
+    setTableVisibility(visibility);
   }, [data?.tables]);
+
+  useEffect(() => {
+    console.log(tableVisibility);
+  }, [tableVisibility]);
 
   useEffect(() => {
     console.log(data?.tables, data?.tables.length);
@@ -192,7 +198,7 @@ export default function Tables() {
         onHide={handleHideCloseModal}
         socket={socket}
         restaurantName={data?.username}
-        tabName={tabToClose}
+        tableName={tabToClose}
         sendNotification={sendNotification}
       />
 
@@ -208,15 +214,17 @@ export default function Tables() {
 
       <section>
         <ul className="table-list-banner">
-          {Object.entries(data?.tables || {}).map(([name, data], i) => (
-            <TableButton
-              key={i}
-              name={name}
-              tabLength={data.tab.length}
-              isActive={tableVisibility[name]}
-              onToggleTable={handleToggleTable}
-            />
-          ))}
+          {Object.entries(data?.tables || {}).map(([name, data], i) => {
+            return (
+              <TableButton
+                key={i}
+                name={name}
+                sessionActive={data.sessionActive}
+                isActive={tableVisibility[name]}
+                onToggleTable={handleToggleTable}
+              />
+            );
+          })}
         </ul>
 
         <ul className="table-list">
@@ -235,6 +243,7 @@ export default function Tables() {
                   name={name}
                   onCloseTab={handleShowCloseModal}
                   onCancelItem={handleShowCancelItemModal}
+                  sessionActive={data.sessionActive}
                   isActive={tableVisibility[name]}
                 />
               );
@@ -246,13 +255,13 @@ export default function Tables() {
   );
 }
 
-function TableButton({ tabLength, name, onToggleTable, isActive }) {
+function TableButton({ sessionActive, name, onToggleTable, isActive }) {
   return (
     <button
       className={`table-button ${
         isActive
           ? ""
-          : tabLength > 0
+          : sessionActive
           ? "inactive--tab-open"
           : "light-bx-shadow inactive-button"
       }`}
@@ -271,7 +280,14 @@ function TableButton({ tabLength, name, onToggleTable, isActive }) {
   );
 }
 
-function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
+function Table({
+  tab,
+  name,
+  onCloseTab,
+  onCancelItem,
+  sessionActive,
+  isActive,
+}) {
   const [selectedItems, setSelectedItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);
   const totalPrice = tab?.reduce(
@@ -279,13 +295,13 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
     0
   );
 
-  const handleToggleItem = (itemName) => {
+  const handleToggleItem = (orderId) => {
     const updatedSelectedItems = [...selectedItems];
 
-    const index = updatedSelectedItems.indexOf(itemName);
+    const index = updatedSelectedItems.indexOf(orderId);
 
     index === -1
-      ? updatedSelectedItems.push(itemName)
+      ? updatedSelectedItems.push(orderId)
       : updatedSelectedItems.splice(index, 1);
 
     setSelectedItems(updatedSelectedItems);
@@ -297,7 +313,7 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
 
   return (
     <fieldset
-      className={`tab box ${tab?.length === 0 ? "empty-tab" : ""} ${
+      className={`tab box ${!sessionActive ? "empty-tab" : ""} ${
         isActive ? "" : "inactive"
       }`}
     >
@@ -360,8 +376,8 @@ function Table({ tab, name, onCloseTab, onCancelItem, isActive }) {
                   <Form.Check
                     className="item-check"
                     type="checkbox"
-                    checked={selectedItems.includes(item.item.name)}
-                    onChange={() => handleToggleItem(item.item.name)}
+                    checked={selectedItems.includes(item.orderId)}
+                    onChange={() => handleToggleItem(item.orderId)}
                   />
                   <div className="item-name">{item.item.name}</div>
                 </label>

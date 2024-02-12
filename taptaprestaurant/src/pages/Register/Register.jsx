@@ -1,4 +1,3 @@
-import "boxicons/css/boxicons.min.css";
 import RegisterForm from "../../components/RegisterForm";
 
 function Register() {
