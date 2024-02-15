@@ -74,6 +74,15 @@ select.form-select option:hover {
   color: #fff;
 }
 
+.accordion-button:focus {
+  border-color: rgb(210, 115, 115, 0.4);
+  box-shadow: 0 0 0 0.25rem rgb(210, 115, 115);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: rgb(210, 115, 115, 0.4);
+}
+
 /*
 UTILITY
 */
@@ -123,8 +132,20 @@ UTILITY
   font-size: 0.8rem !important;
 }
 
+.mr-3 {
+  padding-right: 1rem;
+}
+
 .center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mono {
+  font-family: monospace;
 }
 
 /*
@@ -489,7 +510,8 @@ button.dummy {
   border-radius: 4px;
   font-weight: 600;
   justify-self: center;
-  width: 6rem;
+  width: 5rem;
+  font-size: 0.8rem;
   text-align: center;
 }
 

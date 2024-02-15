@@ -8,6 +8,7 @@ import { SocketContext } from "../../App";
 import Header from "../../components/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ElapsedTime from "../../components/ElapsedTime";
 
 function CloseTabTooltip() {
   return (
@@ -54,7 +55,10 @@ function CloseTabModal({
           <Modal.Title>Close Tab</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Are you sure you want to close the tab at table '{tableName}'?</p>
+          <p>
+            Are you sure you want to close the tab at table '
+            <em>{tableName}</em>'?
+          </p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
@@ -72,35 +76,35 @@ function CloseTabModal({
 function CancelItemModal({
   show,
   onHide,
-  socket,
   restaurantName,
-  tabName,
-  itemName,
+  tableName,
   sendNotification,
+  orderIds,
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (socket) {
-      socket.emit("cancelItem", {
-        restaurantName,
-        table: tabName,
-        itemName,
-      });
+    console.log(restaurantName, tableName);
 
-      socket.on("success", () => {
-        sendNotification(
-          "info",
-          `Canceled item ${itemName} at table '${tabName}'`
-        );
-      });
-
-      socket.on("error", (error) => {
-        console.log("error: ", error);
+    axios
+      .post("http://localhost:8008/pos/cancelOrders", {
+        restaurantName, // TODO
+        tableName,
+        orderIds,
+      })
+      .then(() => {
+        sendNotification("info", `Canceled order at table '${tableName}'`);
+        onHide();
+      })
+      .catch((error) => {
+        console.log(error);
         sendNotification("error", error.message);
       });
-    }
   };
+
+  useEffect(() => {
+    console.log(orderIds);
+  }, [orderIds]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -115,8 +119,8 @@ function CancelItemModal({
         </Modal.Header>
         <Modal.Body>
           <p>
-            Are you sure you want to cancel item '{itemName}' at Table '
-            {tabName}'?
+            Are you sure you want to cancel item '<em>{orderIds[0]}</em>' at
+            Table '<em>{tableName}</em>'?
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -137,8 +141,11 @@ export default function Tables() {
   const { socket, data } = useContext(SocketContext);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [tabToClose, setTabToClose] = useState("");
-  const [showCancelItemModal, setShowCancelItemModal] = useState(false);
-  const [itemToCancel, setItemToCancel] = useState(null);
+  const [showCancelOrdersModal, setShowCancelOrdersModal] = useState(false);
+  const [ordersToCancel, setOrdersToCancel] = useState({
+    orderIds: [],
+    tableName: "",
+  });
   const [tableVisibility, setTableVisibility] = useState({});
   const navigate = useNavigate();
 
@@ -160,17 +167,20 @@ export default function Tables() {
     setTabToClose("");
   };
 
-  const handleShowCancelItemModal = (item, table) => {
-    setShowCancelItemModal(true);
-    setItemToCancel({
-      item,
-      table,
+  const handleShowCancelOrdersModal = (orderIds, tableName) => {
+    setShowCancelOrdersModal(true);
+    setOrdersToCancel({
+      orderIds,
+      tableName,
     });
   };
 
-  const handleHideCancelItemModal = () => {
-    setShowCancelItemModal(false);
-    setItemToCancel(null);
+  const handleHideCancelOrdersModal = () => {
+    setShowCancelOrdersModal(false);
+    setOrdersToCancel({
+      orderIds: [],
+      tableName: "",
+    });
   };
 
   useEffect(() => {
@@ -182,11 +192,11 @@ export default function Tables() {
   }, [data?.tables]);
 
   useEffect(() => {
-    console.log(tableVisibility);
-  }, [tableVisibility]);
-
-  useEffect(() => {
-    console.log(data?.tables, data?.tables.length);
+    console.log(
+      data?.tables,
+      data?.tables.length,
+      data?.tables["1"]?.tab[0]?.createdAt
+    );
   }, [data?.tables]);
 
   return (
@@ -203,12 +213,11 @@ export default function Tables() {
       />
 
       <CancelItemModal
-        show={showCancelItemModal}
-        onHide={handleHideCancelItemModal}
-        socket={socket}
+        show={showCancelOrdersModal}
+        onHide={handleHideCancelOrdersModal}
         restaurantName={data?.username}
-        tabName={itemToCancel?.table}
-        itemName={itemToCancel?.item}
+        tableName={ordersToCancel?.tableName}
+        orderIds={ordersToCancel?.orderIds}
         sendNotification={sendNotification}
       />
 
@@ -242,7 +251,7 @@ export default function Tables() {
                   tab={data.tab}
                   name={name}
                   onCloseTab={handleShowCloseModal}
-                  onCancelItem={handleShowCancelItemModal}
+                  onCancelItem={handleShowCancelOrdersModal}
                   sessionActive={data.sessionActive}
                   isActive={tableVisibility[name]}
                 />
@@ -336,88 +345,116 @@ function Table({
       />
 
       <div className="item-list-header">
-        <ActionBanner selectedItems={selectedItems} />
+        <ActionBanner
+          selectedItems={selectedItems}
+          onDelete={() => onCancelItem(selectedItems, name)}
+        />
         <span>Item</span>
         <span>#</span>
+        <span>Elapsed Time</span>
         <span>Status</span>
         <span>Customer</span>
         <span>Total</span>
-        <span></span>
+        <span>Tendered</span>
       </div>
 
-      <ul className="item-list">
-        {filteredItems?.length > 0 ? (
-          filteredItems?.map((item, i) => {
-            let statusClass;
-
-            switch (item.status) {
-              case "Placed":
-                statusClass = "order-placed";
-                break;
-              case "Prepared":
-                statusClass = "order-prepared";
-                break;
-              case "Delivered":
-                statusClass = "order-delivered";
-                break;
-              case "Tendered":
-                statusClass = "order-tendered";
-                break;
-              case "Error":
-                statusClass = "order-error";
-                break;
-              default:
-                statusClass = "";
-            }
-
-            return (
-              <li className="item" key={i}>
-                <label className="item-label">
-                  <Form.Check
-                    className="item-check"
-                    type="checkbox"
-                    checked={selectedItems.includes(item.orderId)}
-                    onChange={() => handleToggleItem(item.orderId)}
-                  />
-                  <div className="item-name">{item.item.name}</div>
-                </label>
-                <div className="item-quantity">
-                  <small>&#x2715;</small>
-                  <span>{item.quantity}</span>
-                </div>
-                <div className={`status-badge ${statusClass}`}>
-                  {item.status}
-                </div>
-                <div className="item-customer-name">
-                  <em>{item.customer_name}</em>
-                </div>
-                <div className="item-price">
-                  <span>&yen;</span>
-                  <strong>{item.item.price * item.quantity}</strong>
-                </div>
-                <div className="item-delete-button">
-                  <button onClick={() => onCancelItem(item.item.name, name)}>
-                    <i className="bx bx-trash"></i>
-                  </button>
-                </div>
-                {item.special_instructions !== "None" ? (
-                  <em className="item-special-instructions">
-                    {item.special_instructions}
-                  </em>
-                ) : null}
-              </li>
-            );
-          })
-        ) : (
-          <p>No results</p>
-        )}
-      </ul>
+      <TableItemList
+        items={filteredItems}
+        selectedItems={selectedItems}
+        onToggleItem={handleToggleItem}
+      />
 
       <footer className="table-footer">
         <span className="table-total">Grand Total:</span>
         <strong>&yen; {totalPrice}</strong>
       </footer>
     </fieldset>
+  );
+}
+
+function TableItemList({ items, selectedItems, onToggleItem, onCancelItem }) {
+  return (
+    <ul className="item-list">
+      {items?.length > 0 ? (
+        items?.map((item, i) => {
+          let statusClass;
+
+          switch (item.status) {
+            case "Placed":
+              statusClass = "order-placed";
+              break;
+            case "Prepared":
+              statusClass = "order-prepared";
+              break;
+            case "Delivered":
+              statusClass = "order-delivered";
+              break;
+            case "Error":
+              statusClass = "order-error";
+              break;
+            default:
+              statusClass = "";
+          }
+
+          return (
+            <li className="item" key={i}>
+              <label className="item-label">
+                <Form.Check
+                  className="item-check"
+                  type="checkbox"
+                  checked={selectedItems.includes(item.orderId)}
+                  onChange={() => onToggleItem(item.orderId)}
+                />
+                <strong className="item-name">{item.item.name}</strong>
+              </label>
+              <div className="item-quantity">
+                <small>&#x2715;</small>
+                <span>{item.quantity}</span>
+              </div>
+              <ElapsedTime startTime={item.createdAt} />
+              <div className={`status-badge ${statusClass}`}>{item.status}</div>
+              <div className="item-customer-name">
+                <em>{item.customerName}</em>
+              </div>
+              <div className="item-price">
+                <span>&yen;</span>
+                <strong>{item.item.price * item.quantity}</strong>
+              </div>
+              <div className="item-tendered">
+                {item.tendered ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="green"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="white"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                    />
+                  </svg>
+                ) : null}
+              </div>
+              <div className="item-delete-button">
+                <button onClick={() => onCancelItem([item.orderId], name)}>
+                  <i className="bx bx-trash"></i>
+                </button>
+              </div>
+              {item.specialInstructions !== "None" ? (
+                <em className="item-special-instructions">
+                  {item.specialInstructions}
+                </em>
+              ) : null}
+            </li>
+          );
+        })
+      ) : (
+        <p>No results</p>
+      )}
+    </ul>
   );
 }
 

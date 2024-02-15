@@ -16,6 +16,7 @@ const blankFormData = {
   available: true,
   allergies: [],
   ingredients: [],
+  thumbnail: "",
 };
 
 export default function MenuItemModal({
@@ -28,6 +29,7 @@ export default function MenuItemModal({
   const { sendNotification } = useNotification();
   const [prevItemName, setPrevItemName] = useState(null);
   const [formData, setFormData] = useState(null);
+  const [image, setImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ export default function MenuItemModal({
     try {
       if (socket) {
         if (mode === "New") {
+          axios.defaults.headers.common["Content-Type"] = "application/json";
           axios
             .post("http://localhost:8008/menu/addMenuItem", {
               item: formData,
@@ -82,11 +85,22 @@ export default function MenuItemModal({
             );
           });*/
         } else if (mode === "Edit") {
+          axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
+          /*const data = new FormData();
+
+          data.append("item", formData);
+          data.append("image", image);
+          data.append("prevItemName", prevItemName);
+          data.append("restaurantName", "makoto");
+
+          console.log("image", data);*/
+
           axios
             .post("http://localhost:8008/menu/updateMenuItem", {
               item: formData,
+              image,
               prevItemName,
-              restaurantName: "makoto", // TODO
+              restaurantName: "makoto",
             })
             .then((response) => {
               console.log(response);
@@ -112,6 +126,7 @@ export default function MenuItemModal({
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(e.target, formData);
     const newValue =
       type === "checkbox"
         ? checked
@@ -125,7 +140,7 @@ export default function MenuItemModal({
   };
 
   useEffect(() => {
-    if (defaultData !== undefined && defaultData !== null) {
+    if (defaultData) {
       setFormData({
         ...blankFormData,
         ...defaultData,
@@ -135,6 +150,10 @@ export default function MenuItemModal({
       setFormData(blankFormData);
     }
   }, [defaultData]);
+
+  useEffect(() => {
+    console.log("Image", image);
+  }, [image]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -241,6 +260,18 @@ export default function MenuItemModal({
               name="available"
               checked={formData?.available}
               onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Thumbnail:</Form.Label>
+            <input
+              type="file"
+              name="thumbnail"
+              accept="image/png, image/jpeg"
+              onChange={(e) => {
+                console.log(e.target.files[0]);
+                setImage(e.target.files[0]);
+              }}
             />
           </Form.Group>
         </Modal.Body>

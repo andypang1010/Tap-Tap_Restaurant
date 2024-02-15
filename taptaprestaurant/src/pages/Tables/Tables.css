@@ -127,12 +127,18 @@
 }
 
 .item-list-header {
+  font-size: 0.7rem;
   display: grid;
   align-items: center;
   position: relative;
-  grid-template-columns: 6fr 3rem 3fr 3fr 4.5rem 1fr;
+  grid-template-columns: 6fr 3rem 3fr 5rem 3fr 3.5rem 2fr 1fr;
   padding: 0.2rem 1.6rem 0.2rem 0.8rem;
   width: 100%;
+  text-align: center;
+}
+
+.item-list-header > * {
+  white-space: nowrap;
 }
 
 .item-list {
@@ -157,8 +163,13 @@
 .item {
   padding: 0.2rem 1.6rem 0.2rem 0.8rem;
   display: grid;
-  grid-template-columns: 6fr 3rem 3fr 3fr 4.5rem 1fr;
+  grid-template-columns: 6fr 3rem 3fr 5rem 3fr 3.5rem 2fr 1fr;
   align-items: center;
+}
+
+.item .elapsed-time {
+  font-size: 0.7rem;
+  text-align: center;
 }
 
 .item-label {
@@ -172,7 +183,8 @@
 }
 
 .item-name {
-  font-size: 90%;
+  width: 7rem;
+  font-size: 80%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -186,6 +198,16 @@
   padding-right: 0.8rem;
 }
 
+.item-tendered {
+  padding-left: 0.6rem;
+  text-align: center;
+}
+
+.item-tendered svg {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
 .item-special-instructions {
   font-size: 0.9rem;
   padding-left: 1.6rem;
@@ -195,6 +217,8 @@
 .item-customer-name {
   padding-left: 0.8rem;
   color: #666;
+  text-align: center;
+  font-size: 0.9rem;
 }
 
 .item-price {
@@ -203,6 +227,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 0.8rem;
 }
 
 .item-delete-button {

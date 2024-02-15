@@ -2,22 +2,23 @@ import { useState, useEffect } from "react";
 
 export default function ElapsedTime({ startTime }) {
   const [elapsedTime, setElapsedTime] = useState(null);
-  const seconds = Math.floor(elapsedTime / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const startTimestamp = new Date(startTime).getTime();
+  const seconds = Math.floor((elapsedTime / 1000) % 60);
+  const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+  const hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setElapsedTime(new Date().getTime() - startTimestamp);
+      setElapsedTime(Date.now() - startTime);
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [startTimestamp]);
+  }, [startTime]);
+
+  const fillZeroes = (value) => ("0" + value).slice(-2);
 
   return (
-    <span>
-      {hours}:{minutes}:{seconds}
+    <span className="elapsed-time mono">
+      {fillZeroes(hours)}:{fillZeroes(minutes)}:{fillZeroes(seconds)}
     </span>
   );
 }

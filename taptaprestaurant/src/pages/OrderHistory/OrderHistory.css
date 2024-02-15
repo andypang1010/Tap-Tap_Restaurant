@@ -1,0 +1,20 @@
+.order-history-item {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 15rem 3fr 3fr 1fr;
+}
+
+.order-history-item svg {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 6fr 3rem 3fr 5rem 3.5rem;
+}
+
+.order-item .item-name {
+  width: auto;
+}
