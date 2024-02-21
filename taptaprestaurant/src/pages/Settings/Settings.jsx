@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import TagInput from "../../components/TagInput/TagInput";
 import "./Settings.css";
-import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
+import { Form, Tab, Tabs } from "react-bootstrap";
 import axios from "axios";
 import EditableField from "../../components/EditableField";
 import { SocketContext } from "../../App";
@@ -170,7 +169,7 @@ function SettingsPanel({ socket, data }) {
           </Tab>
           <Tab eventKey="menu" title="Menu">
             <fieldset className="light-bx-shadow box mb-3">
-              <h5 className="mb-3">Display to Customers:</h5>
+              <legend className="light-bx-shadow">Display to Customers:</legend>
               <Form.Check
                 id="menu_display_description"
                 type="checkbox"
@@ -203,8 +202,9 @@ function SettingsPanel({ socket, data }) {
                 checked={formData?.menu_display_alcohol_label}
                 onChange={handleInputChange}
               />
-
-              <h5 className="mb-3">Orders:</h5>
+            </fieldset>
+            <fieldset className="light-bx-shadow box">
+              <legend className="light-bx-shadow">Orders:</legend>
 
               <Form.Label>Max Quantity per Order:</Form.Label>
               <Form.Control
