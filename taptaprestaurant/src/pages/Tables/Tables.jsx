@@ -7,7 +7,6 @@ import { useNotification } from "../../components/NotificationContext";
 import { SocketContext } from "../../App";
 import Header from "../../components/Header";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import ElapsedTime from "../../components/ElapsedTime";
 
 function CloseTabTooltip() {
@@ -147,7 +146,6 @@ export default function Tables() {
     tableName: "",
   });
   const [tableVisibility, setTableVisibility] = useState({});
-  const navigate = useNavigate();
 
   const handleToggleTable = (tableName) => {
     setTableVisibility((prevVisibility) => {
@@ -404,6 +402,7 @@ function TableItemList({ items, selectedItems, onToggleItem, onCancelItem }) {
                   type="checkbox"
                   checked={selectedItems.includes(item.orderId)}
                   onChange={() => onToggleItem(item.orderId)}
+                  disabled={item.tendered}
                 />
                 <strong className="item-name">{item.item.name}</strong>
               </label>
@@ -438,11 +437,14 @@ function TableItemList({ items, selectedItems, onToggleItem, onCancelItem }) {
                   </svg>
                 ) : null}
               </div>
-              <div className="item-delete-button">
-                <button onClick={() => onCancelItem([item.orderId], name)}>
-                  <i className="bx bx-trash"></i>
-                </button>
-              </div>
+              {item.tendered ? null : (
+                <div className="item-delete-button">
+                  <button onClick={() => onCancelItem([item.orderId], name)}>
+                    <i className="bx bx-trash"></i>
+                  </button>
+                </div>
+              )}
+
               {item.specialInstructions !== "None" ? (
                 <em className="item-special-instructions">
                   {item.specialInstructions}

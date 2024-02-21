@@ -8,6 +8,7 @@ import ActionBanner from "../../components/ActionBanner/ActionBanner";
 import { AuthContext, SocketContext } from "../../App";
 import { useNotification } from "../../components/NotificationContext";
 import Header from "../../components/Header";
+import Unauthorized from "../../components/Unauthorized";
 
 function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
   const userString =
@@ -75,7 +76,26 @@ function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
 export default function Users() {
   const { sendNotification } = useNotification();
   const { data } = useContext(SocketContext);
-  const { user } = useContext(AuthContext);
+  const { user, authenticated } = useContext(AuthContext);
+
+  return (
+    <main className="main-content">
+      <Header title="Users" pageTitle="Users" />
+
+      {user?.roles[0] === "Admin" && authenticated ? (
+        <UserList
+          users={data?.users}
+          user={user}
+          sendNotification={sendNotification}
+        />
+      ) : (
+        <Unauthorized />
+      )}
+    </main>
+  );
+}
+
+function UserList({ users, user, sendNotification }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);
@@ -106,66 +126,61 @@ export default function Users() {
   useEffect(() => {
     setSelectedUsers([]);
   }, [filteredItems]);
-
   return (
-    <main className="main-content">
-      <Header title="Users" pageTitle="Users" />
+    <div className="user-list-wrapper">
+      <Pagination
+        itemsPerPage={10}
+        itemList={users}
+        filteredItems={filteredItems}
+        onFilteredItems={setFilteredItems}
+      />
 
-      <div className="user-list-wrapper">
-        <Pagination
-          itemsPerPage={10}
-          itemList={data?.users}
-          filteredItems={filteredItems}
-          onFilteredItems={setFilteredItems}
+      <DeleteUserModal
+        show={showDeleteModal}
+        onHide={handleHideDeleteModal}
+        usernames={usersToDelete}
+        sendNotification={sendNotification}
+      />
+
+      <div className="user-list-header">
+        <ActionBanner
+          selectedItems={selectedUsers}
+          onDelete={handleShowDeleteModal}
         />
-
-        <DeleteUserModal
-          show={showDeleteModal}
-          onHide={handleHideDeleteModal}
-          usernames={usersToDelete}
-          sendNotification={sendNotification}
-        />
-
-        <div className="user-list-header">
-          <ActionBanner
-            selectedItems={selectedUsers}
-            onDelete={handleShowDeleteModal}
-          />
-          <span></span>
-          <span>Full Name</span>
-          <span>Status</span>
-          <span>Phone</span>
-          <span>Email</span>
-          <span>Roles</span>
-          <span>Actions</span>
-        </div>
-
-        <ul className="user-list">
-          {filteredItems?.length > 0 ? (
-            filteredItems?.map((item, i) => (
-              <User
-                key={i}
-                item={item}
-                user={user}
-                onShowDeleteModal={handleShowDeleteModal}
-                onToggleUser={handleToggleUser}
-                selected={selectedUsers.includes(item.username)}
-              />
-            ))
-          ) : (
-            <p>No results</p>
-          )}
-        </ul>
-
-        <Link
-          to="/Users/NewUser"
-          role="button"
-          className="action-button red-hover"
-        >
-          Add New User
-        </Link>
+        <span></span>
+        <span>Full Name</span>
+        <span>Status</span>
+        <span>Phone</span>
+        <span>Email</span>
+        <span>Roles</span>
+        <span>Actions</span>
       </div>
-    </main>
+
+      <ul className="user-list">
+        {filteredItems?.length > 0 ? (
+          filteredItems?.map((item, i) => (
+            <User
+              key={i}
+              item={item}
+              user={user}
+              onShowDeleteModal={handleShowDeleteModal}
+              onToggleUser={handleToggleUser}
+              selected={selectedUsers.includes(item.username)}
+            />
+          ))
+        ) : (
+          <p>No results</p>
+        )}
+      </ul>
+
+      <Link
+        to="/Users/NewUser"
+        role="button"
+        className="action-button red-hover"
+      >
+        Add New User
+      </Link>
+    </div>
   );
 }
 

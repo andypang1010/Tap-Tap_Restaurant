@@ -176,16 +176,18 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Temporary Password:</Form.Label>
-          <Form.Control
-            placeholder="Fill in or leave blank for random password."
-            type="text"
-            name="tempPassword"
-            value={formData?.tempPassword}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
+        {mode === "New" ? (
+          <Form.Group className="mb-3">
+            <Form.Label>Temporary Password:</Form.Label>
+            <Form.Control
+              placeholder="Fill in or leave blank for random password."
+              type="text"
+              name="tempPassword"
+              value={formData?.tempPassword}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+        ) : null}
 
         <Form.Group className="mb-3 user-roles">
           <Form.Label>Roles:</Form.Label>

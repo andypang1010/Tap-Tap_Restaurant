@@ -1,28 +1,30 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Header from "../../components/Header";
-import { SocketContext } from "../../App";
+import { AuthContext, SocketContext } from "../../App";
 import Accordion from "react-bootstrap/Accordion";
 import "./OrderHistory.css";
 import Pagination from "../../components/Pagination/Pagination";
+import Unauthorized from "../../components/Unauthorized";
 
 export default function OrderHistory() {
   const { data } = useContext(SocketContext);
+  const { authenticated } = useContext(AuthContext);
 
   return (
     <main className="main-content">
       <Header title="Order History" pageTitle="Order History" />
 
-      <OrderHistoryList history={data?.orderHistory} />
+      {authenticated ? (
+        <OrderHistoryList history={data?.orderHistory} />
+      ) : (
+        <Unauthorized />
+      )}
     </main>
   );
 }
 
 function OrderHistoryList({ history }) {
   const [filteredItems, setFilteredItems] = useState(null);
-
-  useEffect(() => {
-    console.log(history);
-  }, [history]);
 
   return (
     <>
@@ -81,9 +83,6 @@ function OrderHistoryList({ history }) {
 }
 
 function Item({ item }) {
-  useEffect(() => {
-    console.log(item);
-  }, [item]);
   return (
     <li className="order-item">
       <strong className="item-name">{item.item.name}</strong>

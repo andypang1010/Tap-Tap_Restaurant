@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TagInput from "../../components/TagInput/TagInput";
 import "./Settings.css";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
 import axios from "axios";
 import EditableField from "../../components/EditableField";
 import { SocketContext } from "../../App";
@@ -96,133 +96,132 @@ function SettingsPanel({ socket, data }) {
   return (
     <section className="settings-panel">
       <Form>
-        <fieldset className="light-bx-shadow box mb-3">
-          <legend className="light-bx-shadow">Restaurant</legend>
+        <Tabs defaultActiveKey="restaurant" className="mb-3" fill>
+          <Tab eventKey="restaurant" title="Restaurant">
+            <fieldset className="light-bx-shadow box mb-3">
+              <div className="grid grid--2-cols">
+                <div>
+                  <EditableField
+                    icon="bx bx-comment-detail"
+                    text={data?.name}
+                    onChange={(value) => {
+                      data.name = value;
+                      handleAccountUpdate();
+                    }}
+                  />
+                  <EditableField
+                    icon="bx bx-phone"
+                    text={data?.phone}
+                    onChange={(value) => {
+                      data.phone = value;
+                      handleAccountUpdate();
+                    }}
+                  />
+                  <EditableField
+                    as="textarea"
+                    icon="bx bx-building-house"
+                    text={data?.address}
+                    onChange={(value) => {
+                      data.address = value;
+                      handleAccountUpdate();
+                    }}
+                  />
+                </div>
 
-          <div className="grid grid--2-cols">
-            <div>
-              <EditableField
-                icon="bx bx-comment-detail"
-                text={data?.name}
-                onChange={(value) => {
-                  data.name = value;
-                  handleAccountUpdate();
+                <div>
+                  <EditableField
+                    icon="bx bx-globe"
+                    prependText="Language:"
+                    text={data?.language}
+                    onChange={(value) => {
+                      data.language = value;
+                      handleAccountUpdate();
+                    }}
+                  />
+                  <EditableField
+                    icon="bx bx-money"
+                    prependText="Currency:"
+                    text={data?.currency}
+                    onChange={(value) => {
+                      data.currency = value;
+                      handleAccountUpdate();
+                    }}
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </Tab>
+          <Tab eventKey="tables" title="Tables">
+            <fieldset className="light-bx-shadow box mb-3">
+              <TagInput
+                tags={tableNames}
+                onSetTags={(tags) => {
+                  setTableNames(tags);
                 }}
               />
-              <EditableField
-                icon="bx bx-phone"
-                text={data?.phone}
-                onChange={(value) => {
-                  data.phone = value;
-                  handleAccountUpdate();
-                }}
+
+              <button
+                className="light-bx-shadow action-button red-hover"
+                onClick={handleUpdateTables}
+              >
+                Set Table Names
+              </button>
+            </fieldset>
+          </Tab>
+          <Tab eventKey="menu" title="Menu">
+            <fieldset className="light-bx-shadow box mb-3">
+              <h5 className="mb-3">Display to Customers:</h5>
+              <Form.Check
+                id="menu_display_description"
+                type="checkbox"
+                label="Description"
+                name="menu_display_description"
+                checked={formData?.menu_display_description}
+                onChange={handleInputChange}
               />
-              <EditableField
-                as="textarea"
-                icon="bx bx-building-house"
-                text={data?.address}
-                onChange={(value) => {
-                  data.address = value;
-                  handleAccountUpdate();
-                }}
+              <Form.Check
+                id="menu_display_vegetarian_label"
+                type="checkbox"
+                label="Vegetarian Label"
+                name="menu_display_vegetarian_label"
+                checked={formData?.menu_display_vegetarian_label}
+                onChange={handleInputChange}
               />
-            </div>
-
-            <div>
-              <EditableField
-                icon="bx bx-globe"
-                prependText="Language:"
-                text={data?.language}
-                onChange={(value) => {
-                  data.language = value;
-                  handleAccountUpdate();
-                }}
+              <Form.Check
+                id="menu_display_vegan_label"
+                type="checkbox"
+                label="Vegan Label"
+                name="menu_display_vegan_label"
+                checked={formData?.menu_display_vegan_label}
+                onChange={handleInputChange}
               />
-              <EditableField
-                icon="bx bx-money"
-                prependText="Currency:"
-                text={data?.currency}
-                onChange={(value) => {
-                  data.currency = value;
-                  handleAccountUpdate();
-                }}
+              <Form.Check
+                id="menu_display_alcohol_label"
+                type="checkbox"
+                label="Alcohol Label"
+                name="menu_display_alcohol_label"
+                checked={formData?.menu_display_alcohol_label}
+                onChange={handleInputChange}
               />
-            </div>
-          </div>
-        </fieldset>
 
-        <fieldset className="light-bx-shadow box mb-3">
-          <legend className="light-bx-shadow">Tables</legend>
+              <h5 className="mb-3">Orders:</h5>
 
-          <TagInput
-            tags={tableNames}
-            onSetTags={(tags) => {
-              setTableNames(tags);
-            }}
-          />
-
-          <button
-            className="light-bx-shadow action-button red-hover"
-            onClick={handleUpdateTables}
-          >
-            Set Table Names
-          </button>
-        </fieldset>
-
-        <fieldset className="light-bx-shadow box mb-3">
-          <legend className="light-bx-shadow">Menu</legend>
-
-          <h5 className="mb-3">Display to Customers:</h5>
-          <Form.Check
-            id="menu_display_description"
-            type="checkbox"
-            label="Description"
-            name="menu_display_description"
-            checked={formData?.menu_display_description}
-            onChange={handleInputChange}
-          />
-          <Form.Check
-            id="menu_display_vegetarian_label"
-            type="checkbox"
-            label="Vegetarian Label"
-            name="menu_display_vegetarian_label"
-            checked={formData?.menu_display_vegetarian_label}
-            onChange={handleInputChange}
-          />
-          <Form.Check
-            id="menu_display_vegan_label"
-            type="checkbox"
-            label="Vegan Label"
-            name="menu_display_vegan_label"
-            checked={formData?.menu_display_vegan_label}
-            onChange={handleInputChange}
-          />
-          <Form.Check
-            id="menu_display_alcohol_label"
-            type="checkbox"
-            label="Alcohol Label"
-            name="menu_display_alcohol_label"
-            checked={formData?.menu_display_alcohol_label}
-            onChange={handleInputChange}
-          />
-
-          <h5 className="mb-3">Orders:</h5>
-
-          <Form.Label>Max Quantity per Order:</Form.Label>
-          <Form.Control
-            type="number"
-            min="1"
-            step="1"
-            placeholder="#"
-            name="menu_order_max_quantity"
-            value={formData?.menu_order_max_quantity}
-            onChange={handleInputChange}
-          />
-        </fieldset>
-
-        <fieldset className="light-bx-shadow box mb-3">
-          <legend className="light-bx-shadow">Users</legend>
-        </fieldset>
+              <Form.Label>Max Quantity per Order:</Form.Label>
+              <Form.Control
+                type="number"
+                min="1"
+                step="1"
+                placeholder="#"
+                name="menu_order_max_quantity"
+                value={formData?.menu_order_max_quantity}
+                onChange={handleInputChange}
+              />
+            </fieldset>
+          </Tab>
+          <Tab eventKey="users" title="Users">
+            <fieldset className="light-bx-shadow box mb-3"></fieldset>
+          </Tab>
+        </Tabs>
       </Form>
     </section>
   );

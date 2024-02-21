@@ -1,27 +1,6 @@
+import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-const sideBarData = [
-  {
-    icon: "bx bx-grid-alt",
-    linkTo: "/Tables",
-    text: "Tables",
-  },
-  {
-    icon: "bx bx-history",
-    linkTo: "/OrderHistory",
-    text: "Order History",
-  },
-  {
-    icon: "bx bx-food-menu",
-    linkTo: "/Menu",
-    text: "Menu",
-  },
-  {
-    icon: "bx bx-group",
-    linkTo: "/Users",
-    text: "Users",
-  },
-];
+import { AuthContext } from "../App";
 
 const footerSideBarData = [
   {
@@ -53,20 +32,26 @@ function Logo() {
 }
 
 function SideBarItems() {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="sidebar-items">
       <Logo />
-      {sideBarData.map((item) => (
-        <SideBarItem
-          icon={item.icon}
-          linkTo={item.linkTo}
-          text={item.text}
-          key={item.text}
-        />
-      ))}
-      {footerSideBarData.map((item, i) => (
-        <FooterSideBarItem icon={item.icon} linkTo={item.linkTo} key={i} />
-      ))}
+      <SideBarItem icon="bx bx-grid-alt" linkTo="/Tables" text="Tables" />
+      <SideBarItem
+        icon="bx bx-history"
+        linkTo="/OrderHistory"
+        text="Order History"
+      />
+      <SideBarItem icon="bx bx-food-menu" linkTo="/Menu" text="Menu" />
+      {user?.roles[0] === "Admin" ? (
+        <SideBarItem icon="bx bx-group" linkTo="/Users" text="Users" />
+      ) : null}
+      <div className="sidebar-footer">
+        {footerSideBarData.map((item, i) => (
+          <FooterSideBarItem icon={item.icon} linkTo={item.linkTo} key={i} />
+        ))}
+      </div>
     </div>
   );
 }

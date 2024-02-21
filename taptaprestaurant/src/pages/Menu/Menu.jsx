@@ -3,10 +3,11 @@ import Pagination from "../../components/Pagination/Pagination";
 import "./Menu.css";
 import { Tooltip, OverlayTrigger, Modal, Form, Button } from "react-bootstrap";
 import MenuItemModal from "../../components/MenuItemModal";
-import { SocketContext } from "../../App";
+import { AuthContext, SocketContext } from "../../App";
 import axios from "axios";
 import { useNotification } from "../../components/NotificationContext";
 import Header from "../../components/Header";
+import Unauthorized from "../../components/Unauthorized";
 
 function VegetarianTooltip() {
   return (
@@ -119,6 +120,7 @@ export default function Menu() {
 }
 
 function MenuBox({ data, socket }) {
+  const { user } = useContext(AuthContext);
   const [sortOption, setSortOption] = useState("Type");
   const [activeButton, setActiveButton] = useState("All");
   const [showModal, setShowModal] = useState(false);
@@ -290,17 +292,20 @@ function MenuBox({ data, socket }) {
                 item={item}
                 onShowEditModal={handleShowEditModal}
                 onShowDeleteModal={handleShowDeleteModal}
+                user={user}
               />
             ))
           ) : (
             <p>No results</p>
           )}
-          <button
-            className="action-button light-bx-shadow red-hover"
-            onClick={handleShowNewModal}
-          >
-            New Menu Item
-          </button>
+          {user?.roles[0] === "Admin" ? (
+            <button
+              className="action-button light-bx-shadow red-hover"
+              onClick={handleShowNewModal}
+            >
+              New Menu Item
+            </button>
+          ) : null}
         </ul>
       </section>
     </>
@@ -370,7 +375,7 @@ function DeleteItemModal({ show, onHide, item }) {
   );
 }
 
-function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
+function MenuItem({ item, onShowEditModal, onShowDeleteModal, user }) {
   const [border, setBorder] = useState("border-main");
 
   useEffect(() => {
@@ -412,30 +417,32 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
 
   return (
     <li className={`menu-item-box ${border}`}>
-      <div className="dropdown action-list">
-        <button className="dropbtn">
-          <i className="bx bx-dots-horizontal"></i>
-        </button>
-        <div className="dropdown-content">
-          <button
-            className="d-flex align-items-center justify-content-between gap-2"
-            onClick={() => onShowEditModal(item)}
-          >
-            <span>Edit</span>
-            <i className="bx bx-edit-alt"></i>
+      {user?.roles[0] === "Admin" ? (
+        <div className="dropdown action-list">
+          <button className="dropbtn">
+            <i className="bx bx-dots-horizontal"></i>
           </button>
-          <button
-            className="d-flex align-items-center justify-content-between gap-2"
-            onClick={(e) => {
-              e.preventDefault();
-              onShowDeleteModal(item);
-            }}
-          >
-            <span>Delete</span>
-            <i className="bx bx-trash"></i>
-          </button>
+          <div className="dropdown-content">
+            <button
+              className="d-flex align-items-center justify-content-between gap-2"
+              onClick={() => onShowEditModal(item)}
+            >
+              <span>Edit</span>
+              <i className="bx bx-edit-alt"></i>
+            </button>
+            <button
+              className="d-flex align-items-center justify-content-between gap-2"
+              onClick={(e) => {
+                e.preventDefault();
+                onShowDeleteModal(item);
+              }}
+            >
+              <span>Delete</span>
+              <i className="bx bx-trash"></i>
+            </button>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <span className="menu-item-name">
         {item.name}{" "}
@@ -477,19 +484,6 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal }) {
             </div>
           </div>
         )}
-        {/*{item.allergies.length > 0 && (
-          <OverlayTrigger
-            placement="top"
-            overlay={AllergyTooltip(item.allergies)}
-          >
-            <i className="bx bx-plus-medical allergy-icon"></i>
-          </OverlayTrigger>
-        )}
-        {item.vegetarian && (
-          <OverlayTrigger placement="top" overlay={VegetarianTooltip()}>
-            <i className="bx bxs-leaf vegetarian-icon"></i>
-          </OverlayTrigger>
-        )}*/}
       </div>
     </li>
   );

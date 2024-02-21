@@ -178,6 +178,7 @@ function ResetPasswordForm({ username }) {
       <footer className="form-button-list">
         <Button
           disabled={
+            formData?.oldPassword?.length > 0 &&
             formData?.newPassword === retypePassword &&
             passwordRegex.test(formData?.newPassword)
               ? null

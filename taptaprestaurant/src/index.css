@@ -83,6 +83,22 @@ select.form-select option:hover {
   background-color: rgb(210, 115, 115, 0.4);
 }
 
+.nav-link {
+  color: #444;
+  font-weight: bold;
+  box-shadow: none;
+}
+
+.nav-link:hover {
+  color: var(--main-taptap-color);
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: var(--main-taptap-color);
+  box-shadow: none;
+}
+
 /*
 UTILITY
 */
@@ -288,11 +304,6 @@ input[type="number"] {
   margin-bottom: 1.6rem;
 }
 
-.sidebar-items *:nth-child(6) {
-  margin-top: auto;
-  margin-bottom: 0;
-}
-
 .sidebar-item {
   padding: 8px;
   line-height: 0.75rem;
@@ -332,6 +343,13 @@ input[type="number"] {
 .footer-sidebar.sidebar-item .sidebar-link {
   height: 3.2rem;
   width: 3.2rem;
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
 }
 
 .page-title h2 {
@@ -572,4 +590,39 @@ button.dummy {
 
 .dropdown:hover .dropbtn {
   background-color: #f1f1f1;
+}
+
+.unauthorized {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.2rem;
+  text-align: center;
+}
+
+.no-access-icon {
+  font-size: 7.2rem;
+  position: relative;
+}
+
+.no-access-icon::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9.6rem;
+  height: 9.6rem;
+  background-color: var(--taptap-light-red);
+  content: " ";
+  border-radius: 1000px;
+  z-index: -2;
+}
+
+.unauthorized-text {
+  font-size: 3.2rem;
+  font-weight: bold;
+}
+
+.contact-system-administrator {
+  font-size: 1.8rem;
+  color: #777;
 }
