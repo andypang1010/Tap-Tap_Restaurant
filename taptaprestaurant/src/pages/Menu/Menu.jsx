@@ -416,11 +416,14 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal, user }) {
 
   return (
     <li className={`menu-item-box ${border}`}>
-      {item.imageUrl ? (
-        <div className="menu-item-img-container">
+      <div
+        className="menu-item-img-container"
+        style={{ backgroundImage: `url(${item.imageUrl})` }}
+      >
+        {/*{item.imageUrl ? (
           <img className="menu-item-img" src={item.imageUrl} alt={item.name} />
-        </div>
-      ) : null}
+        ) : null}*/}
+      </div>
       <div className="menu-item-details">
         {user?.roles[0] === "Admin" ? (
           <div className="dropdown action-list">

@@ -1,6 +1,6 @@
 .menu-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(25.5rem, 1fr));
   gap: 1.6rem 0.8rem;
   align-items: center;
   flex-wrap: wrap;
@@ -63,8 +63,10 @@
   position: relative;
   height: 9rem;
   width: 25rem;
-  display: flex;
+  display: grid;
   align-items: stretch;
+  justify-content: space-between;
+  grid-template-columns: 9rem 15rem;
   border-radius: 10px;
   border: 6px solid #999;
   box-shadow: 1px 1px 2px #ccc;
@@ -80,9 +82,12 @@
 }
 
 .menu-item-img-container {
-  width: 12rem;
   position: relative;
-  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  scale: 1.02;
+  border-radius: 6px;
+  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
 }
 
 .menu-item-details {

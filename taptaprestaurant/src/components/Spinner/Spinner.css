@@ -1,0 +1,40 @@
+.spinner-container {
+  height: 2.4rem;
+  width: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2000;
+}
+
+.ring {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 1000px;
+  border: 6px solid transparent;
+  animation: spin 1s linear infinite;
+}
+
+.ring-1 {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+  animation-duration: 1000ms;
+  border-top-color: rgb(252 165 165);
+}
+
+.ring-2 {
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 750ms;
+  animation-duration: 750ms;
+  border-top-color: rgb(220 38 38);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
