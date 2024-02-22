@@ -463,7 +463,7 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal, user }) {
         </div>
 
         <div className="menu-item-datalists">
-          {item.ingredients.length > 0 && (
+          {item.ingredients?.length > 0 && (
             <div className="dropdown">
               <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
                 <span>Ingred.:</span>
@@ -476,7 +476,7 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal, user }) {
               </div>
             </div>
           )}
-          {item.allergies.length > 0 && (
+          {item.allergies?.length > 0 && (
             <div className="dropdown">
               <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
                 <span>Allergies:</span>
