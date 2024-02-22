@@ -333,6 +333,7 @@ input[type="number"] {
 .active-sidebar-link {
   color: var(--main-taptap-color);
   background-color: rgb(210, 115, 115, 0.15);
+  box-shadow: 0 0 0.1rem var(--main-taptap-color);
 }
 
 .active-sidebar-link i {

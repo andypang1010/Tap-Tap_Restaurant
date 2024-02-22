@@ -86,14 +86,6 @@ export default function MenuItemModal({
           });*/
         } else if (mode === "Edit") {
           axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
-          /*const data = new FormData();
-
-          data.append("item", formData);
-          data.append("image", image);
-          data.append("prevItemName", prevItemName);
-          data.append("restaurantName", "makoto");
-
-          console.log("image", data);*/
 
           axios
             .post("http://localhost:8008/menu/updateMenuItem", {

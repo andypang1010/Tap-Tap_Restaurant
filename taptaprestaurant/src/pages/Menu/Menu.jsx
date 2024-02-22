@@ -7,7 +7,6 @@ import { AuthContext, SocketContext } from "../../App";
 import axios from "axios";
 import { useNotification } from "../../components/NotificationContext";
 import Header from "../../components/Header";
-import Unauthorized from "../../components/Unauthorized";
 
 function VegetarianTooltip() {
   return (
@@ -417,73 +416,80 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal, user }) {
 
   return (
     <li className={`menu-item-box ${border}`}>
-      {user?.roles[0] === "Admin" ? (
-        <div className="dropdown action-list">
-          <button className="dropbtn">
-            <i className="bx bx-dots-horizontal"></i>
-          </button>
-          <div className="dropdown-content">
-            <button
-              className="d-flex align-items-center justify-content-between gap-2"
-              onClick={() => onShowEditModal(item)}
-            >
-              <span>Edit</span>
-              <i className="bx bx-edit-alt"></i>
-            </button>
-            <button
-              className="d-flex align-items-center justify-content-between gap-2"
-              onClick={(e) => {
-                e.preventDefault();
-                onShowDeleteModal(item);
-              }}
-            >
-              <span>Delete</span>
-              <i className="bx bx-trash"></i>
-            </button>
-          </div>
+      {item.imageUrl ? (
+        <div className="menu-item-img-container">
+          <img className="menu-item-img" src={item.imageUrl} alt={item.name} />
         </div>
       ) : null}
-
-      <span className="menu-item-name">
-        {item.name}{" "}
-        {item.vegetarian && (
-          <OverlayTrigger placement="top" overlay={VegetarianTooltip()}>
-            <i className="bx bxs-leaf vegetarian-icon"></i>
-          </OverlayTrigger>
-        )}
-      </span>
-      <div className="d-flex align-items-center justify-content-between">
-        <em>{item.category}</em>
-        <strong className="menu-item-price">&#165;{item.price}</strong>
-      </div>
-
-      <div className="menu-item-datalists">
-        {item.ingredients.length > 0 && (
-          <div className="dropdown">
-            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
-              <span>Ingred.:</span>
-              <i className="bx bx-chevron-down"></i>
+      <div className="menu-item-details">
+        {user?.roles[0] === "Admin" ? (
+          <div className="dropdown action-list">
+            <button className="dropbtn">
+              <i className="bx bx-dots-horizontal"></i>
             </button>
             <div className="dropdown-content">
-              {item.ingredients.map((ingredient, i) => (
-                <span key={i}>{ingredient}</span>
-              ))}
+              <button
+                className="d-flex align-items-center justify-content-between gap-2"
+                onClick={() => onShowEditModal(item)}
+              >
+                <span>Edit</span>
+                <i className="bx bx-edit-alt"></i>
+              </button>
+              <button
+                className="d-flex align-items-center justify-content-between gap-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onShowDeleteModal(item);
+                }}
+              >
+                <span>Delete</span>
+                <i className="bx bx-trash"></i>
+              </button>
             </div>
           </div>
-        )}
-        {item.allergies.length > 0 && (
-          <div className="dropdown">
-            <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
-              <span>Allergies:</span>
-              <i className="bx bx-chevron-down"></i>
-            </button>
-            <div className="dropdown-content">
-              {item.allergies.map((allergy, i) => (
-                <span key={i}>{allergy}</span>
-              ))}
+        ) : null}
+
+        <span className="menu-item-name">
+          {item.name}{" "}
+          {item.vegetarian && (
+            <OverlayTrigger placement="top" overlay={VegetarianTooltip()}>
+              <i className="bx bxs-leaf vegetarian-icon"></i>
+            </OverlayTrigger>
+          )}
+        </span>
+        <div className="d-flex align-items-center justify-content-between">
+          <em>{item.category}</em>
+          <strong className="menu-item-price">&#165;{item.price}</strong>
+        </div>
+
+        <div className="menu-item-datalists">
+          {item.ingredients.length > 0 && (
+            <div className="dropdown">
+              <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
+                <span>Ingred.:</span>
+                <i className="bx bx-chevron-down"></i>
+              </button>
+              <div className="dropdown-content">
+                {item.ingredients.map((ingredient, i) => (
+                  <span key={i}>{ingredient}</span>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          {item.allergies.length > 0 && (
+            <div className="dropdown">
+              <button className="dropbtn font-size-sm d-flex align-items-center gap-1 light-bx-shadow">
+                <span>Allergies:</span>
+                <i className="bx bx-chevron-down"></i>
+              </button>
+              <div className="dropdown-content">
+                {item.allergies.map((allergy, i) => (
+                  <span key={i}>{allergy}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </li>
   );

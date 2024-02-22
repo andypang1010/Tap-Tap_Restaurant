@@ -92,6 +92,10 @@ function SettingsPanel({ socket, data }) {
     }
   }, [data?.tables]);
 
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   return (
     <section className="settings-panel">
       <Form>
@@ -151,7 +155,7 @@ function SettingsPanel({ socket, data }) {
             </fieldset>
           </Tab>
           <Tab eventKey="tables" title="Tables">
-            <fieldset className="light-bx-shadow box mb-3">
+            <fieldset className="d-flex align-items-center gap-4 light-bx-shadow box mb-3">
               <TagInput
                 tags={tableNames}
                 onSetTags={(tags) => {
