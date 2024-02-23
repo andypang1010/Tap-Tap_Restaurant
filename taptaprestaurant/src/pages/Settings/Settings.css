@@ -1,3 +1,13 @@
 input[type="number"] {
   width: 20%;
 }
+
+.phone-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.address {
+  font-size: 0.7rem;
+  line-height: 1.2;
+}

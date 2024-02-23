@@ -21,14 +21,19 @@ import { useState, useEffect, createContext } from "react";
 import axios from "axios";
 import { NotificationProvider } from "./components/NotificationContext.jsx";
 import NotificationsBar from "./components/NotificationsBar/NotificationsBar.jsx";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export const AuthContext = createContext();
 export const SocketContext = createContext();
 
+const queryClient = new QueryClient({});
+
 export default function App({ socket = io("http://localhost:8008") }) {
   return (
     <Router>
-      <Contain socket={socket} />
+      <QueryClientProvider client={queryClient}>
+        <Contain socket={socket} />
+      </QueryClientProvider>
     </Router>
   );
 }

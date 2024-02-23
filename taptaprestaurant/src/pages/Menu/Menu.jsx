@@ -253,7 +253,7 @@ function MenuBox({ data, socket }) {
 
       <section className="bg-white light-bx-shadow box">
         <Pagination
-          itemsPerPage={20}
+          itemsPerPage={8}
           itemList={filteredItems}
           onFilteredItems={setPaginationFilteredItems}
         />
@@ -419,11 +419,7 @@ function MenuItem({ item, onShowEditModal, onShowDeleteModal, user }) {
       <div
         className="menu-item-img-container"
         style={{ backgroundImage: `url(${item.imageUrl})` }}
-      >
-        {/*{item.imageUrl ? (
-          <img className="menu-item-img" src={item.imageUrl} alt={item.name} />
-        ) : null}*/}
-      </div>
+      ></div>
       <div className="menu-item-details">
         {user?.roles[0] === "Admin" ? (
           <div className="dropdown action-list">

@@ -121,6 +121,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
         <Form.Group className="mb-3">
           <Form.Label>First Name:</Form.Label>
           <Form.Control
+            className="required"
             placeholder="Ex: 'John'"
             type="text"
             name="first"
@@ -132,6 +133,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
         <Form.Group className="mb-3">
           <Form.Label>Last Name:</Form.Label>
           <Form.Control
+            className="required"
             placeholder="Ex: 'Smith'"
             type="text"
             name="last"
@@ -154,6 +156,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
         <Form.Group className="mb-2">
           <Form.Label>Email</Form.Label>
           <Form.Control
+            className="required"
             placeholder="Ex: 'johnsmith@domain.com'"
             type="email"
             name="email"
@@ -168,6 +171,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
         <Form.Group className="mb-3">
           <Form.Label>Username:</Form.Label>
           <Form.Control
+            className="required"
             placeholder="8-12 characters"
             type="text"
             name="username"
@@ -180,6 +184,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
           <Form.Group className="mb-3">
             <Form.Label>Temporary Password:</Form.Label>
             <Form.Control
+              className="required"
               placeholder="Fill in or leave blank for random password."
               type="text"
               name="tempPassword"
@@ -211,7 +216,19 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
         >
           Clear Form
         </Button>
-        <Button className="light-bx-shadow" variant="danger" type="submit">
+        <Button
+          disabled={
+            !formData?.first ||
+            !formData?.last ||
+            !formData?.email ||
+            !formData?.username
+              ? true
+              : null
+          }
+          className="light-bx-shadow"
+          variant="danger"
+          type="submit"
+        >
           {mode === "New" ? "Create User" : "Save User"}
         </Button>
       </footer>

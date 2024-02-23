@@ -30,7 +30,9 @@ function OrderHistoryList({ history }) {
     <>
       <Pagination
         itemsPerPage={10}
-        itemList={history?.reverse()}
+        itemList={history?.sort(
+          (a, b) => parseFloat(b.finishedAt) - parseFloat(a.finishedAt)
+        )}
         onFilteredItems={setFilteredItems}
       />
       <Accordion>

@@ -422,6 +422,10 @@ input[type="number"] {
 .submit-button {
   background-color: var(--main-taptap-color);
   border-color: var(--main-taptap-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
 }
 
 .submit-button:hover {
@@ -432,6 +436,10 @@ input[type="number"] {
 .submit-button:hover,
 .add-button:hover {
   background-image: linear-gradient(rgb(0 0 0/5%) 0 0);
+}
+
+.required:placeholder-shown {
+  border-bottom: 1px solid var(--main-taptap-color);
 }
 
 /*Pulled from https://codepen.io/P1N2O/pen/pyBNzX*/

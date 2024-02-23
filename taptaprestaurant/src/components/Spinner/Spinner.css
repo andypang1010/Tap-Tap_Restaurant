@@ -1,6 +1,6 @@
 .spinner-container {
-  height: 2.4rem;
-  width: 2.4rem;
+  height: 1.4rem;
+  width: 1.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,7 +13,7 @@
   height: 100%;
   width: 100%;
   border-radius: 1000px;
-  border: 6px solid transparent;
+  border: 4px solid transparent;
   animation: spin 1s linear infinite;
 }
 
@@ -30,7 +30,8 @@
   animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
   transition-duration: 750ms;
   animation-duration: 750ms;
-  border-top-color: rgb(220 38 38);
+  border-top-color: #fff;
+  /*border-top-color: rgb(220 38 38);*/
 }
 
 @keyframes spin {

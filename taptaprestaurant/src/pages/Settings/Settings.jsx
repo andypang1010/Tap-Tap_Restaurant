@@ -7,6 +7,7 @@ import EditableField from "../../components/EditableField";
 import { SocketContext } from "../../App";
 import Header from "../../components/Header";
 import { useNotification } from "../../components/NotificationContext";
+import { useQuery } from "react-query";
 
 export default function Settings() {
   const { socket, data } = useContext(SocketContext);
@@ -35,10 +36,21 @@ const defaultOptions = {
   menu_order_max_quantity: 10,
 };
 
-function SettingsPanel({ socket, data }) {
+function getAllSettings() {
+  return axios
+    .get(
+      `http://localhost:8008/settings/getAllSettings?restaurantName=${"makoto"}`
+    )
+    .then((response) => response.data);
+}
+
+function SettingsPanel() {
   const { sendNotification } = useNotification();
   const [tableNames, setTableNames] = useState([]);
   const [formData, setFormData] = useState(defaultOptions);
+  const { isLoading, data, error } = useQuery(["allSettings"], () =>
+    getAllSettings()
+  );
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -53,20 +65,6 @@ function SettingsPanel({ socket, data }) {
       [name]: newValue,
     });
   };
-
-  function handleAccountUpdate() {
-    if (socket) {
-      socket.emit("updateAccount", data);
-
-      socket.on("success", (newData) => {
-        console.log("newdata: ", newData);
-      });
-
-      socket.on("server-error", (error) => {
-        console.log("error: ", error);
-      });
-    }
-  }
 
   const handleUpdateTables = (e) => {
     e.preventDefault();
@@ -93,8 +91,8 @@ function SettingsPanel({ socket, data }) {
   }, [data?.tables]);
 
   useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+    console.log("settings: ", data);
+  }, [data]);
 
   return (
     <section className="settings-panel">
@@ -102,54 +100,33 @@ function SettingsPanel({ socket, data }) {
         <Tabs defaultActiveKey="restaurant" className="mb-3" fill>
           <Tab eventKey="restaurant" title="Restaurant">
             <fieldset className="light-bx-shadow box mb-3">
-              <div className="grid grid--2-cols">
-                <div>
-                  <EditableField
-                    icon="bx bx-comment-detail"
-                    text={data?.name}
-                    onChange={(value) => {
-                      data.name = value;
-                      handleAccountUpdate();
-                    }}
-                  />
-                  <EditableField
-                    icon="bx bx-phone"
-                    text={data?.phone}
-                    onChange={(value) => {
-                      data.phone = value;
-                      handleAccountUpdate();
-                    }}
-                  />
-                  <EditableField
-                    as="textarea"
-                    icon="bx bx-building-house"
-                    text={data?.address}
-                    onChange={(value) => {
-                      data.address = value;
-                      handleAccountUpdate();
-                    }}
-                  />
+              <div className="d-flex align-items-center justify-content-center gap-4 mb-8">
+                <div className="text-center">
+                  <p>
+                    <strong>{data?.public?.displayName}</strong>
+                  </p>
+                  <p className="d-flex align-items-center justify-content-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="phone-icon"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                      />
+                    </svg>
+                    {data?.public?.phone}
+                  </p>
                 </div>
-
-                <div>
-                  <EditableField
-                    icon="bx bx-globe"
-                    prependText="Language:"
-                    text={data?.language}
-                    onChange={(value) => {
-                      data.language = value;
-                      handleAccountUpdate();
-                    }}
-                  />
-                  <EditableField
-                    icon="bx bx-money"
-                    prependText="Currency:"
-                    text={data?.currency}
-                    onChange={(value) => {
-                      data.currency = value;
-                      handleAccountUpdate();
-                    }}
-                  />
+                <div className="text-center address">
+                  <p>{data?.public?.address1}</p>
+                  <p>{data?.public?.address2}</p>
+                  <p>{data?.public?.address3}</p>
                 </div>
               </div>
             </fieldset>

@@ -38,10 +38,11 @@ export default function MenuItemModal({
 
     try {
       if (mode === "New") {
-        axios.defaults.headers.common["Content-Type"] = "application/json";
+        axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
         axios
           .post("http://localhost:8008/menu/addMenuItem", {
             item: formData,
+            image,
             restaurantName: "makoto", // TODO
           })
           .then(() => {
@@ -49,6 +50,7 @@ export default function MenuItemModal({
               "success",
               `Successfully created menu item ${formData.name}`
             );
+            axios.defaults.headers.common["Content-Type"] = "application/json";
             setIsLoading(false);
             onHide();
             handleClearFormData();
@@ -59,6 +61,7 @@ export default function MenuItemModal({
               "error",
               `Failed to create new menu item: ${error.response.data}`
             );
+            axios.defaults.headers.common["Content-Type"] = "application/json";
             setIsLoading(false);
           });
       } else if (mode === "Edit") {
@@ -77,6 +80,7 @@ export default function MenuItemModal({
               "success",
               `Successfully updated menu item ${formData.name}`
             );
+            axios.defaults.headers.common["Content-Type"] = "application/json";
             setIsLoading(false);
             onHide();
           })
@@ -86,12 +90,14 @@ export default function MenuItemModal({
               "error",
               `Failed to update menu item: ${error.response.data}`
             );
+            axios.defaults.headers.common["Content-Type"] = "application/json";
             setIsLoading(false);
           });
       } else {
         sendNotification("error", "Unknown mode");
       }
     } catch (error) {
+      axios.defaults.headers.common["Content-Type"] = "application/json";
       sendNotification("error", error);
     }
   };
@@ -244,7 +250,7 @@ export default function MenuItemModal({
               <input
                 type="file"
                 name="thumbnail"
-                accept="image/png, image/jpeg"
+                accept="image/*"
                 onChange={(e) => {
                   console.log(e.target.files[0]);
                   setImage(e.target.files[0]);
@@ -254,29 +260,23 @@ export default function MenuItemModal({
           </fieldset>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={onHide}
-            disabled={isLoading ? true : null}
-          >
-            Back
-          </Button>
-          <Button
-            className="submit-button"
-            variant="danger"
-            type="submit"
-            disabled={isLoading ? true : null}
-          >
-            {!isLoading ? (
-              mode === "New" ? (
-                "Create"
-              ) : (
-                "Save Changes"
-              )
-            ) : (
-              <Spinner />
-            )}
-          </Button>
+          <div className="d-flex align-items-stretch gap-2">
+            <Button
+              variant="secondary"
+              onClick={onHide}
+              disabled={isLoading ? true : null}
+            >
+              Back
+            </Button>
+            <Button
+              className="submit-button"
+              variant="danger"
+              type="submit"
+              disabled={isLoading ? true : null}
+            >
+              {!isLoading ? mode === "New" ? "Create" : "Save" : <Spinner />}
+            </Button>
+          </div>
         </Modal.Footer>
       </Form>
     </Modal>

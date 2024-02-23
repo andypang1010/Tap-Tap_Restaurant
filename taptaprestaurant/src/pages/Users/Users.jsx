@@ -178,7 +178,7 @@ function UserList({ users, user, sendNotification }) {
         role="button"
         className="action-button red-hover"
       >
-        Add New User
+        Create New User
       </Link>
     </div>
   );
