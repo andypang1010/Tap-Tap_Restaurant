@@ -150,7 +150,7 @@ export default function MenuItemModal({
         </Modal.Header>
         <Modal.Body>
           <fieldset disabled={isLoading ? true : null}>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3 required">
               <Form.Label>Name:</Form.Label>
               <Form.Control
                 placeholder="Enter new item name"
