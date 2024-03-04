@@ -351,8 +351,8 @@ function Table({
         <span>#</span>
         <span>Elapsed Time</span>
         <span>Status</span>
-        <span>Customer</span>
-        <span>Total</span>
+        {/*<span>Customer</span>
+        <span>Total</span>*/}
         <span>Tendered</span>
       </div>
 
@@ -412,13 +412,13 @@ function TableItemList({ items, selectedItems, onToggleItem, onCancelItem }) {
               </div>
               <ElapsedTime startTime={item.createdAt} />
               <div className={`status-badge ${statusClass}`}>{item.status}</div>
-              <div className="item-customer-name">
+              {/*<div className="item-customer-name">
                 <em>{item.customerName}</em>
               </div>
               <div className="item-price">
                 <span>&yen;</span>
                 <strong>{item.item.price * item.quantity}</strong>
-              </div>
+          </div>*/}
               <div className="item-tendered">
                 {item.tendered ? (
                   <svg
