@@ -83,8 +83,6 @@ function CancelItemModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(restaurantName, tableName);
-
     axios
       .post("https://taptap-414502.uw.r.appspot.com/pos/cancelOrders", {
         restaurantName: "makoto", // TODO
@@ -100,10 +98,6 @@ function CancelItemModal({
         sendNotification("error", error.message);
       });
   };
-
-  useEffect(() => {
-    console.log(orderIds);
-  }, [orderIds]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -187,14 +181,6 @@ export default function Tables() {
       visibility[name] = data.sessionActive;
     });
     setTableVisibility(visibility);
-  }, [data?.tables]);
-
-  useEffect(() => {
-    console.log(
-      data?.tables,
-      data?.tables.length,
-      data?.tables["1"]?.tab[0]?.createdAt
-    );
   }, [data?.tables]);
 
   return (

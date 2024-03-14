@@ -8,8 +8,6 @@ export const NotificationProvider = ({ children }) => {
   const sendNotification = (type, message) => {
     const newNotification = { type, message, id: Date.now() };
 
-    console.log(newNotification);
-
     setNotifications((prevNotifications) => [
       ...prevNotifications,
       newNotification,

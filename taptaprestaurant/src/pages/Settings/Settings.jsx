@@ -85,14 +85,9 @@ function SettingsPanel() {
 
   useEffect(() => {
     if (data?.tables !== undefined) {
-      console.log(data?.tables, Object.keys(data?.tables));
       setTableNames(Object.keys(data?.tables));
     }
   }, [data?.tables]);
-
-  useEffect(() => {
-    console.log("settings: ", data);
-  }, [data]);
 
   return (
     <section className="settings-panel">

@@ -19,7 +19,6 @@ function RegisterForm({ successRedirect = "/Login" }) {
         password,
       })
       .then((response) => {
-        console.log(response);
         localStorage.setItem("jwt", response.data);
         navigate(successRedirect);
       })

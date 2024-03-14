@@ -13,7 +13,6 @@ export default function EditableField({
   const [isEditing, setIsEditing] = useState(false);
 
   function handleInputChange(value) {
-    console.log("valuee: ", value, type);
     setNewValue(value);
     onChange(value);
   }
@@ -22,12 +21,10 @@ export default function EditableField({
     const val =
       type === "number" ? parseInt(event.target.value) : event.target.value;
 
-    console.log("val", val);
     event.key === "Enter" ? handleInputChange(val) : setNewValue(val || 0);
   };
 
   const handleBlur = (event) => {
-    console.log("bool", event.target.value !== text);
 
     if (event.target.value !== text) {
       handleInputChange(

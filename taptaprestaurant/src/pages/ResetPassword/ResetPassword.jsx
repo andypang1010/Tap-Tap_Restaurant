@@ -64,8 +64,7 @@ function ResetPasswordForm({ username }) {
           password: formData.oldPassword,
           restaurantName: "makoto",
         })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           axios
             .post("https://taptap-414502.uw.r.appspot.com/auth/updatePassword", {
               newPassword: formData.newPassword,

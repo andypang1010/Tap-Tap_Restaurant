@@ -10,7 +10,6 @@ export default function EditUser() {
 
   useEffect(() => {
     setUserToEdit(location.state.user);
-    console.log(location.state);
   }, [location.state]);
 
   return (

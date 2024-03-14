@@ -175,10 +175,6 @@ function MenuBox({ data, socket }) {
             return item.text.toLowerCase() === b.type.toLowerCase();
           });
 
-          if (indexA === -1 || indexB === -1) {
-            console.log("A: ", indexA, "B: ", indexB);
-          }
-
           return indexA - indexB;
         });
         break;
@@ -191,9 +187,6 @@ function MenuBox({ data, socket }) {
             return item.value.toLowerCase() === b.category.toLowerCase();
           });
 
-          if (indexA === -1 || indexB === -1) {
-            console.log("A: ", indexA, "B: ", indexB);
-          }
 
           return indexA - indexB;
         });

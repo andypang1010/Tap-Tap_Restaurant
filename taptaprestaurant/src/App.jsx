@@ -63,10 +63,6 @@ function Contain({ socket }) {
   }, [socket]);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (!authenticated) {
       const jwt = localStorage.getItem("jwt");
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;

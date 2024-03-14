@@ -68,14 +68,13 @@ export default function MenuItemModal({
         axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 
         axios
-          .post("https://taptap-414502.uw.r.appspot.com/menu/updateMenuItem", {
+          .post("http://localhost:8080/menu/updateMenuItem", {
             item: formData,
             image,
             prevItemName,
             restaurantName: "makoto",
           })
-          .then((response) => {
-            console.log(response);
+          .then(() => {
             sendNotification(
               "success",
               `Successfully updated menu item ${formData.name}`
@@ -108,7 +107,6 @@ export default function MenuItemModal({
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(e.target, formData);
     const newValue =
       type === "checkbox"
         ? checked
@@ -132,10 +130,6 @@ export default function MenuItemModal({
       setFormData(blankFormData);
     }
   }, [defaultData]);
-
-  useEffect(() => {
-    console.log("Image", image);
-  }, [image]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -252,7 +246,6 @@ export default function MenuItemModal({
                 name="thumbnail"
                 accept="image/*"
                 onChange={(e) => {
-                  console.log(e.target.files[0]);
                   setImage(e.target.files[0]);
                 }}
               />
