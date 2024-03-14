@@ -28,8 +28,8 @@ function CloseTabModal({
     e.preventDefault();
 
     axios
-      .post("http://localhost:8008/pos/closeTableSession", {
-        restaurantName, // TODO
+      .post("https://taptap-414502.uw.r.appspot.com/pos/closeTableSession", {
+        restaurantName: "makoto", // TODO
         tableName: tableName,
       })
       .then(() => {
@@ -86,8 +86,8 @@ function CancelItemModal({
     console.log(restaurantName, tableName);
 
     axios
-      .post("http://localhost:8008/pos/cancelOrders", {
-        restaurantName, // TODO
+      .post("https://taptap-414502.uw.r.appspot.com/pos/cancelOrders", {
+        restaurantName: "makoto", // TODO
         tableName,
         orderIds,
       })

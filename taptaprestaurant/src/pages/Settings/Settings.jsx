@@ -39,7 +39,7 @@ const defaultOptions = {
 function getAllSettings() {
   return axios
     .get(
-      `http://localhost:8008/settings/getAllSettings?restaurantName=${"makoto"}`
+      `https://taptap-414502.uw.r.appspot.com/settings/getAllSettings?restaurantName=${"makoto"}`
     )
     .then((response) => response.data);
 }
@@ -70,7 +70,7 @@ function SettingsPanel() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8008/table/createTableTemplate", {
+      .post("https://taptap-414502.uw.r.appspot.com/table/createTableTemplate", {
         tableNames,
         restaurantName: "makoto", // TODO
       })

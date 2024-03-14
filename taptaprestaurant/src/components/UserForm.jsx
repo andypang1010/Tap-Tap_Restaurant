@@ -55,7 +55,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
     try {
       if (mode === "New") {
         axios
-          .post("http://localhost:8008/auth/signup", {
+          .post("https://taptap-414502.uw.r.appspot.com/auth/signup", {
             ...formData,
             restaurantName: "makoto", // TODO
           })
@@ -72,7 +72,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
           });
       } else {
         axios
-          .post("http://localhost:8008/user/updateUserAccount", {
+          .post("https://taptap-414502.uw.r.appspot.com/user/updateUserAccount", {
             ...formData,
             restaurantName: "makoto", // TODO
           })

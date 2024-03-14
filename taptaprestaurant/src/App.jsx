@@ -28,7 +28,7 @@ export const SocketContext = createContext();
 
 const queryClient = new QueryClient({});
 
-export default function App({ socket = io("http://localhost:8008") }) {
+export default function App({ socket = io("https://taptap-414502.uw.r.appspot.com") }) {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
@@ -72,12 +72,12 @@ function Contain({ socket }) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
       axios
-        .get("http://localhost:8008/protected")
+        .get("https://taptap-414502.uw.r.appspot.com/protected")
         .then(() => {
           console.log("User is logged in!");
           setAuthenticated(true);
           axios
-            .get("http://localhost:8008/user/getUserAccount")
+            .get("https://taptap-414502.uw.r.appspot.com/user/getUserAccount")
             .then((response) => {
               setUser(response.data);
             })

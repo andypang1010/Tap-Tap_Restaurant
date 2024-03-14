@@ -40,7 +40,7 @@ export default function MenuItemModal({
       if (mode === "New") {
         axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
         axios
-          .post("http://localhost:8008/menu/addMenuItem", {
+          .post("https://taptap-414502.uw.r.appspot.com/menu/addMenuItem", {
             item: formData,
             image,
             restaurantName: "makoto", // TODO
@@ -68,7 +68,7 @@ export default function MenuItemModal({
         axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 
         axios
-          .post("http://localhost:8008/menu/updateMenuItem", {
+          .post("https://taptap-414502.uw.r.appspot.com/menu/updateMenuItem", {
             item: formData,
             image,
             prevItemName,

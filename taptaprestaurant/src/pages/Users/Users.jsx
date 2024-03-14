@@ -25,7 +25,7 @@ function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
     let err = null;
 
     axios
-      .post("http://localhost:8008/user/deleteUser", {
+      .post("https://taptap-414502.uw.r.appspot.com/user/deleteUser", {
         usernames,
         restaurantName: "makoto", // TODO
       })

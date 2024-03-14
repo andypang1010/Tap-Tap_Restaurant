@@ -59,7 +59,7 @@ function ResetPasswordForm({ username }) {
 
     try {
       axios
-        .post("http://localhost:8008/auth/login", {
+        .post("https://taptap-414502.uw.r.appspot.com/auth/login", {
           username,
           password: formData.oldPassword,
           restaurantName: "makoto",
@@ -67,7 +67,7 @@ function ResetPasswordForm({ username }) {
         .then((response) => {
           console.log(response);
           axios
-            .post("http://localhost:8008/auth/updatePassword", {
+            .post("https://taptap-414502.uw.r.appspot.com/auth/updatePassword", {
               newPassword: formData.newPassword,
               username,
               restaurantName: "makoto", // TODO

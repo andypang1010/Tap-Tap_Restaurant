@@ -16,7 +16,7 @@ import axios from "axios";
 
 export default Main;
 
-const serverUrl="http://localhost:8008/auth/register"; //Jeffery: it's better to module this!
+const serverUrl="https://taptap-414502.uw.r.appspot.com/auth/register"; //Jeffery: it's better to module this!
 
 
     /* -------------------------------------------------- */

@@ -331,7 +331,7 @@ function DeleteItemModal({ show, onHide, item }) {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8008/menu/deleteMenuItem", {
+      .post("https://taptap-414502.uw.r.appspot.com/menu/deleteMenuItem", {
         item,
         restaurantName: "makoto", // TODO
       })

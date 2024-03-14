@@ -14,7 +14,7 @@ function RegisterForm({ successRedirect = "/Login" }) {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8008/auth/login", {
+      .post("https://taptap-414502.uw.r.appspot.com/auth/login", {
         username,
         password,
       })
