@@ -68,7 +68,7 @@ export default function MenuItemModal({
         axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 
         axios
-          .post("http://localhost:8080/menu/updateMenuItem", {
+          .post("https://taptap-414502.uw.r.appspot.com/menu/updateMenuItem", {
             item: formData,
             image,
             prevItemName,
