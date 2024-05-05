@@ -8,6 +8,7 @@ import { SocketContext } from "../../App";
 import Header from "../../components/Header";
 import axios from "axios";
 import ElapsedTime from "../../components/ElapsedTime";
+import environment from "../../environment.json"
 
 function CloseTabTooltip() {
   return (
@@ -28,7 +29,7 @@ function CloseTabModal({
     e.preventDefault();
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/pos/closeTableSession", {
+      .post(`${environment.API_BASEURL}/pos/closeTableSession`, {
         restaurantName: "makoto", // TODO
         tableName: tableName,
       })
@@ -84,7 +85,7 @@ function CancelItemModal({
     e.preventDefault();
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/pos/cancelOrders", {
+      .post(`${environment.API_BASEURL}/pos/cancelOrders`, {
         restaurantName: "makoto", // TODO
         tableName,
         orderIds,
@@ -128,6 +129,24 @@ function CancelItemModal({
     </Modal>
   );
 }
+
+
+function OpenAllToolTip() {
+  return (
+    <Tooltip>
+      <strong>Open All</strong>
+    </Tooltip>
+  );
+}
+
+function CloseAllToolTip() {
+  return (
+    <Tooltip>
+      <strong>Close All</strong>
+    </Tooltip>
+  );
+}
+
 
 export default function Tables() {
   const { sendNotification } = useNotification();
@@ -207,6 +226,32 @@ export default function Tables() {
 
       <section>
         <ul className="table-list-banner">
+          <div className="d-flex align-items-center gap-2">
+            <OverlayTrigger placement="top" overlay={OpenAllToolTip()}>
+              <button className="open-button" onClick={() => {
+                const visibility = tableVisibility;
+                Object.entries(data?.tables || {}).forEach(([name, _]) => {
+                  visibility[name] = true;
+                });
+
+                console.log(visibility);
+                setTableVisibility(visibility);
+              }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </button>
+            </OverlayTrigger>
+            <OverlayTrigger placement="top" overlay={CloseAllToolTip()}>
+              <button className="close-button" onClick={() => {
+                setTableVisibility({});
+              }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </OverlayTrigger>
+          </div>
           {Object.entries(data?.tables || {}).map(([name, data], i) => {
             return (
               <TableButton
@@ -306,7 +351,7 @@ function Table({
 
   return (
     <fieldset
-      className={`tab box ${!sessionActive ? "empty-tab" : ""} ${
+      className={`tab box animate light-bx-shadow ${!sessionActive ? "empty-tab" : ""} ${
         isActive ? "" : "inactive"
       }`}
     >

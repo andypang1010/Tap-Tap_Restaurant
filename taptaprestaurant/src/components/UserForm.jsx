@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TagInput from "./TagInput/TagInput";
+import environment from "../environment.json";
 
 import { useNotification } from "./NotificationContext";
 
@@ -55,7 +56,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
     try {
       if (mode === "New") {
         axios
-          .post("https://taptap-414502.uw.r.appspot.com/auth/signup", {
+          .post(`${environment.API_BASEURL}/auth/signup`, {
             ...formData,
             restaurantName: "makoto", // TODO
           })
@@ -72,7 +73,7 @@ export default function UserForm({ mode = "New", defaultValues = null }) {
           });
       } else {
         axios
-          .post("https://taptap-414502.uw.r.appspot.com/user/updateUserAccount", {
+          .post(`${environment.API_BASEURL}/user/updateUserAccount`, {
             ...formData,
             restaurantName: "makoto", // TODO
           })

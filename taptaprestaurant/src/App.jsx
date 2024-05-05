@@ -14,6 +14,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  Navigate,
 } from "react-router-dom";
 import SideBar from "./components/SideBar";
 import io from "socket.io-client";
@@ -22,13 +23,14 @@ import axios from "axios";
 import { NotificationProvider } from "./components/NotificationContext.jsx";
 import NotificationsBar from "./components/NotificationsBar/NotificationsBar.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
+import environment from "./environment.json";
 
 export const AuthContext = createContext();
 export const SocketContext = createContext();
 
 const queryClient = new QueryClient({});
 
-export default function App({ socket = io("https://taptap-414502.uw.r.appspot.com") }) {
+export default function App({ socket = io(environment.API_BASEURL) }) {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
@@ -46,6 +48,7 @@ function Contain({ socket }) {
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
+  const [restaurantName, setRestaurantName] = useState(localStorage.getItem("restaurant"));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,17 +66,22 @@ function Contain({ socket }) {
   }, [socket]);
 
   useEffect(() => {
+    const urlParts = window.location.pathname.split('/');
+    console.log(urlParts);
+  }, [])
+
+  useEffect(() => {
     if (!authenticated) {
       const jwt = localStorage.getItem("jwt");
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
       axios
-        .get("https://taptap-414502.uw.r.appspot.com/protected")
+        .get(`${environment.API_BASEURL}/protected`)
         .then(() => {
           console.log("User is logged in!");
           setAuthenticated(true);
           axios
-            .get("https://taptap-414502.uw.r.appspot.com/user/getUserAccount")
+            .get(`${environment.API_BASEURL}/user/getUserAccount`)
             .then((response) => {
               setUser(response.data);
             })
@@ -90,7 +98,7 @@ function Contain({ socket }) {
 
   return (
     <div className="contain">
-      <AuthContext.Provider value={{ authenticated, setAuthenticated, user }}>
+      <AuthContext.Provider value={{ authenticated, setAuthenticated, user, restaurantName, setRestaurantName }}>
         <SocketContext.Provider value={{ socket, data }}>
           <NotificationProvider>
             <NotificationsBar />
@@ -103,19 +111,21 @@ function Contain({ socket }) {
             <Routes>
               {authenticated ? (
                 <>
-                  <Route path="/" element={<Tables />} />
-                  <Route path="/Tables" element={<Tables />} />
-                  <Route path="/Menu" element={<Menu />} />
-                  <Route path="/Account" element={<Account />} />
-                  <Route
-                    path="/Account/ResetPassword"
-                    element={<ResetPassword />}
-                  />
-                  <Route path="/OrderHistory" element={<OrderHistory />} />
-                  <Route path="/Users" element={<Users />} />
-                  <Route path="/Users/NewUser" element={<NewUser />} />
-                  <Route path="/Users/EditUser" element={<EditUser />} />
-                  <Route path="/Settings" element={<Settings />} />
+                  <Route path=":restaurantName" >
+                    <Route path="*" element={<Navigate to="Tables" replace />} />
+                    <Route path="Tables" element={<Tables />} />
+                    <Route path="Menu" element={<Menu />} />
+                    <Route path="Account" element={<Account />} />
+                    <Route
+                      path="Account/ResetPassword"
+                      element={<ResetPassword />}
+                    />
+                    <Route path="OrderHistory" element={<OrderHistory />} />
+                    <Route path="Users" element={<Users />} />
+                    <Route path="Users/NewUser" element={<NewUser />} />
+                    <Route path="Users/EditUser" element={<EditUser />} />
+                    <Route path="Settings" element={<Settings />} />
+                  </Route>
                 </>
               ) : (
                 <>

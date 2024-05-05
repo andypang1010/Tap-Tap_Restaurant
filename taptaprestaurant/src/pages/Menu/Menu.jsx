@@ -7,6 +7,7 @@ import { AuthContext, SocketContext } from "../../App";
 import axios from "axios";
 import { useNotification } from "../../components/NotificationContext";
 import Header from "../../components/Header";
+import environment from "../../environment.json"
 
 function VegetarianTooltip() {
   return (
@@ -324,7 +325,7 @@ function DeleteItemModal({ show, onHide, item }) {
     e.preventDefault();
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/menu/deleteMenuItem", {
+      .post(`${environment.API_BASEURL}/menu/deleteMenuItem`, {
         item,
         restaurantName: "makoto", // TODO
       })

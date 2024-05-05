@@ -1,33 +1,37 @@
 import { Button, Form } from "react-bootstrap";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginForm.css";
 import "boxicons/css/boxicons.min.css";
 import { useNotification } from "../NotificationContext";
+import environment from "../../environment.json"
+import { AuthContext } from "../../App";
 
-function LoginForm({ successRedirect = "/" }) {
+function LoginForm() {
   const { sendNotification } = useNotification();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { restaurantName, setRestaurantName } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/auth/login", {
+      .post(`${environment.API_BASEURL}/auth/login`, {
         username,
         password,
-        restaurantName: "makoto",
+        restaurantName,
       })
       .then((response) => {
         sendNotification("info", `Logged in as user ${username}`);
         localStorage.setItem("jwt", response.data);
-        navigate(successRedirect);
+        localStorage.setItem("restaurant", restaurantName);
+        navigate(`/${restaurantName}/Tables`);
       })
-      .catch(() => {
-        sendNotification("error", `Username or password is incorrect`);
+      .catch((error) => {
+        sendNotification("error", `${error}`);
       });
   };
 
@@ -35,6 +39,18 @@ function LoginForm({ successRedirect = "/" }) {
     <div className="login-container">
       <h1>Login</h1>
       <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formRestaurantName">
+          <div className="input-container">
+            <i className="bx bxs-building-house bx-sm"></i>
+            <Form.Control
+              className="input-box"
+              type="text"
+              placeholder="Restaurant/domain name"
+              value={restaurantName}
+              onChange={(e) => setRestaurantName(e.target.value)}
+            />
+          </div>
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formUsername">
           <div className="input-container">
             <i className="bx bxs-user bx-sm"></i>

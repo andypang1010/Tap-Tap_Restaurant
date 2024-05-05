@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginForm/LoginForm";
 import "boxicons/css/boxicons.min.css";
+import environment from "../environment.json"
 
 function RegisterForm({ successRedirect = "/Login" }) {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ function RegisterForm({ successRedirect = "/Login" }) {
     e.preventDefault();
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/auth/login", {
+      .post(`${environment.API_BASEURL}/auth/login`, {
         username,
         password,
       })

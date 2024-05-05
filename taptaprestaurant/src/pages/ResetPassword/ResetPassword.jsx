@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from "../../App";
 import { useNotification } from "../../components/NotificationContext";
 import Header from "../../components/Header";
+import environment from "../../environment.json"
 
 const passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[.,!@#$%^&*])(?=.{8,})"
@@ -59,14 +60,14 @@ function ResetPasswordForm({ username }) {
 
     try {
       axios
-        .post("https://taptap-414502.uw.r.appspot.com/auth/login", {
+        .post(`${environment.API_BASEURL}/auth/login`, {
           username,
           password: formData.oldPassword,
           restaurantName: "makoto",
         })
         .then(() => {
           axios
-            .post("https://taptap-414502.uw.r.appspot.com/auth/updatePassword", {
+            .post(`${environment.API_BASEURL}/auth/updatePassword`, {
               newPassword: formData.newPassword,
               username,
               restaurantName: "makoto", // TODO

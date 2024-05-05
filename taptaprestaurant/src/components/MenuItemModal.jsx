@@ -6,6 +6,7 @@ import TagInput from "./TagInput/TagInput";
 import axios from "axios";
 import { useNotification } from "./NotificationContext";
 import Spinner from "./Spinner/Spinner";
+import environment from "../environment.json"
 
 const blankFormData = {
   name: "",
@@ -40,7 +41,7 @@ export default function MenuItemModal({
       if (mode === "New") {
         axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
         axios
-          .post("https://taptap-414502.uw.r.appspot.com/menu/addMenuItem", {
+          .post(`${environment.API_BASEURL}/menu/addMenuItem`, {
             item: formData,
             image,
             restaurantName: "makoto", // TODO
@@ -68,7 +69,7 @@ export default function MenuItemModal({
         axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 
         axios
-          .post("https://taptap-414502.uw.r.appspot.com/menu/updateMenuItem", {
+          .post(`${environment.API_BASEURL}/menu/updateMenuItem`, {
             item: formData,
             image,
             prevItemName,

@@ -32,24 +32,24 @@ function Logo() {
 }
 
 function SideBarItems() {
-  const { user } = useContext(AuthContext);
+  const { user, restaurantName } = useContext(AuthContext);
 
   return (
     <div className="sidebar-items">
       <Logo />
-      <SideBarItem icon="bx bx-grid-alt" linkTo="/Tables" text="Tables" />
+      <SideBarItem icon="bx bx-grid-alt" linkTo={`${restaurantName}/Tables`} text="Tables" />
       <SideBarItem
         icon="bx bx-history"
-        linkTo="/OrderHistory"
+        linkTo={`${restaurantName}/OrderHistory`}
         text="Order History"
       />
-      <SideBarItem icon="bx bx-food-menu" linkTo="/Menu" text="Menu" />
+      <SideBarItem icon="bx bx-food-menu" linkTo={`${restaurantName}/Menu`} text="Menu" />
       {user?.roles[0] === "Admin" ? (
-        <SideBarItem icon="bx bx-group" linkTo="/Users" text="Users" />
+        <SideBarItem icon="bx bx-group" linkTo={`${restaurantName}/Users`} text="Users" />
       ) : null}
       <div className="sidebar-footer">
         {footerSideBarData.map((item, i) => (
-          <FooterSideBarItem icon={item.icon} linkTo={item.linkTo} key={i} />
+          <FooterSideBarItem icon={item.icon} linkTo={`${restaurantName}${item.linkTo}`} key={i} />
         ))}
       </div>
     </div>

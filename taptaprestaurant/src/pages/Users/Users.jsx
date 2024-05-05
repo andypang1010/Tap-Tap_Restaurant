@@ -9,6 +9,7 @@ import { AuthContext, SocketContext } from "../../App";
 import { useNotification } from "../../components/NotificationContext";
 import Header from "../../components/Header";
 import Unauthorized from "../../components/Unauthorized";
+import environment from "../../environment.json"
 
 function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
   const userString =
@@ -25,7 +26,7 @@ function DeleteUserModal({ show, onHide, usernames, sendNotification }) {
     let err = null;
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/user/deleteUser", {
+      .post(`${environment.API_BASEURL}/user/deleteUser`, {
         usernames,
         restaurantName: "makoto", // TODO
       })

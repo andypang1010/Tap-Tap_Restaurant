@@ -8,6 +8,7 @@ import { SocketContext } from "../../App";
 import Header from "../../components/Header";
 import { useNotification } from "../../components/NotificationContext";
 import { useQuery } from "react-query";
+import environment from "../../environment.json"
 
 export default function Settings() {
   const { socket, data } = useContext(SocketContext);
@@ -39,7 +40,7 @@ const defaultOptions = {
 function getAllSettings() {
   return axios
     .get(
-      `https://taptap-414502.uw.r.appspot.com/settings/getAllSettings?restaurantName=${"makoto"}`
+      `${environment.API_BASEURL}/settings/getAllSettings?restaurantName=${"makoto"}`
     )
     .then((response) => response.data);
 }
@@ -70,7 +71,7 @@ function SettingsPanel() {
     e.preventDefault();
 
     axios
-      .post("https://taptap-414502.uw.r.appspot.com/table/createTableTemplate", {
+      .post(`${environment.API_BASEURL}/table/createTableTemplate`, {
         tableNames,
         restaurantName: "makoto", // TODO
       })

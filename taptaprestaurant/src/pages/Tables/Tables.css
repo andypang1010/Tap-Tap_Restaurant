@@ -243,10 +243,6 @@
   color: var(--taptap-red);
 }
 
-.inactive {
-  display: none;
-}
-
 .inactive-button {
   background-color: #efefef;
   color: #666;
@@ -271,4 +267,60 @@
 .empty-tab .close-tab-button {
   color: #aaa;
   background-color: #eee;
+}
+
+.open-button, 
+.close-button {
+  padding: 0.4rem;
+  line-height: 1;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: var(--main-taptap-color);
+  color: #fff;
+  border: none;
+  border-radius: 0.8rem;
+  animation: 0.3s all;
+}
+
+.open-button:hover,
+.close-button:hover {
+  translate: 0 -0.1rem;
+}
+
+.animate {
+  animation-duration: 0.15s;
+  animation-name: animate-fade-in;
+  animation-delay: 0.01s;
+  animation-fill-mode: backwards;
+  animation-timing-function: cubic-bezier(.08,.7,.82,1.17);
+}
+
+.inactive {
+  animation-duration: 0.15s;
+  animation-name: animate-fade-out;
+  animation-delay: 0.01s;
+  animation-fill-mode: backwards;
+  animation-timing-function: cubic-bezier(.08,.7,.82,1.17);
+  display: none;
+}
+
+
+@keyframes animate-fade-in {
+  0% { 
+    opacity: 0; 
+    scale: 0.2;
+  }
+  100% { 
+    opacity: 1; 
+    scale: 1;
+  }
+}
+
+@keyframes animate-fade-out {
+  0% { 
+    opacity: 1;
+  }
+  100% { 
+    opacity: 0;
+  }
 }
