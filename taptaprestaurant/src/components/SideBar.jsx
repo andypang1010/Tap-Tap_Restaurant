@@ -63,7 +63,7 @@ function SideBarItem({ icon, linkTo, text }) {
     <div className="sidebar-item ">
       <Link
         className={`sidebar-link light-bx-shadow ${
-          location.pathname === linkTo ? "active-sidebar-link" : ""
+          location.pathname === `/${linkTo}` ? "active-sidebar-link" : ""
         }`}
         to={linkTo}
       >

@@ -17,7 +17,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import SideBar from "./components/SideBar";
-import io from "socket.io-client";
 import { useState, useEffect, createContext } from "react";
 import axios from "axios";
 import { NotificationProvider } from "./components/NotificationContext.jsx";
@@ -30,11 +29,11 @@ export const SocketContext = createContext();
 
 const queryClient = new QueryClient({});
 
-export default function App({ socket = io(environment.API_BASEURL) }) {
+export default function App() {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        <Contain socket={socket} />
+        <Contain />
       </QueryClientProvider>
     </Router>
   );
@@ -44,26 +43,12 @@ function RestaurantName({ name }) {
   return <span className="restaurant-name-badge">{name}</span>;
 }
 
-function Contain({ socket }) {
+function Contain() {
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [restaurantName, setRestaurantName] = useState(localStorage.getItem("restaurant"));
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("data", (newData) => {
-        setData(newData);
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [socket]);
 
   useEffect(() => {
     const urlParts = window.location.pathname.split('/');
@@ -77,8 +62,10 @@ function Contain({ socket }) {
 
       axios
         .get(`${environment.API_BASEURL}/protected`)
-        .then(() => {
+        .then((response) => {
           console.log("User is logged in!");
+          setData(response.data);
+          console.log(response.data);
           setAuthenticated(true);
           axios
             .get(`${environment.API_BASEURL}/user/getUserAccount`)
@@ -99,7 +86,7 @@ function Contain({ socket }) {
   return (
     <div className="contain">
       <AuthContext.Provider value={{ authenticated, setAuthenticated, user, restaurantName, setRestaurantName }}>
-        <SocketContext.Provider value={{ socket, data }}>
+        <SocketContext.Provider value={{ data }}>
           <NotificationProvider>
             <NotificationsBar />
             {authenticated && (
